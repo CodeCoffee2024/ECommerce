@@ -1,0 +1,20 @@
+# Ignore ASP.NET build folders
+**/bin/
+**/obj/
+**/.vscode/
+
+# Ignore Angular build and dependencies
+ECommerce.Api/appsettings.Development.json
+ECommerce.Api/appsettings.json
+ECommerce.Client/node_modules/
+ECommerce.Client/dist/
+ECommerce.Client/.angular/
+
+# Ignore logs and temporary files
+*.log
+*.tmp
+.DS_Store
+
+# User-specific files
+*.user
+*.vs/
