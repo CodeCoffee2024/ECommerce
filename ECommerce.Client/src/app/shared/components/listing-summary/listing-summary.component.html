@@ -1,0 +1,23 @@
+
+<div *ngIf="listingData.totalPages > 0">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="text-muted text-sm">
+                <small>{{ listingData.page + ' of ' + listingData.totalPages + ' | '+listingData.totalRecords + ' result(s)' }}</small>
+            </div>
+        </div>
+        <div class="col-lg-6 text-right justify-content-end d-flex">
+            <ngb-pagination 
+                [collectionSize]="listingData.totalRecords" 
+                [(page)]="listingData.page"
+                [pageSize]="listingData.pageSize"
+                (pageChange)="onPageChange($event)">
+            </ngb-pagination>
+        </div>
+    </div>
+</div>
+<div *ngIf="listingData.totalPages === 0">
+    <div class="text-muted text-sm">
+        No result found.
+    </div>
+</div>

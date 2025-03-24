@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentValidation;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
 namespace ECommerce.Application
@@ -15,6 +17,8 @@ namespace ECommerce.Application
                     Assembly.GetExecutingAssembly() // Ensure it scans the entire application layer
                 );
             });
+
+            services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly, includeInternalTypes: true);
 
             return services;
         }

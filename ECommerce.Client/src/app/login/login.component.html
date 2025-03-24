@@ -1,0 +1,44 @@
+<div class="p-3 vh-100 d-flex align-items-center bg-color-main justify-content-center">
+    <div class="row border-secondary bg-white pt-3 pb-3 p-md-4 border rounded">
+        <div class="col-12">
+            <div class="d-flex justify-content-center">
+                <img src="/assets/logo.webp" alt="logo" width="50" height="50"/>
+            </div>
+            <h3 class="font-weight-bold">
+                Sign in
+            </h3>
+            <h6>
+                Don't have an account? <span class="color-secondary">Sign up</span>
+            </h6>
+        </div>
+        <div class="col-12">
+            <form [formGroup]="loginForm.form" (ngSubmit)="onSubmit()" *ngIf="loginForm.form">
+                <div *ngIf="loginForm.getServerError('user')" class="alert alert-danger">
+                    {{ loginForm.getServerError('user') }}
+                </div>
+                <app-input
+                    [inputType]="InputTypes.Email"
+                    inputId="usernameEmail"
+                    [formGroup]="loginForm.form"
+                    [controlName]="'usernameEmail'"
+                    [label]="'Email'"
+                ></app-input>
+                <app-input
+                    [inputType]="InputTypes.Password"
+                    inputId="password"
+                    [formGroup]="loginForm.form"
+                    [label]="'Password'"
+                    [controlName]="'password'"
+                ></app-input>
+                <app-input
+                    [inputType]="InputTypes.Checkbox"
+                    inputId="rememberMe"
+                    [formGroup]="loginForm.form"
+                    [controlName]="'rememberMe'"
+                    [label]="'Remember Me?'"
+                ></app-input>
+                <button type="submit" class="btn btn-success w-100 mt-2">Sign in</button>
+            </form>
+        </div>
+    </div>
+</div>

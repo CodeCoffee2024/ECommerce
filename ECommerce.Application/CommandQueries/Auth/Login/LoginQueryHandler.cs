@@ -39,7 +39,7 @@ namespace ECommerce.Application.CommandQueries.Auth.Login
             if (!validation.IsValid)
                 return Result.Failure<TokenResponse>(Error.Validation, validation.Errors);
 
-            var user = _userRepository.FindByUsername(request.Username);
+            var user = _userRepository.FindByUsername(request.UsernameEmail);
             if (_passwordService.VerifyPassword(user.Password, request.Password))
             {
                 var token = _tokenService.GenerateToken(user);

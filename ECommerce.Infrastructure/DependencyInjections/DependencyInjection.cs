@@ -1,4 +1,5 @@
 ﻿using ECommerce.Application.Abstractions;
+using ECommerce.Domain.Abstractions;
 using ECommerce.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -29,15 +30,22 @@ namespace ECommerce.Infrastructure.DependencyInjections
 
         private static void AddPersistence(IServiceCollection services, IConfiguration configuration)
         {
-            string connectionString = configuration.GetConnectionString("DefaultConnection") ??
-                                      throw new ArgumentNullException(nameof(configuration));
+            string connectionString = configuration.GetConnectionString("DefaultConnection");
 
-            // Configure EF Core with PostgreSQL
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new ArgumentNullException(nameof(configuration), "Database connection string is missing!");
+            }
+            // Configure EF Core with SQL Server
             services.AddDbContext<AppDbContext>(options =>
-                 options.UseSqlServer(connectionString).UseLazyLoadingProxies());
+                options.UseSqlServer(connectionString).UseLazyLoadingProxies());
 
             services.AddScoped<ITokenService, TokenService>();
-            services.AddSingleton<IPermissionService, PermissionService>();
+            services.AddHttpContextAccessor();
+            services.AddScoped<IPermissionService, PermissionService>();
+            services.AddScoped<IExportService, ExportService>();
+            services.AddScoped<IDbService>(sp => sp.GetRequiredService<AppDbContext>());
+
             // Call the method to add repository services
             services.AddRepositories();
         }

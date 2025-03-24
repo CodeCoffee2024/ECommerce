@@ -27,11 +27,11 @@ namespace ECommerce.Infrastructure.Services
 
         public TokenService(IConfiguration configuration, IUserRepository userRepository)
         {
-            _accessTokenExpiration = int.Parse(configuration["JwtSettings:AccessTokenExpiration"]);
-            _refreshTokenExpiration = int.Parse(configuration["JwtSettings:RefreshTokenExpiration"]);
-            Key = configuration["JwtSettings:SecretKey"];
-            Issuer = configuration["JwtSettings:Issuer"];
-            Audience = configuration["JwtSettings:Audience"];
+            _accessTokenExpiration = int.Parse(configuration["JwtSettings:AccessTokenExpiration"]!);
+            _refreshTokenExpiration = int.Parse(configuration["JwtSettings:RefreshTokenExpiration"]!);
+            Key = configuration["JwtSettings:SecretKey"]!;
+            Issuer = configuration["JwtSettings:Issuer"]!;
+            Audience = configuration["JwtSettings:Audience"]!;
             _userRepository = userRepository;
         }
 
@@ -95,22 +95,19 @@ namespace ECommerce.Infrastructure.Services
         private List<Claim> GetCommonClaims(User user)
         {
             var permissions = new List<string>();
-            if (user.Email != "admin@gmail.com")
-            {
-                permissions = user.UserUserPermissions!.Select(it => it.UserPermission.Permissions).ToList();
-            }
+            permissions = user.UserUserPermissions!.Select(it => it.UserPermission.Permissions).ToList();
 
             // Convert the permissions list to a comma-separated string
             var permissionsString = string.Join(",", permissions);
 
             return new List<Claim>
-        {
-            new Claim(JwtRegisteredClaimNames.UniqueName, user.Email),
-            new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim("UserId", user.Id.ToString()),
-            new Claim("Permissions", permissionsString)
-        };
+            {
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.Email),
+                new Claim("UserName", $"{user.FirstName} {user.LastName}"),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim("UserId", user.Id.ToString()),
+                new Claim("Permissions", permissionsString)
+            };
         }
 
         private string GenerateJwtToken(List<Claim> commonClaims, DateTime expiration)

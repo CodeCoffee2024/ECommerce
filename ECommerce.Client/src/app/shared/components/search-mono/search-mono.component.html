@@ -1,0 +1,15 @@
+<form [formGroup]="searchForm">
+    <div class="input-group mb-3">
+        <div class="input-group-append">
+            <span class="input-group-text">
+                <i class="bi fs-sm bi-search"></i>
+            </span>
+        </div>
+        <input 
+            type="text" 
+            class="form-control form-control-sm" 
+            [placeholder]="placeholder" 
+            formControlName="searchTerm"
+        />
+    </div>
+</form>

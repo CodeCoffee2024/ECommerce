@@ -14,8 +14,19 @@
 
         #region Public Constructors
 
+        private UserUserPermission(Guid userId, Guid userPermissionId)
+        {
+            UserId = userId;
+            UserPermissionId = userPermissionId;
+        }
         public UserUserPermission()
         {
+        }
+
+        public static UserUserPermission Create(Guid userId, Guid userPermissionId)
+        {
+            var userUserPermission = new UserUserPermission(userId, userPermissionId);
+            return userUserPermission;
         }
 
         #endregion Public Constructors

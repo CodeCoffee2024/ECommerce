@@ -30,15 +30,27 @@ builder.Services.AddAuthentication(x =>
 });
 
 builder.Services.AddAuthorization();
-builder.Services.AddApplication();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(); Console.WriteLine($"Connection String from Configuration: {builder.Configuration.GetConnectionString("DefaultConnection")}");
+
+builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddScoped<DatabaseScriptManager>();
 builder.Services.AddScoped<IPasswordHasherService, PasswordHasherService>();
 
+var origin = builder.Configuration.GetValue<string>("Config:CORSOriginPath");
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular",
+        policy => policy
+            .WithOrigins(origin) // Angular URL
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()); // If using cookies/auth
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -47,6 +59,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 
+    app.UseCors("AllowAngular"); // Apply CORS policy
     app.UseDeveloperExceptionPage(); // Add this for detailed error messages
 }
 

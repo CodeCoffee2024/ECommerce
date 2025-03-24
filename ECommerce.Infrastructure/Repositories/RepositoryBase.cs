@@ -29,6 +29,11 @@ namespace ECommerce.Infrastructure.Repositories
             DbContext.Add(entity);
         }
 
+        public virtual void Update(T entity)
+        {
+            DbContext.Update(entity);
+        }
+
         public virtual void Remove(T entity)
         {
             DbContext.Remove(entity);

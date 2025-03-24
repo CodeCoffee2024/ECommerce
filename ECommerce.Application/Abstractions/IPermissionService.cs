@@ -1,5 +1,4 @@
 ﻿using ECommerce.Domain.Dtos.Shared;
-using ECommerce.Domain.Enums;
 
 namespace ECommerce.Application.Abstractions
 {
@@ -9,9 +8,9 @@ namespace ECommerce.Application.Abstractions
 
         IEnumerable<ModulePermissionDTO> GetPermissions();
 
-        IEnumerable<string> GetDependencies(PermissionAccess permission);
+        //IEnumerable<string> GetDependencies(PermissionAccess permission);
 
-        bool HasAccess(string module, string permission, IEnumerable<string> userPermissions);
+        //bool HasAccess(string module, string permission, IEnumerable<string> userPermissions);
 
         #endregion Public Methods
     }

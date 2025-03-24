@@ -29,17 +29,17 @@ namespace ECommerce.Application.CommandQueries.Auth.Login
         public override ValidationResult Validate(LoginQuery input)
         {
             _result
-                .Required(nameof(input.Username), input.Username)
+                .Required(nameof(input.UsernameEmail), input.UsernameEmail)
                 .Required(nameof(input.Password), input.Password);
 
-            var user = _userRepository.FindByUsername(input.Username);
+            var user = _userRepository.FindByUsername(input.UsernameEmail);
             if (user == null)
             {
                 _result.Null(nameof(user));
                 return _result;
             }
             _result
-                .Exists(nameof(input.Username), user, "User not found.")
+                .Exists(nameof(input.UsernameEmail), user, "User not found.")
                 .Ensure(nameof(input.Password), user != null && _passwordService.VerifyPassword(user.Password, input.Password), "Incorrect password.");
 
             return _result;

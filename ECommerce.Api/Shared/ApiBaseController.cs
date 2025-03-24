@@ -1,6 +1,5 @@
 ﻿using ECommerce.Domain.Abstractions;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace ECommerce.Api.Shared
 {
@@ -9,13 +8,13 @@ namespace ECommerce.Api.Shared
     {
         #region Properties
 
-        protected long UserId
+        protected Guid UserId
         {
             get
             {
-                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var userIdClaim = User.FindFirst("UserId")?.Value;
 
-                if (long.TryParse(userIdClaim, out var userId))
+                if (Guid.TryParse(userIdClaim, out var userId))
                 {
                     return userId;
                 }

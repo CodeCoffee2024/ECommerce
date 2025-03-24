@@ -1,0 +1,61 @@
+<!-- Regular Input (Text, Password, etc.) -->
+<div class="form-group input-container" *ngIf="inputType !== 'checkbox'">
+  <label *ngIf="label" [for]="inputId" class="form-label">
+    {{ label }}
+    <span *ngIf="isRequired" class="text-danger">*</span>
+  </label>
+
+  <!-- Password Input with Show/Hide Toggle -->
+  <div class="input-group" *ngIf="inputType === 'password'; else normalInput">
+    <input
+      pInputText
+      class="form-control form-control-sm"
+      [id]="inputId"
+      [formControl]="formControl"
+      [type]="isPasswordVisible ? 'text' : 'password'"
+      [ngClass]="{'border-danger': formControl.invalid && formGroup.touched}"
+    />
+    <div class="input-group-append">
+      <button type="button" class="btn btn-sm btn-outline-secondary" (click)="togglePasswordVisibility()">
+        <i class="fa" [ngClass]="{'bi bi-eye': !isPasswordVisible, 'bi bi-eye-slash': isPasswordVisible}"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Normal Text Input -->
+  <ng-template #normalInput>
+    <input
+      pInputText
+      class="form-control"
+      [id]="inputId"
+      [formControl]="formControl"
+      [type]="inputType"
+      [ngClass]="{'border-danger': formControl.invalid && formGroup.touched}"
+    />
+  </ng-template>
+  <div *ngIf="errors && (formControl.invalid && formGroup.touched) " class="text-danger">
+    <div *ngFor="let error of errors">
+      {{ error }}
+    </div>
+  </div>
+</div>
+
+<!-- Checkbox Input -->
+<div *ngIf="inputType === 'checkbox'" class="custom-control custom-checkbox">
+  <input
+    class="custom-control-input"
+    [id]="inputId"
+    [formControl]="formControl"
+    type="checkbox"
+    [ngClass]="{'p-invalid': formControl.invalid && formControl.touched}"
+  />
+  <label class="custom-control-label" [for]="inputId">
+    {{ label }}
+    <span *ngIf="isRequired" class="text-danger">*</span>
+  </label>
+
+  <!-- Validation Message for Checkbox -->
+  <div *ngIf="formControl.hasError('required') && formControl.touched" class="p-error">
+    {{ label }} is required.
+  </div>
+</div>

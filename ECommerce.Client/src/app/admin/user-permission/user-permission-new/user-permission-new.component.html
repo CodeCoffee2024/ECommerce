@@ -1,0 +1,12 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12 pt-3">
+            <h4>User Permissions <i class="bi bi-chevron-right"></i> <span>New</span></h4>
+        </div>
+    </div>
+    <div class="row" *ngIf="form">
+        <div class="col-12">
+            <app-user-permission-form (formData)="submit($event)" [form]="form"></app-user-permission-form>
+        </div>
+    </div>
+</div>

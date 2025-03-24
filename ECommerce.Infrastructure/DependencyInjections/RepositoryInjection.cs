@@ -12,6 +12,7 @@ namespace ECommerce.Infrastructure.DependencyInjections
         {
             services.AddScoped<IUserPermissionRepository, UserPermissionRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IModuleRepository, ModuleRepository>();
             return services;
         }
 

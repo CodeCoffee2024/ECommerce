@@ -18,6 +18,7 @@ namespace ECommerce.Domain.Entities.UserManagement
 
         public virtual ICollection<UserUserPermission> UserUserPermissions { get; private set; } = new List<UserUserPermission>();
         public string Name { get; private set; } = string.Empty;
+
         public string Permissions { get; private set; } = string.Empty;
 
         public static UserPermission Create(string permissions, string name, Guid? createdBy, DateTime createdDate)
@@ -25,6 +26,14 @@ namespace ECommerce.Domain.Entities.UserManagement
             var userPermission = new UserPermission(permissions, name);
             userPermission.SetCreated(createdDate, createdBy);
             return userPermission;
+        }
+
+        public UserPermission Update(string permissions, string name, Guid? createdBy, DateTime createdDate)
+        {
+            Permissions = permissions;
+            Name = name;
+            SetUpdated(createdDate, createdBy);
+            return this;
         }
 
         #endregion Properties

@@ -1,13 +1,15 @@
-﻿using ECommerce.Domain.Entities.UserManagement;
+﻿using ECommerce.Domain.Abstractions;
+using ECommerce.Domain.Entities.UserManagement;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Infrastructure
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : DbContext, IDbService
     {
         #region Public Constructors
 
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options)
+            : base(options)
         {
         }
 
@@ -17,6 +19,7 @@ namespace ECommerce.Infrastructure
 
         public DbSet<User> Users { get; set; }
         public DbSet<UserPermission> UserPermissions { get; set; }
+        public DbSet<Module> Modules { get; set; }
         public DbSet<UserUserPermission> UserUserPermissions { get; set; }
 
         #endregion Properties

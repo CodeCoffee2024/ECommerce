@@ -1,0 +1,22 @@
+<div class="admin-container">
+    
+    <app-header 
+        [isSidebarOpen]="isSidebarOpen" 
+        [isDesktop]="isDesktop" 
+        (toggleSidebar)="toggleSidebar()">
+    </app-header>
+
+    <!-- SIDEBAR -->
+    <app-sidebar 
+        [isSidebarOpen]="isSidebarOpen" 
+        [isDesktop]="isDesktop" 
+        (closeSidebar)="closeSidebar()">
+    </app-sidebar>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-content bg-color-main" [class.shifted]="isSidebarOpen && isDesktop">
+        <div class="main-content bg-white">
+            <router-outlet></router-outlet>
+        </div>
+    </main>
+</div>

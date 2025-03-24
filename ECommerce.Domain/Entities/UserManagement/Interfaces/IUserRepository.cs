@@ -6,6 +6,8 @@
 
         Task<User?> GetByIdAsync(Guid Id, CancellationToken cancellationToken = default);
 
+        User? GetUserPermission(Guid Id);
+
         User FindByUsername(string username);
 
         void Add(User userPermission);

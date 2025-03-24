@@ -1,0 +1,37 @@
+<form [formGroup]="form.form" (ngSubmit)="submit()">
+    <div class="row">
+        <div class="col-12 col-lg-4">
+            <app-input
+                [inputType]="InputTypes.Text"
+                inputId="name"
+                [formGroup]="form.form"
+                [controlName]="'name'"
+                [label]="'Name'"
+            ></app-input>
+            <div *ngIf="form.getServerError('name')" class="alert alert-danger">
+                {{ form.getServerError('name') }}
+            </div>
+        </div>
+    </div>
+    <div formArrayName="modules">
+        <div *ngIf="form.getServerError('permissions')" class="alert alert-danger">
+            {{ form.getServerError('permissions') }}
+        </div>
+        <div *ngFor="let module of form.modules.controls; let i = index" [formGroupName]="i">
+            <h5>{{ module.get('description')?.value }}</h5>
+            <div class="row" formArrayName="userPermissions">
+                <div class="col-4" *ngFor="let perm of form.getUserPermissions(i).controls; let j = index" [formGroupName]="j">
+                    <label>
+                        <input type="checkbox" formControlName="selected" (change)="form.toggleDependency(i, j)">
+                        {{ perm.get('description')?.value }}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 d-flex justify-content-end">
+            <button class="btn btn-success" type="submit"><i class="bi bi-check mr-2"></i>Save</button>
+        </div>
+    </div>
+</form>

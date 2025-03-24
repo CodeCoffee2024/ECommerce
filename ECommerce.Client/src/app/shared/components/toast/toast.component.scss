@@ -1,0 +1,31 @@
+.toast {
+    position: fixed;
+    right: 20px;
+    z-index: 2000;
+    transition: all 0.5s;
+    min-width: 200px;
+    opacity: 0;
+    transition: opacity 0.5s linear;
+}
+.toast.show {
+    opacity: 1;
+}
+.timer-bar {
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.7);
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+.animate-timer {
+    animation: countdown linear forwards;
+}
+@keyframes countdown {
+    from {
+        width: 100%;
+    }
+    to {
+        width: 0%;
+    }
+}

@@ -30,6 +30,7 @@ namespace ECommerce.Infrastructure.Seeders
         public void RunDbScripts()
         {
             //Seed Permissions
+            ModuleSeeder.Run(_context);
             UserSeeder.Run(_context, _passwordHasherService.HashPassword("password"));
             UserPermissionSeeder.Run(_context);
         }
