@@ -21,6 +21,12 @@ body, .bg-color-main {
 .color-highlight:hover {
     color: var(--font-color-highlight)
 }
+.bg-color-highlight:hover {
+    background-color: var(--font-color-highlight) !important
+}
+.bg-color-primary {
+    background-color: var(--font-color-highlight)
+}
 .cursor-pointer {
     cursor: pointer;
 }
@@ -50,5 +56,8 @@ ul, li, a, a:hover {
     border-color: var(--page-active-color) !important;
 }
 .d-block.modal.fade.show {
-    z-index: 99999;
+    z-index: 1059;
+}
+.max-w-2em {
+    max-width: 2em;
 }

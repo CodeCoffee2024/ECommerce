@@ -18,6 +18,10 @@ namespace ECommerce.Domain.Commons
             $"{entityName}.NotFound",
             $"The {entityName.ToLower()} with the specified ID was not found");
 
+        public static Error SuperAdminRestrict(string entityName) => new(
+            $"{entityName}.SuperAdminRestrict",
+            $"The {entityName.ToLower()} cannot perform this action");
+
         public static Error Required(string entityName, string propertyName) => new(
             $"{entityName}.Required",
             $"{propertyName.ToLower()} is required");

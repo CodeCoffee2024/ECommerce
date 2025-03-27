@@ -40,10 +40,22 @@ namespace ECommerce.Application.CommandQueries.Auth.Login
                 return Result.Failure<TokenResponse>(Error.Validation, validation.Errors);
 
             var user = _userRepository.FindByUsername(request.UsernameEmail);
-            if (_passwordService.VerifyPassword(user.Password, request.Password))
+            var userEmail = _userRepository.FindByEmail(request.UsernameEmail);
+            if (user != null)
             {
-                var token = _tokenService.GenerateToken(user);
-                return Result.Success<TokenResponse>(token);
+                if (_passwordService.VerifyPassword(user.Password, request.Password))
+                {
+                    var token = _tokenService.GenerateToken(user);
+                    return Result.Success<TokenResponse>(token);
+                }
+            }
+            else
+            {
+                if (_passwordService.VerifyPassword(userEmail.Password, request.Password))
+                {
+                    var token = _tokenService.GenerateToken(userEmail);
+                    return Result.Success<TokenResponse>(token);
+                }
             }
             validation.AddError("password", "Invalid Password");
             return Result.Failure<TokenResponse>(Error.Validation, validation.Errors);

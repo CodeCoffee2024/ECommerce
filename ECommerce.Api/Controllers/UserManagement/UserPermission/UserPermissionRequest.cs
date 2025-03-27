@@ -1,7 +1,7 @@
 ﻿using ECommerce.Application.CommandQueries.UserManagement.Permission.AddUserPermission;
 using ECommerce.Application.CommandQueries.UserManagement.Permission.UpdateUserPermission;
 
-namespace ECommerce.Api.Controllers.UserManagement
+namespace ECommerce.Api.Controllers.UserManagement.UserPermission
 {
     public sealed record UserPermissionRequest
     {

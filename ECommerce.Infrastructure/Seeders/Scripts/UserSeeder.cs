@@ -10,8 +10,8 @@ namespace ECommerce.Infrastructure.Seeders.Scripts
         {
             var users = new List<User>
             {
-                User.Create("Admin Lastname", "Admin Firstname", "Admin middlename",DateTime.Now, "admin@gmail.com","admin", hashedPassword, null, DateTime.UtcNow, null),
-                User.Create("Staff Lastname", "Staff Firstname", "Staff middlename",DateTime.Now, "Staff@gmail.com","Staff", hashedPassword, null, DateTime.UtcNow, null),
+                User.Create("Admin Lastname", "Admin Firstname", "Admin middlename",DateTime.Now, "admin@gmail.com","admin", hashedPassword, DateTime.UtcNow, null),
+                User.Create("Staff Lastname", "Staff Firstname", "Staff middlename",DateTime.Now, "Staff@gmail.com","Staff", hashedPassword, DateTime.UtcNow, null),
             };
 
             foreach (var user in users)

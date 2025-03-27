@@ -9,12 +9,13 @@ import {
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, switchMap, filter, take } from 'rxjs/operators';
 import { LoginService } from '../../../login/login.service';
+import { Router } from '@angular/router';
 @Injectable()
   export class AuthInterceptor implements HttpInterceptor {
     private isRefreshing = false;
     private refreshTokenSubject = new BehaviorSubject<string | null>(null);
   
-    constructor(private authService: LoginService) {}
+    constructor(private authService: LoginService, private router: Router) {}
   
     intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
       const accessToken = this.authService.getAccessToken();
@@ -48,6 +49,7 @@ import { LoginService } from '../../../login/login.service';
           switchMap((tokenResponse) => {
             this.isRefreshing = false;
             if (tokenResponse.isSuccess && tokenResponse.data) {
+              this.authService.storeTokens(tokenResponse.data.accessToken, tokenResponse.data.refreshToken)
               this.refreshTokenSubject.next(tokenResponse.data.accessToken);
               return next.handle(this.addToken(req, tokenResponse.data.accessToken));
             }
@@ -56,6 +58,7 @@ import { LoginService } from '../../../login/login.service';
           catchError((error) => {
             this.isRefreshing = false;
             this.authService.logout();
+            this.router.navigate(['/']);
             return throwError(() => error);
           })
         );

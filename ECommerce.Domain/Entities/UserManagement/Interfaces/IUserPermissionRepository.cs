@@ -13,6 +13,8 @@ namespace ECommerce.Domain.Entities.UserManagement.Interfaces
 
         Task<PagedResult<UserPermission>> GetListingPageResultAsync(DefaultFilterBaseDto searchValue, CancellationToken cancellationToken);
 
+        Task<PagedResult<UserPermission>> GetListingPageDropdownResultAsync(DefaultFilterBaseDto searchValue, CancellationToken cancellationToken);
+
         UserPermission FindByName(string name);
 
         Task<UnpagedResult<UserPermission>> GetListingPageResultExportAsync(DefaultFilterBaseDto searchValue, CancellationToken cancellationToken);

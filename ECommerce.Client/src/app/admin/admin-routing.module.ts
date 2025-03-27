@@ -4,6 +4,7 @@ import { AdminComponent } from './admin.component';
 import { AuthGuard } from '../shared/guards/auth/auth.guard';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { UserPermissionPermission } from '../models/user-permission/user-permission';
+import { UserPermission } from '../models/user/user';
 
 const routes: Routes = [
   {
@@ -18,6 +19,16 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         data: { permission: UserPermissionPermission.UserEnableToViewUserPermission }, 
       },
+      { 
+        path: 'users', 
+        loadChildren: () => import('./user/user.module').then(m => m.UserModule),
+        canActivate: [AuthGuard],
+        data: { permission: UserPermission.UserEnableToViewUser }, 
+      },
+      {
+        path: '401',
+        component: UnauthorizedComponent,
+      }
     ]
   },
   {

@@ -31,10 +31,17 @@ export class InputComponent implements ControlValueAccessor {
     Object.keys(controlErrors).forEach(errorKey => {
       if (errorKey === 'required') {
         errorMessages.push(`${this.label} is required`);
+      } else if (errorKey === 'email') {
+        errorMessages.push(`${this.label} must be a valid email`);
+      } else if (errorKey === 'mustMatch') {
+        errorMessages.push(`${this.label} must match to ${controlErrors['mustMatch']}`);
+      } else if (errorKey === 'minlength') {
+        const min = controlErrors['minlength']?.requiredLength;
+        errorMessages.push(`${this.label} length must be greater than ${ min-1 }`);
       } else if (errorKey === 'serverError') {
-        const errorWords = controlErrors['serverError'].split(' ');
-        const errorString = errorWords.slice(1).join(' '); // Skip the first word
-        errorMessages.push(`${this.label} ${errorString}`);
+        // const errorWords = controlErrors['serverError'].split(' ');
+        // const errorString = errorWords.slice(1).join(' '); // Skip the first word
+        errorMessages.push(controlErrors['serverError']);
       } else {
         errorMessages.push(`${this.label} ${errorKey.replace(/([A-Z])/g, ' $1').toLowerCase()}`);
       }
