@@ -65,7 +65,9 @@ namespace ECommerce.Infrastructure.Services
                 return null!;
             }
 
-            var userId = principal?.FindFirstValue(JwtRegisteredClaimNames.Sub);
+            var identity = principal.Identity as ClaimsIdentity;
+            var userId = identity.Claims.First(it => it.Type.ToLower() == "userid").Value;
+
             if (string.IsNullOrEmpty(userId))
             {
                 return null!;
@@ -125,20 +127,32 @@ namespace ECommerce.Infrastructure.Services
         private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
+            var validationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = false, // Disabled to allow expired tokens
+                ValidateAudience = false, // Disabled for refresh token validation
+                ValidateLifetime = false, // Allow expired tokens
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Key))
+            };
+
             try
             {
-                var securityToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
-                if (securityToken == null || securityToken.ValidTo < DateTime.UtcNow)
+                var principal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken securityToken);
+                var jwtToken = securityToken as JwtSecurityToken;
+
+                if (jwtToken == null)
                 {
-                    return null; // Token is expired or invalid
+                    Console.WriteLine("Invalid JWT token.");
+                    return null;
                 }
 
-                var identity = new ClaimsIdentity(securityToken.Claims, "jwt");
-                var principal = new ClaimsPrincipal(identity);
+                Console.WriteLine($"Principal Created: {principal.Identity?.Name}");
                 return principal;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine($"Token validation failed: {ex.Message}");
                 return null;
             }
         }

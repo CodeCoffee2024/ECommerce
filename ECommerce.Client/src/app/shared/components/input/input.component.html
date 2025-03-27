@@ -1,6 +1,6 @@
 <!-- Regular Input (Text, Password, etc.) -->
 <div class="form-group input-container" *ngIf="inputType !== 'checkbox'">
-  <label *ngIf="label" [for]="inputId" class="form-label">
+  <label *ngIf="label" [for]="inputId" class="form-label font-weight-bold">
     {{ label }}
     <span *ngIf="isRequired" class="text-danger">*</span>
   </label>

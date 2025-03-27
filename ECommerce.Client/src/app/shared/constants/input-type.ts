@@ -3,5 +3,6 @@ export enum InputTypes {
     Password = 'password',
     Number = 'number',
     Checkbox = 'checkbox',
-    Email = 'email'
+    Email = 'email',
+    Date = 'date'
 }

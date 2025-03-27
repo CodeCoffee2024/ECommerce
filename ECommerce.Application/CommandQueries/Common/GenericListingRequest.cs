@@ -13,6 +13,7 @@ namespace ECommerce.Application.CommandQueries.Common
             {
                 Search = Search,
                 Page = Page,
+                Exclude = Exclude,
                 PageSize = PageSize,
                 SortDirection = SortDirection,
                 SortBy = SortBy
@@ -30,6 +31,7 @@ namespace ECommerce.Application.CommandQueries.Common
             {
                 SearchValues = searchValues,
                 Page = Page,
+                Exclude = Exclude,
                 PageSize = PageSize,
                 SortDirection = SortDirection,
                 SortBy = SortBy,

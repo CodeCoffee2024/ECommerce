@@ -1,4 +1,4 @@
-import { UserPermission } from "./user";
+import { UserPermission } from "./user/user";
 import { UserPermissionPermission } from "./user-permission/user-permission";
 
 export class SideBarNavigation {

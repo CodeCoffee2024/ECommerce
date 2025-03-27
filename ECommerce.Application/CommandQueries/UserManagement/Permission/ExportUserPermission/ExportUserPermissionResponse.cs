@@ -13,7 +13,6 @@ namespace ECommerce.Application.CommandQueries.UserManagement.Permission.ExportU
         [Description("Created Date")]
         public DateTime? CreatedDate { get; set; }
 
-
         [Description("Created By")]
         public string CreatedBy { get; set; } = string.Empty;
 

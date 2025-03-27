@@ -1,0 +1,11 @@
+<div class="font-weight-bold">
+    <span>{{ description }}</span>
+</div>
+<div>
+    <span *ngIf="!isNullable; else nullableText">
+        {{ labelValue | formatNullable }}
+    </span>
+    <ng-template #nullableText>
+        <span>{{ labelValue }}</span>
+    </ng-template>
+</div>

@@ -35,8 +35,12 @@ namespace ECommerce.Application.CommandQueries.Auth.Login
             var user = _userRepository.FindByUsername(input.UsernameEmail);
             if (user == null)
             {
-                _result.Null(nameof(user));
-                return _result;
+                user = _userRepository.FindByEmail(input.UsernameEmail);
+                if (user == null)
+                {
+                    _result.Null(nameof(user));
+                    return _result;
+                }
             }
             _result
                 .Exists(nameof(input.UsernameEmail), user, "User not found.")

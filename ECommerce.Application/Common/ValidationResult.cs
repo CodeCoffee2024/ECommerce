@@ -48,20 +48,20 @@ namespace ECommerce.Application.Common
             return this;
         }
 
-        public ValidationResult LengthOutOfRange(string field, object? value, int min = 0, int max = 0, string? message = null)
+        public ValidationResult LengthOutOfRange(string field, object? value, int min = 0, int max = 0, string? message = null, string? customField = null)
         {
             string minMaxMesage = "";
             if (max > 0 && min == 0)
             {
-                minMaxMesage = $"{field} must be not greater than " + max;
+                minMaxMesage = $"{customField ?? field} must be not greater than " + max;
             }
             if (max == 0 && min > 0)
             {
-                minMaxMesage = $"{field} must be atleast " + min;
+                minMaxMesage = $"{customField ?? field} must be atleast " + min;
             }
             if (max > 0 && min > 0)
             {
-                minMaxMesage = $"{field} must be atleast " + min + " and not greater than " + max;
+                minMaxMesage = $"{customField ?? field} must be atleast " + min + " and not greater than " + max;
             }
             AddError(field, message ?? minMaxMesage);
             return this;

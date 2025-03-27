@@ -21,6 +21,10 @@ export class UserPermissionService extends GenericService {
     const queryParams = this.setQueryParameters(listingOption);
     return this.get<ApiResult<GenericListingResult<UserPermissionListingReponse[]>>>(`${this.controller}/GetUserPermissions?`+queryParams, null, true);
   }
+  dropdown(listingOption): Observable<ApiResult<GenericListingResult<UserPermissionListingReponse[]>>> {
+    const queryParams = this.setQueryParameters(listingOption);
+    return this.get<ApiResult<GenericListingResult<UserPermissionListingReponse[]>>>(`${this.controller}/Dropdown?`+queryParams, null, true);
+  }
   getPermissions(): Observable<ApiResult<ModuleDTO[]>> {
     return this.get<ApiResult<ModuleDTO[]>>(`${this.controller}/GetAllUserPermissions?`, null, true);
   }

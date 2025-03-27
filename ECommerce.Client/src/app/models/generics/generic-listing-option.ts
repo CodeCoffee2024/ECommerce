@@ -1,4 +1,4 @@
-import { UserFragment } from "../user";
+import { UserFragment } from "../user/user";
 
 export abstract class GenericListingOption {
     search: string;

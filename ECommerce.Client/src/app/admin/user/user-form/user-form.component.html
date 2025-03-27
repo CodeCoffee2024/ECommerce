@@ -1,0 +1,129 @@
+<div class="modal-header">
+    <h5 class="modal-title">User Form</h5>
+    <button type="button" class="close" (click)="cancel()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<form [formGroup]="form.form" (ngSubmit)="submit()">
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-12">
+                <app-input
+                    [inputType]="InputTypes.Text"
+                    inputId="lastName"
+                    [formGroup]="form.form"
+                    [controlName]="'lastName'"
+                    [label]="'Last Name'"
+                ></app-input>
+                <div *ngIf="form.getServerError('lastName')" class="alert alert-danger">
+                    {{ form.getServerError('lastName') }}
+                </div>
+            </div>
+            <div class="col-12">
+                <app-input
+                    [inputType]="InputTypes.Text"
+                    inputId="firstName"
+                    [formGroup]="form.form"
+                    [controlName]="'firstName'"
+                    [label]="'First Name'"
+                ></app-input>
+                <div *ngIf="form.getServerError('firstName')" class="alert alert-danger">
+                    {{ form.getServerError('firstName') }}
+                </div>
+            </div>
+            <div class="col-12">
+                <app-input
+                    [inputType]="InputTypes.Text"
+                    inputId="middleName"
+                    [formGroup]="form.form"
+                    [controlName]="'middleName'"
+                    [label]="'Middle Name'"
+                ></app-input>
+                <div *ngIf="form.getServerError('middleName')" class="alert alert-danger">
+                    {{ form.getServerError('middleName') }}
+                </div>
+            </div>
+            <div class="col-12">
+                <app-input
+                    [inputType]="InputTypes.Date"
+                    inputId="birthDate"
+                    [formGroup]="form.form"
+                    [controlName]="'birthDate'"
+                    [label]="'Birth Date'"
+                ></app-input>
+                <div *ngIf="form.getServerError('birthDate')" class="alert alert-danger">
+                    {{ form.getServerError('birthDate') }}
+                </div>
+            </div>
+            <div class="col-12" *ngIf="!isUpdate else uneditableEmail">
+                <app-input
+                    [inputType]="InputTypes.Email"
+                    inputId="email"
+                    [formGroup]="form.form"
+                    [controlName]="'email'"
+                    [label]="'Email'"
+                ></app-input>
+                <div *ngIf="form.getServerError('email')" class="alert alert-danger">
+                    {{ form.getServerError('email') }}
+                </div>
+            </div>
+            <ng-template #uneditableEmail>
+                <div class="col-12 mb-2">
+                    <app-field-label [description]="'Email'" [value]="form.form.get('email').value"></app-field-label>
+                </div>
+            </ng-template>
+            <div class="col-12">
+                <app-input
+                    [inputType]="InputTypes.Text"
+                    inputId="userName"
+                    [formGroup]="form.form"
+                    [controlName]="'userName'"
+                    [label]="'Username'"
+                ></app-input>
+            </div>
+            <div class="col-12" *ngIf="!isUpdate">
+                <app-input
+                    [inputType]="InputTypes.Password"
+                    inputId="password"
+                    [formGroup]="form.form"
+                    [controlName]="'password'"
+                    [label]="'Password'"
+                ></app-input>
+            </div>
+            <div class="col-12" *ngIf="!isUpdate">
+                <app-input
+                    [inputType]="InputTypes.Password"
+                    inputId="repeatPassword"
+                    [formGroup]="form.form"
+                    [controlName]="'repeatPassword'"
+                    [label]="'Repeat Password'"
+                ></app-input>
+            </div>
+            <div class="col-12">
+                <app-search-multi-select 
+                    [label]="'User Permissions'"
+                    [placeholder]="'Search user permissions...'"
+                    [searchOptions]="userPermissions"
+                    [hasSearchIcon]="true"
+                    [hasMore]="hasMore"
+                    [selectedItems]="selectedItems"
+                    [field]="'name'"
+                    [isLoading]="isDropdownLoading"
+                    (searchChanged)="onSearchChanged($event)"
+                    (selectedItemsChange)="onSelectionChange($event)">
+                </app-search-multi-select>
+                <div *ngIf="form.form.get('userPermissions')?.errors as errors">
+                    <div *ngFor="let error of form.errorKeys(errors)" class="alert alert-danger">
+                        {{ error }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-secondary btn-sm" (click)="cancel()">Cancel</button>
+        <button class="btn btn-success  btn-sm" type="submit"><i class="bi bi-check mr-2"></i>Save</button>
+    
+    </div>
+</form>

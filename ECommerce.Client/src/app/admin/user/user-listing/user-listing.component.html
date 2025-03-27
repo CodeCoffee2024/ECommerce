@@ -1,0 +1,125 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12 pt-3">
+            <h4>Users</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-12">
+                    <app-search-mono 
+                    [(searchModel)]="listingOption.search" 
+                    (searchChanged)="searchChanged($event)" 
+                    [placeholder]="'Search By Last Name, First Name, Middle Name, User Permissions'"
+                    ></app-search-mono>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <app-search-multi-select 
+                        [label]="'User Permissions'"
+                        [placeholder]="'Search user permissions...'"
+                        [searchOptions]="userPermissions"
+                        [hasMore]="hasMore"
+                        [field]="'name'"
+                        [isLoading]="isDropdownLoading"
+                        (searchChanged)="onSearchChanged($event)"
+                        (selectedItemsChange)="onSelectionChange($event)">
+                    </app-search-multi-select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-success w-100 listing-btn" (click)="new()">
+                <i class="bi bi-plus mr-2"></i>New User
+            </button>
+            <div class="dropdown mt-2" *ngIf="results && results.length > 0">
+                <button class="btn btn-secondary dropdown-toggle w-100 listing-btn" (click)="toggleDropdown()" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-file-earmark mr-2"></i> Export
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right" [class.show]="isDropdownOpen">
+                    <li>
+                        <button class="dropdown-item" (click)="exportToPDF()">
+                            <i class="bi bi-file-pdf mr-2"></i> Export to PDF
+                        </button>
+                    </li>
+                    <li>
+                        <button class="dropdown-item" (click)="exportToExcel()">
+                            <i class="bi bi-file-excel mr-2"></i> Export to Excel
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="!isLoading">
+        <div class="col-12">
+            <table class="table table-responsive">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>
+                            <app-th-header 
+                                [name]="'LastName'" 
+                                [description]="'Last Name'" 
+                                [isSortable]="true"
+                                [sortBy]="listingOption.sortBy" 
+                                [sortDirection]="listingOption.sortDirection"
+                                (sortResult)="sortEvent($event)"
+                            ></app-th-header>
+                        </th>
+                        <th>
+                            <app-th-header 
+                                [name]="'FirstName'" 
+                                [description]="'First Name'" 
+                                [isSortable]="true"
+                                [sortBy]="listingOption.sortBy" 
+                                [sortDirection]="listingOption.sortDirection"
+                                (sortResult)="sortEvent($event)"
+                            ></app-th-header>
+                        </th>
+                        <th>
+                            <app-th-header 
+                                [name]="'MiddleName'" 
+                                [description]="'Middle Name'" 
+                                [isSortable]="true"
+                                [sortBy]="listingOption.sortBy" 
+                                [sortDirection]="listingOption.sortDirection"
+                                (sortResult)="sortEvent($event)"
+                            ></app-th-header>
+                        </th>
+                        <th>
+                            <app-th-header 
+                                [name]="'UserPermissions'" 
+                                [description]="'User Permissions'" 
+                                [sortBy]="listingOption.sortBy" 
+                                [sortDirection]="listingOption.sortDirection"
+                                (sortResult)="sortEvent($event)"
+                            ></app-th-header>
+                        </th>
+                        <th>
+                            <app-th-header 
+                                [name]="'CreatedDate'" 
+                                [description]="'Date Created'" 
+                                [isSortable]="true"
+                                [sortBy]="listingOption.sortBy" 
+                                [sortDirection]="listingOption.sortDirection"
+                                (sortResult)="sortEvent($event)"
+                            ></app-th-header>
+                        </th>
+                    </tr>
+                </thead>
+                <tr *ngFor="let result of results; let i = index;" class="table-item cursor-pointer" [routerLink]="'view/'+result.id">
+                    <td>{{ 1 + i }}</td>
+                    <td>{{ result.lastName }}</td>
+                    <td>{{ result.firstName }}</td>
+                    <td>{{ result.middleName | formatNullable }}</td>
+                    <td [innerHTML]="formatPermission(result.permissions)"></td>
+                    <td class="text-nowrap">{{ result.createdDate | date:'Y-MM-dd'}}</td>
+                </tr>
+            </table>
+            <app-listing-summary [listingData]="listingData" (changePage)="goTo($event)"></app-listing-summary>
+        </div>
+    </div>
+</div>

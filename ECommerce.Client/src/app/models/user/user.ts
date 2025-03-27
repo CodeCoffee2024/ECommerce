@@ -1,3 +1,5 @@
+import { UserPermissionFragment } from "../user-permission/user-permission";
+
 export enum UserPermission {
     UserEnableToModifyUser = "UserEnableToModifyUser",
     UserEnableToViewUser = "UserEnableToViewUser",
@@ -14,4 +16,16 @@ export class UserFragment {
         }
         return this.firstName+" "+this.lastName;
     }
+}
+export class UserResult {
+    id: string;
+    lastName: string;
+    firstName: string;
+    middleName: string;
+    userName: string;
+    email: string;
+    canUpdate: boolean;
+    canDelete: boolean;
+    birthDate: Date;
+    permissions: UserPermissionFragment[];
 }

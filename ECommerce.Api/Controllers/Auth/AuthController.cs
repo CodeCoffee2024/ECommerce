@@ -1,4 +1,5 @@
 ﻿using ECommerce.Api.Shared;
+using ECommerce.Application.CommandQueries.Auth.GetRefreshToken;
 using ECommerce.Application.CommandQueries.Auth.GetUserAccessQuery;
 using ECommerce.Application.CommandQueries.Auth.Login;
 using MediatR;
@@ -40,6 +41,16 @@ namespace ECommerce.Api.Controllers.Auth
         {
             //var query = request.Login();
             var userAccessQuery = new GetUserAccessQuery(UserId);
+            var result = await _sender.Send(userAccessQuery);
+
+            return HandleResponse(result);
+        }
+
+        [HttpPost("Refresh")]
+        public async Task<IActionResult> RefReshToken([FromBody] AuthRefreshTokenRequest refreshToken, CancellationToken cancellationToken)
+        {
+            //var query = request.Login();
+            var userAccessQuery = new RefreshTokenQuery(refreshToken.RefreshToken);
             var result = await _sender.Send(userAccessQuery);
 
             return HandleResponse(result);

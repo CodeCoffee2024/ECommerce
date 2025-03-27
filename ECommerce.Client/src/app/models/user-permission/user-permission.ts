@@ -18,3 +18,7 @@ export class UserPermissionResult {
     permissions: string;
     modulePermissions: ModuleDTO[];
 }
+export class UserPermissionFragment {
+    id: string;
+    name: string;
+}

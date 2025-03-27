@@ -9,6 +9,7 @@
         public string ReportName { get; set; } = string.Empty;
         public string? SortDirection { get; set; } = "desc";
         public string? SortBy { get; set; } = string.Empty;
+        public string? Exclude { get; set; } = string.Empty;
         public string? Search { get; set; } = string.Empty;
 
         #endregion Properties

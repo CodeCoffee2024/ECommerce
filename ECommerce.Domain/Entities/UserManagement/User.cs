@@ -23,7 +23,7 @@ namespace ECommerce.Domain.Entities.UserManagement
         public User()
         { }
 
-        private User(string lastName, string firstName, string middleName, DateTime? birthDate, string email, string username, string password, ICollection<UserUserPermission>? userUserPermissions)
+        private User(string lastName, string firstName, string middleName, DateTime? birthDate, string email, string username, string password)
         {
             LastName = lastName;
             Email = email;
@@ -32,18 +32,39 @@ namespace ECommerce.Domain.Entities.UserManagement
             FirstName = firstName;
             MiddleName = middleName;
             BirthDate = birthDate;
-            UserUserPermissions = userUserPermissions;
+        }
+
+        public bool isSuperAdmin()
+        {
+            return Username == "admin";
+        }
+
+        public User Update(string lastName, string firstName, string middleName, DateTime? birthDate, string email, string username, DateTime? updatedDate, Guid updatedById)
+        {
+            LastName = lastName;
+            Email = email;
+            Username = username;
+            FirstName = firstName;
+            MiddleName = middleName;
+            BirthDate = birthDate;
+            SetUpdated(updatedDate, updatedById);
+            return this;
         }
 
         #endregion Private Constructors
 
         #region Private Methods
 
-        public static User Create(string lastName, string firstName, string middleName, DateTime? birthDate, string email, string username, string password, ICollection<UserUserPermission>? userUserPermissions, DateTime? createdDate, Guid? createdById)
+        public static User Create(string lastName, string firstName, string middleName, DateTime? birthDate, string email, string username, string password, DateTime? createdDate, Guid? createdById)
         {
-            var user = new User(lastName, firstName, middleName, birthDate, email, username, password, userUserPermissions);
+            var user = new User(lastName, firstName, middleName, birthDate, email, username, password);
             user.SetCreated(createdDate, createdById);
             return user;
+        }
+
+        public void SetUserUserPermissions(ICollection<UserUserPermission> userUserPermissions)
+        {
+            UserUserPermissions = userUserPermissions;
         }
 
         #endregion Private Methods

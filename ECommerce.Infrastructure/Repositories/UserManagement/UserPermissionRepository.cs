@@ -59,6 +59,37 @@ namespace ECommerce.Infrastructure.Repositories.UserManagement
             return list;
         }
 
+        public async Task<PagedResult<UserPermission>> GetListingPageDropdownResultAsync(DefaultFilterBaseDto listFilterDto, CancellationToken cancellationToken)
+        {
+            var query = DbContext.UserPermissions.AsQueryable();
+            var queryCount = await query.AsNoTracking().CountAsync();
+
+            if (listFilterDto.HasSearchValues)
+            {
+                query = query.Where(userPermission =>
+                    userPermission.Name.Contains(listFilterDto.GlobalSearchValue)
+                );
+                if (listFilterDto.Exclude != "")
+                {
+                    query = query.Where(userPermission =>
+                        userPermission.Name.Contains(listFilterDto.GlobalSearchValue) && !listFilterDto.Exclude!.Contains(userPermission.Name)
+                    );
+                }
+            }
+
+            var list = await query
+                .OrderByDescending(r => r.ModifiedDate)
+                .AsNoTracking()
+                .PaginateAsync(
+                    listFilterDto.Page,
+                    listFilterDto.PageSize,
+                    listFilterDto.SortBy,
+                    listFilterDto.SortDirection,
+                    queryCount);
+
+            return list;
+        }
+
         public async Task<UnpagedResult<UserPermission>> GetListingPageResultExportAsync(DefaultFilterBaseDto listFilterDto, CancellationToken cancellationToken)
         {
             var query = DbContext.UserPermissions.AsQueryable();

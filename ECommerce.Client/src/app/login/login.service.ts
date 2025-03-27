@@ -32,7 +32,7 @@ export class LoginService extends GenericService {
     const refreshToken = this.getRefreshToken();
     if (!refreshToken) return throwError(() => new Error('No refresh token available'));
 
-    return this.post<ApiResult<TokenResponse>>(`${this.controller}/refresh`, { refreshToken }).pipe(
+    return this.post<ApiResult<TokenResponse>>(`${this.controller}refresh`, { refreshToken }).pipe(
       tap(result => {
         if (result.isSuccess && result.data) {
           this.storeTokens(result.data.accessToken, result.data.refreshToken);

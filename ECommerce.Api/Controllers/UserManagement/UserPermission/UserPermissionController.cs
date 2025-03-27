@@ -5,12 +5,13 @@ using ECommerce.Application.CommandQueries.UserManagement.Module.GetAllModule;
 using ECommerce.Application.CommandQueries.UserManagement.Permission.DeleteUserPermission;
 using ECommerce.Application.CommandQueries.UserManagement.Permission.GetOneUserPermission;
 using ECommerce.Application.CommandQueries.UserManagement.Permission.GetUserPermission;
+using ECommerce.Application.CommandQueries.UserManagement.Permission.GetUserPermissionDropdown;
 using ECommerce.Domain.Commons.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ECommerce.Api.Controllers.UserManagement
+namespace ECommerce.Api.Controllers.UserManagement.UserPermission
 {
     [ApiController]
     [Authorize]
@@ -38,6 +39,14 @@ namespace ECommerce.Api.Controllers.UserManagement
         public async Task<IActionResult> GetAllUserPermissions([FromQuery] GetAllModuleQuery request, CancellationToken cancellationToken)
         {
             var result = await _sender.Send(request);
+
+            return HandleResponse(result);
+        }
+
+        [HttpGet("Dropdown")]
+        public async Task<IActionResult> Dropdown([FromQuery] GenericListingRequest request, CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(request.SetQuery<GetUserPermissionDropdownQuery>(), cancellationToken);
 
             return HandleResponse(result);
         }
