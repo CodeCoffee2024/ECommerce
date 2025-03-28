@@ -7,6 +7,8 @@ import { PermissionService } from '../shared/services/permission/permission.serv
 import { Router } from '@angular/router';
 import { LoadingService } from '../shared/services/loading/loading.service';
 import { finalize, switchMap } from 'rxjs/operators';
+import { UserService } from '../admin/user/user.service';
+import { environment } from '../../../environment';
 
 @Component({
   selector: 'app-login',
@@ -22,6 +24,7 @@ export class LoginComponent implements OnInit {
     private permissionService: PermissionService,
     private formErrorService: FormErrorService,
     private loadingService: LoadingService,
+    private userService: UserService,
     private router: Router
   ) {}
 
@@ -37,6 +40,12 @@ export class LoginComponent implements OnInit {
     this.loginService.login(this.loginForm).pipe(
       switchMap((result) => {
         this.loginService.storeTokens(result.data.accessToken, result.data.refreshToken);
+        this.userService.profile().subscribe({
+          next: (result) => {
+            this.loginService.storeUserInfo("name", result.data.firstName+" "+result.data.lastName);
+            this.loginService.storeUserInfo("img", environment.folderPath + result.data.img);
+          }
+        })
         return this.loginService.getUserPermissions();
       }),
       finalize(() => this.loadingService.hide()) // Ensures loader is hidden after request completes

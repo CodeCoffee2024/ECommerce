@@ -45,6 +45,10 @@ namespace ECommerce.Infrastructure.Configurations.UserManagement
                    .HasMaxLength(255)
                    .IsRequired(false);
 
+            builder.Property(user => user.Img)
+                   .HasMaxLength(1000)
+                   .IsRequired(false);
+
             builder.Property(user => user.BirthDate)
                    .IsRequired(false);
 

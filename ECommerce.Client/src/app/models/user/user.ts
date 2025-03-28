@@ -23,6 +23,7 @@ export class UserResult {
     firstName: string;
     middleName: string;
     userName: string;
+    img: string;
     email: string;
     canUpdate: boolean;
     canDelete: boolean;

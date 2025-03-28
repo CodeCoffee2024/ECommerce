@@ -5,11 +5,11 @@
     
     <div class="dropdown">
         <button class="btn btn-default dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <img src="assets/profile.jpg" alt="Profile" class="profile-img">
-            <span class="ms-2">John Doe</span>
+            <img [src]="img" alt="Profile" class="profile-img mr-2">
+            <span class="ms-2">{{name}}</span>
         </button>
         <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="profileDropdown">
-            <li><button class="dropdown-item" href="#">Profile Settings</button></li>
+            <li><button class="dropdown-item" (click)="updateProfile()">Profile Settings</button></li>
             <li><button class="dropdown-item text-danger" (click)="logout()">Sign Out</button></li>
         </ul>
     </div>

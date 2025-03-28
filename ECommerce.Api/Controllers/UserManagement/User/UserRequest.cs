@@ -1,5 +1,6 @@
 ﻿using ECommerce.Application.CommandQueries.UserManagement.User.AddUser;
 using ECommerce.Application.CommandQueries.UserManagement.User.UpdateUser;
+using ECommerce.Application.CommandQueries.UserManagement.User.UpdateUserProfile;
 
 namespace ECommerce.Api.Controllers.UserManagement.User
 {
@@ -10,6 +11,7 @@ namespace ECommerce.Api.Controllers.UserManagement.User
         public string? MiddleName { get; set; } = string.Empty;
         public DateTime? BirthDate { get; set; }
         public string UserName { get; set; } = string.Empty;
+        public IFormFile? Img { get; set; } = default!;
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public string UserPermissions { get; set; } = string.Empty;
@@ -18,5 +20,8 @@ namespace ECommerce.Api.Controllers.UserManagement.User
 
         public UpdateUserCommand SetUpdateCommand(Guid userId, Guid updateById) =>
             new(LastName, FirstName, MiddleName!, BirthDate, Email, UserName, UserPermissions, userId, updateById);
+
+        public UpdateUserProfileCommand SetUpdateProfileCommand(Guid userId, Guid updateById) =>
+            new(LastName, FirstName, MiddleName!, BirthDate, UserName, Img, userId, updateById);
     }
 }

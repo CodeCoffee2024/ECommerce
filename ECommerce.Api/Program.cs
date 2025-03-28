@@ -61,6 +61,7 @@ if (app.Environment.IsDevelopment())
 
     app.UseCors("AllowAngular"); // Apply CORS policy
     app.UseDeveloperExceptionPage(); // Add this for detailed error messages
+    app.UseStaticFiles();
 }
 
 using (var scope = app.Services.CreateScope())

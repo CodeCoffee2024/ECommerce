@@ -12,6 +12,7 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.GetOneUser
         public string MiddleName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string UserName { get; set; } = string.Empty;
+        public string Img { get; set; } = string.Empty;
         public Guid? Id { get; set; }
         public List<OneUserPermissionDTO> Permissions { get; set; }
         public DateTime? CreatedDate { get; set; }
@@ -38,6 +39,7 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.GetOneUser
                 LastName = user.LastName,
                 CreatedDate = user.CreatedDate,
                 ModifiedDate = user.ModifiedDate,
+                Img = user.Img,
                 Email = user.Email,
                 BirthDate = user.BirthDate,
                 CanUpdate = !user.isSuperAdmin(),

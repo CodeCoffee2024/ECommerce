@@ -13,6 +13,7 @@ namespace ECommerce.Domain.Entities.UserManagement
         public string Email { get; private set; } = string.Empty;
         public string Username { get; private set; } = string.Empty;
         public string Password { get; private set; } = string.Empty;
+        public string Img { get; private set; } = string.Empty;
         public string MiddleName { get; private set; } = string.Empty;
         public DateTime? BirthDate { get; private set; }
 
@@ -65,6 +66,16 @@ namespace ECommerce.Domain.Entities.UserManagement
         public void SetUserUserPermissions(ICollection<UserUserPermission> userUserPermissions)
         {
             UserUserPermissions = userUserPermissions;
+        }
+
+        public void UpdatePassword(string password)
+        {
+            Password = password;
+        }
+
+        public void UpdateImage(string img)
+        {
+            Img = img;
         }
 
         #endregion Private Methods

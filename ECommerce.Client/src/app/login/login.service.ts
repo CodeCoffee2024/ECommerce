@@ -51,6 +51,9 @@ export class LoginService extends GenericService {
     localStorage.setItem('accessToken', accessToken);
     localStorage.setItem('refreshToken', refreshToken);
   }
+  storeUserInfo(key: string, value: string) {
+    localStorage.setItem(key, value);
+  }
   logout(): void {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('permission');

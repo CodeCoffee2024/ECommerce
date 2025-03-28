@@ -1,0 +1,13 @@
+.circular-image {
+    min-width: 100px; // Adjust size as needed
+    min-height: 100px;
+    width: 100px; // Adjust size as needed
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover; // Ensures the image is properly cropped within the circle
+    border: 2px solid #ddd; // Optional: Adds a light border
+}
+.image-wrapper {
+    width: 100px; // Adjust size as needed
+    height: 100px;
+}

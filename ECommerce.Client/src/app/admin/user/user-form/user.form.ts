@@ -14,6 +14,8 @@ export class UserForm extends BaseModel {
                 lastName: ['', [Validators.required, Validators.minLength(2)]],
                 firstName: ['', [Validators.required, Validators.minLength(2)]],
                 middleName: [''],
+                img: [''],
+                imgFile: [null],
                 email: ['', [Validators.required, Validators.email]],
                 userName: ['', [Validators.required, Validators.minLength(4)]],
                 repeatPassword: ['', [Validators.required]], // Will be validated separately
@@ -51,10 +53,24 @@ export class UserForm extends BaseModel {
             middleName: this.form.get('middleName')?.value,
             birthDate: this.form.get('birthDate')?.value,
             userName: this.form.get('userName')?.value,
+            img: this.form.get('imgFile')?.value,
             email: this.form.get('email')?.value,
             password: this.form.get('password')?.value,
             userPermissions: this.form.get('userPermissions')?.value,
         };
+    }
+    get updateProfileData() {
+        const formData = new FormData();
+        const selectedFile = this.form.get('imgFile')?.value;
+        Object.keys(this.submitData).forEach(key => {
+            if (key != 'img') {
+                formData.append(key, this.form.value[key]);
+            }
+        });
+        if (selectedFile) {
+            formData.append('img', selectedFile);
+        }
+        return formData;
     }
     
     private mustMatchValidator(passwordKey: string, confirmPasswordKey: string) {
@@ -79,6 +95,7 @@ export class UserForm extends BaseModel {
         this.form.get('lastName').setValue(user.lastName);
         this.form.get('firstName').setValue(user.firstName);
         this.form.get('middleName').setValue(user.middleName);
+        this.form.get('img').setValue(user.img ?? '/assets/profile-placeholder.png');
         const birthDate = user.birthDate ? new Date(user.birthDate).toISOString().split('T')[0] : '';
         this.form.get('birthDate')!.setValue(birthDate);
         this.form.get('userName').setValue(user.userName);

@@ -54,6 +54,17 @@ namespace ECommerce.Api.Controllers.UserManagement.User
             return HandleResponse(result);
         }
 
+        [HttpGet("GetProfile")]
+        public async Task<IActionResult> GetProfile(CancellationToken cancellationToken)
+        {
+            UserRequest request = new UserRequest();
+            var query = new GetOneUserQuery(UserId);
+
+            var result = await _sender.Send(query, cancellationToken);
+
+            return HandleResponse(result);
+        }
+
         [HttpPost]
         [AuthorizePermission(Permissions.UserEnableToModifyUser)]
         public async Task<IActionResult> Create([FromBody] UserRequest request, CancellationToken cancellationToken)
@@ -69,6 +80,15 @@ namespace ECommerce.Api.Controllers.UserManagement.User
         public async Task<IActionResult> Update([FromBody] UserRequest request, [FromRoute] string Id, CancellationToken cancellationToken)
         {
             var command = request.SetUpdateCommand(Guid.Parse(Id), UserId);
+            var result = await _sender.Send(command, cancellationToken);
+
+            return HandleResponse(result);
+        }
+
+        [HttpPut("UpdateUserProfile")]
+        public async Task<IActionResult> UpdateUserProfile([FromForm] UserRequest request, CancellationToken cancellationToken)
+        {
+            var command = request.SetUpdateProfileCommand(UserId, UserId);
             var result = await _sender.Send(command, cancellationToken);
 
             return HandleResponse(result);

@@ -23,11 +23,17 @@ export class UserService extends GenericService {
   show(id): Observable<ApiResult<UserResult>> {
     return this.get<ApiResult<UserResult>>(`${this.controller}/`+id, null, true);
   }
+  profile(): Observable<ApiResult<UserResult>> {
+    return this.get<ApiResult<UserResult>>(`${this.controller}/GetProfile`, null, true);
+  }
   create(payload): Observable<ApiResult<UserResult>> {
     return this.post(this.controller, payload);
   }
   update(payload, id): Observable<ApiResult<UserResult>> {
     return this.put(this.controller+"/"+id, payload);
+  }
+  updateProfile(payload): Observable<ApiResult<UserResult>> {
+    return this.put(this.controller+"/UpdateUserProfile", payload);
   }
   export(listingOption, exportType = 'excel'): Observable<Blob> {
     const queryParams = this.setQueryParameters(listingOption);

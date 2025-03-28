@@ -10,6 +10,8 @@ import { UserPermissionListingOption } from '../../user-permission/user-permissi
 import { UserPermissionService } from '../../user-permission/user-permission.service';
 import { UserService } from '../user.service';
 import { UserForm } from './user.form';
+import { LoginService } from '../../../login/login.service';
+import { environment } from '../../../../../environment';
 
 @Component({
   selector: 'app-user-form',
@@ -21,7 +23,12 @@ export class UserFormComponent implements OnInit {
   InputTypes = InputTypes;
   hasMore = false;
   isUpdate = false;
+  isProfileUpdate = false;
   isDropdownLoading = false;
+  invalidDimension = false;
+  isLoading = false;
+  invalidFileSize = false;
+  isImgModified = false;
   userPermissions = [];
   selectedItems = [];
   listingOptionPermission;
@@ -30,6 +37,7 @@ export class UserFormComponent implements OnInit {
     private userService: UserService,
     private userPermissionService: UserPermissionService,
     private toastService: ToastService,
+    private loginService: LoginService,
     private formErrorService: FormErrorService
   ) {
     this.listingOptionPermission = new UserPermissionListingOption();
@@ -39,6 +47,9 @@ export class UserFormComponent implements OnInit {
       this.selectedItems = JSON.parse(this.form.form.get("userPermissions").value);
       this.listingOptionPermission.exclude = this.selectedItems.map(it => it.name).join(",");
     }
+  }
+  get title() {
+    return this.isUpdate ? 'User Update':'User New';
   }
   submit() {
     if(!this.isUpdate) {
@@ -51,7 +62,7 @@ export class UserFormComponent implements OnInit {
           this.formErrorService.setServerErrors(this.form.form, result);
         }
       });
-    } else {
+    } else if(!this.isProfileUpdate) {
       this.userService.update(this.form.submitData, this.form.id).subscribe({
         next: () => {
           this.toastService.add("Success", UpdateSuccess("User"), ToastType.SUCCESS);
@@ -61,9 +72,64 @@ export class UserFormComponent implements OnInit {
           this.formErrorService.setServerErrors(this.form.form, result);
         }
       });
+    } else {
+      this.isLoading = true;
+      this.userService.updateProfile(this.form.updateProfileData).subscribe({
+        next: () => {
+          this.toastService.add("Success", UpdateSuccess("User"), ToastType.SUCCESS);
+          this.userService.profile().subscribe({
+            next: (result) => {
+              this.isLoading = false;
+              this.loginService.storeUserInfo('name', result.data.firstName + " " + result.data.lastName);
+              this.loginService.storeUserInfo('img', environment.folderPath + result.data.img);
+              this.isImgModified = false;
+              this.activeModal.close(true);
+            }
+          })
+        },
+        error: (result) => {
+          this.formErrorService.setServerErrors(this.form.form, result);
+        }
+      });
     }
   }
 
+  get img() {
+    return this.isImgModified ? this.form.form.get('img').value : environment.folderPath + this.form.form.get('img').value;
+  }
+  
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length) {
+        const file = input.files[0];
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        const maxSizeMB = 1;
+        if (file.size > maxSizeMB * 1024 * 1024) {
+          this.invalidFileSize = true;
+          return;
+        }
+        
+        reader.onload = () => {
+          const img = new Image();
+          img.src = reader.result as string;
+          img.onload = () =>{
+            if (img.width !== img.height) {
+              this.invalidDimension = true;
+              return;
+            }
+            this.isImgModified = true;
+            this.invalidFileSize = false;
+            this.invalidDimension = false;
+            this.form.form.patchValue({ img: reader.result });
+            this.form.form.patchValue({ imgFile: file });
+          }
+        };
+    }
+  }
+  get invalidMessages() {
+    return this.invalidDimension ? 'File must be square image (e.g. 100x100)' : this.invalidFileSize ? 'File must not exceed 1MB' : '';
+  }
   cancel() {
     this.activeModal.dismiss(false);
   }
