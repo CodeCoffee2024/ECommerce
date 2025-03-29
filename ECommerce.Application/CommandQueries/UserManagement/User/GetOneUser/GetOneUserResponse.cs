@@ -38,6 +38,7 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.GetOneUser
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 CreatedDate = user.CreatedDate,
+                MiddleName = user.MiddleName,
                 ModifiedDate = user.ModifiedDate,
                 Img = user.Img,
                 Email = user.Email,

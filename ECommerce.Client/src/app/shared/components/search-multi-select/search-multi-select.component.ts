@@ -28,6 +28,7 @@ export class SearchMultiSelectComponent {
   searchSubject = new Subject<string>();
 
   constructor() {
+    this.selectedItems = this.selectedItems ?? [];
     this.searchSubject.pipe(debounceTime(300)).subscribe(query => {
       console.log(query)
       this.page = 1; // Reset page
@@ -69,6 +70,7 @@ export class SearchMultiSelectComponent {
 
   /** Selects an item */
   selectItem(item): void {
+    console.log(this.selectedItems);
     if (!this.selectedItems.includes(item)) {
       this.selectedItems.push(item);
       this.selectedItemsChange.emit(this.selectedItems);
@@ -78,7 +80,6 @@ export class SearchMultiSelectComponent {
 
   /** Removes a selected item */
   removeItem(item): void {
-    console.log(this.selectedItems);
     this.selectedItems = this.selectedItems.filter(i => i[this.field] !== item[this.field]);
     this.selectedItemsChange.emit(this.selectedItems);
   }

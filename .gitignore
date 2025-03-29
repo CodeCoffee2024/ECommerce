@@ -16,6 +16,7 @@ ECommerce.Client/.angular/
 .DS_Store
 
 wwwroot/
+Logs/
 
 # User-specific files
 *.user

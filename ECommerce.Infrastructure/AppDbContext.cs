@@ -1,4 +1,5 @@
 ﻿using ECommerce.Domain.Abstractions;
+using ECommerce.Domain.Entities.Log;
 using ECommerce.Domain.Entities.UserManagement;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +20,7 @@ namespace ECommerce.Infrastructure
 
         public DbSet<User> Users { get; set; }
         public DbSet<UserPermission> UserPermissions { get; set; }
+        public DbSet<Log> Logs { get; set; }
         public DbSet<Module> Modules { get; set; }
         public DbSet<UserUserPermission> UserUserPermissions { get; set; }
 

@@ -4,6 +4,10 @@ using ECommerce.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
+using Serilog.Sinks.MSSqlServer;
+using System.Collections.ObjectModel;
+using System.Data;
 
 namespace ECommerce.Infrastructure.DependencyInjections
 {
@@ -44,10 +48,31 @@ namespace ECommerce.Infrastructure.DependencyInjections
             services.AddHttpContextAccessor();
             services.AddScoped<IPermissionService, PermissionService>();
             services.AddScoped<IExportService, ExportService>();
+            services.AddScoped<IFileService, FileService>();
             services.AddScoped<IDbService>(sp => sp.GetRequiredService<AppDbContext>());
 
+            var columnOptions = new ColumnOptions
+            {
+                AdditionalColumns = new Collection<SqlColumn>
+                {
+                    new SqlColumn("UserId", SqlDbType.Int), // Example additional column
+                    new SqlColumn("RequestPath", SqlDbType.NVarChar, false)
+                }
+            };
             // Call the method to add repository services
             services.AddRepositories();
+
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+                .WriteTo.MSSqlServer(
+                    connectionString: connectionString,
+                    sinkOptions: new MSSqlServerSinkOptions { TableName = "Logs", AutoCreateSqlTable = true },
+                    columnOptions: columnOptions
+                )
+                .Enrich.FromLogContext()
+                .MinimumLevel.Information()
+                .CreateLogger();
         }
 
         #endregion Private Methods

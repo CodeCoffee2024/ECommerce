@@ -2,11 +2,13 @@ using ECommerce.Application;
 using ECommerce.Application.Abstractions;
 using ECommerce.Infrastructure;
 using ECommerce.Infrastructure.DependencyInjections;
+using ECommerce.Infrastructure.Middleware;
 using ECommerce.Infrastructure.Seeders;
 using ECommerce.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,6 +39,7 @@ builder.Services.AddSwaggerGen(); Console.WriteLine($"Connection String from Con
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Host.UseSerilog();
 builder.Services.AddScoped<DatabaseScriptManager>();
 builder.Services.AddScoped<IPasswordHasherService, PasswordHasherService>();
 
@@ -63,6 +66,7 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage(); // Add this for detailed error messages
     app.UseStaticFiles();
 }
+app.UseMiddleware<ErrorLoggingMiddleware>();
 
 using (var scope = app.Services.CreateScope())
 {
