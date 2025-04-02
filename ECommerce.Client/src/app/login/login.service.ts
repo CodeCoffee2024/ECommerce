@@ -59,4 +59,8 @@ export class LoginService extends GenericService {
     localStorage.removeItem('permission');
     localStorage.removeItem('refreshToken');
   }
+  hasAccess(permission: string) {
+    const permissions = localStorage.getItem('permission').split(",");
+    return permissions.includes(permission);
+  }
 }

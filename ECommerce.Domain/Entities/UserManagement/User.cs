@@ -1,4 +1,5 @@
 ﻿using ECommerce.Domain.Abstractions;
+using System.Text.Json.Serialization;
 
 namespace ECommerce.Domain.Entities.UserManagement
 {
@@ -6,6 +7,7 @@ namespace ECommerce.Domain.Entities.UserManagement
     {
         #region Properties
 
+        [JsonIgnore]
         public virtual ICollection<UserUserPermission>? UserUserPermissions { get; set; } = new List<UserUserPermission>();
 
         public string LastName { get; private set; } = string.Empty;
@@ -76,6 +78,23 @@ namespace ECommerce.Domain.Entities.UserManagement
         public void UpdateImage(string img)
         {
             Img = img;
+        }
+
+        public Dictionary<string, string> GetActivityLog(string modifiedBy = "", string createdBy = "")
+        {
+            return new Dictionary<string, string>
+            {
+                { "Last Name", LastName },
+                { "First Name", FirstName },
+                { "Middle Name", MiddleName },
+                { "Username", Username },
+                { "Email", Email },
+                { "Birth Date", BirthDate.HasValue ? BirthDate.Value.ToString("MM/dd/yy") : "" },
+                { "Img", Img ?? "--" },
+                { "User Permissions", string.Join(",", UserUserPermissions!.Select(it => it.UserPermission.Name))},
+                { "Modified By", !string.IsNullOrEmpty(modifiedBy) ? modifiedBy : ModifiedBy?.FirstName + " " + ModifiedBy?.LastName },
+                { "Created By",!string.IsNullOrEmpty(createdBy) ? createdBy : CreatedBy?.FirstName + " " + CreatedBy?.LastName }
+            };
         }
 
         #endregion Private Methods

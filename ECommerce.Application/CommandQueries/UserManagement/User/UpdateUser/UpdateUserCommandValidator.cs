@@ -39,6 +39,11 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.UpdateUser
             var usernameExists = _userRepository.FindByUsername(input.UserName);
             if (usernameExists != null)
             {
+                if (usernameExists!.isSuperAdmin())
+                {
+                    _result
+                        .AddError("Super admin", "Super admin update restricted");
+                }
                 if (usernameExists.Id != input.Id)
                     _result
                         .Exists(nameof(input.UserName), null, "Username already exists");
@@ -49,11 +54,6 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.UpdateUser
                 if (emailExists.Id != input.Id)
                     _result
                         .Exists(nameof(input.Email), null, "Email already exists");
-            }
-            if (usernameExists!.isSuperAdmin())
-            {
-                _result
-                    .AddError("Super admin", "Super admin update restricted");
             }
             if (input.UserPermissions.Split(",").Length == 0 || input.UserPermissions == "")
             {

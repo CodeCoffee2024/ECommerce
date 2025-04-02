@@ -8,6 +8,8 @@ import { UserListingComponent } from './user-listing/user-listing.component';
 import { UserNewComponent } from './user-new/user-new.component';
 import { UserShowComponent } from './user-show/user-show.component';
 import { UserUpdateComponent } from './user-update/user-update.component';
+import { UserActivityLogComponent } from './user-activity-log/user-activity-log.component';
+import { UserActivityLogShowComponent } from './user-activity-log-show/user-activity-log-show.component';
 
 
 @NgModule({
@@ -16,7 +18,9 @@ import { UserUpdateComponent } from './user-update/user-update.component';
     UserListingComponent,
     UserNewComponent,
     UserShowComponent,
-    UserUpdateComponent
+    UserUpdateComponent,
+    UserActivityLogComponent,
+    UserActivityLogShowComponent
   ],
   imports: [
     CommonModule,

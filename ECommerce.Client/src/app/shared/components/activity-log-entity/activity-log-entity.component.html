@@ -1,0 +1,25 @@
+<div class="container" *ngIf ="entity">
+    <div class="row">
+        <div class="col-12 pt-3">
+            <h4>{{ entity }} Activity Logs</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-sm table-responsive">
+                <thead>
+                    <tr>
+                        <th>Field</th>
+                        <th>Changes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let key of keys">
+                        <td><strong>{{ key }}</strong></td>
+                        <td [innerHTML]="displayChange(key)"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

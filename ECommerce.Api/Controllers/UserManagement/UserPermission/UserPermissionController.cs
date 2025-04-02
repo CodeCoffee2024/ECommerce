@@ -1,5 +1,8 @@
-﻿using ECommerce.Api.Middleware.Authorization;
+﻿using ECommerce.Api.Controllers.ActivityLog;
+using ECommerce.Api.Middleware.Authorization;
 using ECommerce.Api.Shared;
+using ECommerce.Application.CommandQueries.ActivityLog.GetActivityLog;
+using ECommerce.Application.CommandQueries.ActivityLog.GetOneActivityLog;
 using ECommerce.Application.CommandQueries.Common;
 using ECommerce.Application.CommandQueries.UserManagement.Module.GetAllModule;
 using ECommerce.Application.CommandQueries.UserManagement.Permission.DeleteUserPermission;
@@ -56,6 +59,27 @@ namespace ECommerce.Api.Controllers.UserManagement.UserPermission
         public async Task<IActionResult> GetListing([FromQuery] GenericListingRequest request, CancellationToken cancellationToken)
         {
             var result = await _sender.Send(request.SetQuery<GetUserPermissionQuery>(), cancellationToken);
+
+            return HandleResponse(result);
+        }
+
+        [HttpGet("GetActivityLogs")]
+        [AuthorizePermission(Permissions.UserEnableToViewUserPermission)]
+        public async Task<IActionResult> GetAllActivityLogs([FromQuery] GenericListingRequest request, CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(request.SetQuery<GetActivityLogQuery>(), cancellationToken);
+
+            return HandleResponse(result);
+        }
+
+        [HttpGet("GetActivityLog/{Id}")]
+        [AuthorizePermission(Permissions.UserEnableToViewUserPermission)]
+        public async Task<IActionResult> GetActivityLog([FromRoute] string Id, CancellationToken cancellationToken)
+        {
+            ActivityLogRequest request = new ActivityLogRequest();
+            var query = new GetOneActivityLogQuery(Guid.Parse(Id));
+
+            var result = await _sender.Send(query, cancellationToken);
 
             return HandleResponse(result);
         }

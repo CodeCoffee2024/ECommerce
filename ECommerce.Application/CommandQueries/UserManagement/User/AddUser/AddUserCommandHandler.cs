@@ -14,6 +14,7 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.AddUser
         private readonly IDbService _dbService;
 
         private readonly IUserRepository _userRepository;
+        private readonly IActivityLogService _activityLogService;
         private readonly IPasswordHasherService _passwordHasherService;
         private readonly IUserPermissionRepository _userPermissionRepository;
         private readonly AddUserCommandValidator _validator;
@@ -22,13 +23,20 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.AddUser
 
         #region Public Constructors
 
-        public AddUserCommandHandler(IUserRepository userRepository, IUserPermissionRepository userPermissionRepository, IPasswordHasherService passwordHasherService, IDbService dbService)
+        public AddUserCommandHandler(
+            IUserRepository userRepository,
+            IUserPermissionRepository userPermissionRepository,
+            IPasswordHasherService passwordHasherService,
+            IDbService dbService,
+            IActivityLogService activityLogService
+        )
         {
             _passwordHasherService = passwordHasherService;
             _dbService = dbService;
             _userRepository = userRepository;
             _userPermissionRepository = userPermissionRepository;
             _validator = new AddUserCommandValidator(userRepository);
+            _activityLogService = activityLogService;
         }
 
         #endregion Public Constructors
@@ -56,7 +64,6 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.AddUser
                 _passwordHasherService.HashPassword(request.Password), DateTime.Now, request.Id
             );
 
-
             // Set permissions & save
             _userRepository.Add(user);
             // Create user-permission mappings
@@ -68,6 +75,10 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.AddUser
                 );
             }
             user.SetUserUserPermissions(userUserPermissions);
+            var current = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
+            var newValues = current!.GetActivityLog(current!.FirstName + " " + current!.LastName, current!.FirstName + " " + current!.LastName);
+            await _activityLogService.LogAsync("User", user.Id!.Value, "New", new Dictionary<string, string>(), newValues);
+
             await _dbService.SaveChangesAsync();
 
             return Result.Success("user");

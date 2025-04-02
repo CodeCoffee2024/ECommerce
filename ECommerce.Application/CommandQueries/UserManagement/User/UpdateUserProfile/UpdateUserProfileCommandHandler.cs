@@ -12,6 +12,7 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.UpdateUserPro
         private readonly IDbService _dbService;
 
         private readonly IUserRepository _userRepository;
+        private readonly IActivityLogService _activityLogService;
         private readonly IFileService _fileService;
         private readonly UpdateUserProfileValidator _validator;
 
@@ -19,8 +20,13 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.UpdateUserPro
 
         #region Public Constructors
 
-        public UpdateUserProfileCommandHandler(IUserRepository userRepository, IDbService dbService, IFileService fileService)
+        public UpdateUserProfileCommandHandler(
+            IUserRepository userRepository,
+            IDbService dbService,
+            IFileService fileService,
+            IActivityLogService activityLogService)
         {
+            _activityLogService = activityLogService;
             _dbService = dbService;
             _fileService = fileService;
             _userRepository = userRepository;
@@ -39,6 +45,7 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.UpdateUserPro
                 return Result.Failure<Result>(Error.Validation, validation.Errors);
 
             var current = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
+            var oldValues = current!.GetActivityLog();
             // Create user
             var user = current.Update(
                 request.LastName, request.FirstName, request.MiddleName,
@@ -52,6 +59,10 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.UpdateUserPro
             }
 
             _userRepository.Update(user);
+            await _dbService.SaveChangesAsync();
+            var current2 = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
+            var newValues = current2.GetActivityLog();
+            await _activityLogService.LogAsync("User", request.Id, "Update Profile", oldValues, newValues);
             await _dbService.SaveChangesAsync();
 
             return Result.Success("user");

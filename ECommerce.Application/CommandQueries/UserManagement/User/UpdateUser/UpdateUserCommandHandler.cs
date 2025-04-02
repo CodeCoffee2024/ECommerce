@@ -1,4 +1,5 @@
-﻿using ECommerce.Application.Abstractions.Messaging;
+﻿using ECommerce.Application.Abstractions;
+using ECommerce.Application.Abstractions.Messaging;
 using ECommerce.Domain.Abstractions;
 using ECommerce.Domain.Entities.UserManagement;
 using ECommerce.Domain.Entities.UserManagement.Interfaces;
@@ -12,6 +13,7 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.UpdateUser
         private readonly IDbService _dbService;
 
         private readonly IUserRepository _userRepository;
+        private readonly IActivityLogService _activityLogService;
         private readonly IUserUserPermissionRepository _userUserPermissionRepository;
         private readonly IUserPermissionRepository _userPermissionRepository;
         private readonly UpdateUserCommandValidator _validator;
@@ -20,8 +22,15 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.UpdateUser
 
         #region Public Constructors
 
-        public UpdateUserCommandHandler(IUserRepository userRepository, IUserPermissionRepository userPermissionRepository, IUserUserPermissionRepository userUserPermissionRepository, IDbService dbService)
+        public UpdateUserCommandHandler(
+            IUserRepository userRepository,
+            IUserPermissionRepository userPermissionRepository,
+            IUserUserPermissionRepository userUserPermissionRepository,
+            IDbService dbService,
+            IActivityLogService activityLogService
+        )
         {
+            _activityLogService = activityLogService;
             _userUserPermissionRepository = userUserPermissionRepository;
             _dbService = dbService;
             _userRepository = userRepository;
@@ -45,6 +54,7 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.UpdateUser
                 .Where(it => request.UserPermissions.Contains(it.Id!.ToString()!))
                 .ToList(); // ✅ Convert to List to avoid multiple enumerations
             var current = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
+            var oldValues = current!.GetActivityLog();
             // Create user
             var user = current.Update(
                 request.LastName, request.FirstName, request.MiddleName,
@@ -62,6 +72,10 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.UpdateUser
                 )).ToList();
             user.SetUserUserPermissions(userUserPermissions);
             _userRepository.Update(user);
+            await _dbService.SaveChangesAsync();
+            var current2 = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
+            var newValues = current2.GetActivityLog();
+            await _activityLogService.LogAsync("User", request.Id, "Update", oldValues, newValues);
             await _dbService.SaveChangesAsync();
 
             return Result.Success("user");

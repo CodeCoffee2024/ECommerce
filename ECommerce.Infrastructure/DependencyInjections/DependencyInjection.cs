@@ -6,8 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
-using System.Collections.ObjectModel;
-using System.Data;
 
 namespace ECommerce.Infrastructure.DependencyInjections
 {
@@ -49,16 +47,8 @@ namespace ECommerce.Infrastructure.DependencyInjections
             services.AddScoped<IPermissionService, PermissionService>();
             services.AddScoped<IExportService, ExportService>();
             services.AddScoped<IFileService, FileService>();
+            services.AddScoped<IActivityLogService, ActivityLogService>();
             services.AddScoped<IDbService>(sp => sp.GetRequiredService<AppDbContext>());
-
-            var columnOptions = new ColumnOptions
-            {
-                AdditionalColumns = new Collection<SqlColumn>
-                {
-                    new SqlColumn("UserId", SqlDbType.Int), // Example additional column
-                    new SqlColumn("RequestPath", SqlDbType.NVarChar, false)
-                }
-            };
             // Call the method to add repository services
             services.AddRepositories();
 
@@ -67,8 +57,7 @@ namespace ECommerce.Infrastructure.DependencyInjections
                 .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
                 .WriteTo.MSSqlServer(
                     connectionString: connectionString,
-                    sinkOptions: new MSSqlServerSinkOptions { TableName = "Logs", AutoCreateSqlTable = true },
-                    columnOptions: columnOptions
+                    sinkOptions: new MSSqlServerSinkOptions { TableName = "Logs", AutoCreateSqlTable = true }
                 )
                 .Enrich.FromLogContext()
                 .MinimumLevel.Information()

@@ -2,6 +2,7 @@
 using ECommerce.Domain.Commons.Constants;
 using ECommerce.Domain.Dtos.Shared;
 using ECommerce.Domain.Entities.UserManagement.Interfaces;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel;
 using System.Reflection;
 
@@ -11,14 +12,15 @@ namespace ECommerce.Infrastructure.Services
     {
         #region Fields
 
-        private IEnumerable<ModulePermissionDTO> ModulePermissions { get; set; }
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         #endregion Fields
 
-        #region Private Methods
+        #region Public Constructors
 
-        public PermissionService(IUserPermissionRepository userPermissionRepository)
+        public PermissionService(IUserPermissionRepository userPermissionRepository, IHttpContextAccessor httpContextAccessor)
         {
+            _httpContextAccessor = httpContextAccessor;
             var userField = typeof(Modules).GetField("User");
             var userDscription = userField.GetCustomAttribute<DescriptionAttribute>()?.Description;
             var userModulePermission = new ModulePermissionDTO(
@@ -73,11 +75,38 @@ namespace ECommerce.Infrastructure.Services
             ];
         }
 
+        #endregion Public Constructors
+
+        #region Properties
+
+        private IEnumerable<ModulePermissionDTO> ModulePermissions { get; set; }
+
+        #endregion Properties
+
+        #region Public Methods
+
         public IEnumerable<ModulePermissionDTO> GetPermissions()
         {
             return ModulePermissions;
         }
 
-        #endregion Private Methods
+        public bool HasPermission(params string[] requiredPermissions)
+        {
+            var user = _httpContextAccessor.HttpContext?.User;
+
+            if (user?.Identity is null || !user.Identity.IsAuthenticated)
+                return false;
+
+            var userPermissions = user.Claims
+                .Where(c => c.Type == "Permissions")
+                .SelectMany(c => c.Value.Split(","))
+                .Select(p => p.Trim())
+                .Distinct()
+                .ToList();
+
+            return requiredPermissions.All(p => userPermissions.Contains(p));
+        }
+
+        #endregion Public Methods
     }
 }

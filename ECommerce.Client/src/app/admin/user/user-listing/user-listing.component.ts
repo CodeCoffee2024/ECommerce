@@ -1,44 +1,52 @@
 import { Component, OnInit } from '@angular/core';
-import { GenericComponentListing } from '../../../models/abstractions/generic-component-listing';
+import { LoginService } from '../../../login/login.service';
 import { GenericListingResult } from '../../../models/generics/generic-listing-result';
+import { UserPermissionListingReponse } from '../../../models/user-permission/user-permission-listing-response';
+import { UserPermission } from '../../../models/user/user';
 import { UserListingReponse } from '../../../models/user/user-listing-response';
+import { BaseComponent } from '../../../shared/components/base/base.component';
 import { LoadingService } from '../../../shared/services/loading/loading.service';
+import { ModalService } from '../../../shared/services/modal/modal.service';
 import { TitleService } from '../../../shared/services/title/title.service';
 import { UserPermissionListingOption } from '../../user-permission/user-permission-listing/user-permission-listing.option';
 import { UserPermissionService } from '../../user-permission/user-permission.service';
+import { UserFormComponent } from '../user-form/user-form.component';
 import { UserForm } from '../user-form/user.form';
 import { UserService } from '../user.service';
-import { UserListingOption } from './user-listing.option';
-import { ModalService } from '../../../shared/services/modal/modal.service';
-import { UserFormComponent } from '../user-form/user-form.component';
-import { UserPermissionListingReponse } from '../../../models/user-permission/user-permission-listing-response';
 
 @Component({
   selector: 'app-user-listing',
   templateUrl: './user-listing.component.html',
   styleUrl: './user-listing.component.scss'
 })
-export class UserListingComponent extends GenericComponentListing<UserListingOption> implements OnInit {
+export class UserListingComponent extends BaseComponent implements OnInit {
   title = 'Users';
-  isLoading = false;
-  isDropdownLoading = false;
   isDropdownOpen = false;
-  results: UserListingReponse[];
-  hasMore = false;
+  isDropdownLoading = false;
   userPermissions = [];
+  hasMore = false;
+  UserEnableToModifyUserPermission = UserPermission.UserEnableToModifyUser;
   listingOptionPermission = new UserPermissionListingOption();
-  listingData: GenericListingResult<UserListingReponse[]>;
+  
   form: UserForm;
+  listingFormat: UserListingReponse[];
   constructor(
+    private authService: LoginService,
     private titleService: TitleService,
-    private userService: UserService,
+    protected userPermissionService: UserPermissionService,
     private loadingService: LoadingService,
-    private userPermissionService: UserPermissionService,
-    private modalService: ModalService
+    private userService: UserService,
+    private modalService: ModalService,
   ) {
-    super();
+    super(authService, titleService, loadingService);
     this.titleService.setTitle(this.title);
-    this.listingOption = new UserListingOption();
+    this.setGenerics(
+      new UserPermissionListingOption(),
+      'User',
+      this.userService,
+      GenericListingResult<UserPermissionListingReponse[]>,
+      this.listingFormat
+    )
     this.listingOptionPermission = new UserPermissionListingOption();
   }
   ngOnInit(): void {
@@ -52,43 +60,6 @@ export class UserListingComponent extends GenericComponentListing<UserListingOpt
         this.listingOption.sortDirection = it.sortDirection;
         this.refresh();
         this.turnOffSortEvent();
-      }
-    })
-  }
-  toggleDropdown() {
-    this.isDropdownOpen = !this.isDropdownOpen;
-  }
-  goTo(page: number) {
-    this.listingOption.page = page;
-    this.refresh();
-  }
-  searchChanged(searchValue) {
-    this.listingOption.search = searchValue;
-    this.refresh();
-  }
-  refresh() {
-    this.loadingService.show();
-    this.userService.getList(this.listingOption).subscribe({
-      next: (result) => {
-        this.results = result.data.result;
-        this.listingData = result.data;
-        this.loadingService.hide();
-        this.form = new UserForm();
-        this.form.initializeForm();
-      }
-    })
-  }
-  exportToPDF() {
-    this.userService.export(this.listingOption, 'pdf').subscribe({
-      next: (result) => {
-        this.downloadExportedFile(result, 'pdf', 'Users');
-      }
-    })
-  }
-  exportToExcel() {
-    this.userService.export(this.listingOption).subscribe({
-      next: (result) => {
-        this.downloadExportedFile(result, 'excel', 'Users');
       }
     })
   }
@@ -128,5 +99,12 @@ export class UserListingComponent extends GenericComponentListing<UserListingOpt
     if (result) {
       this.refresh();
     }
+  }
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+  goTo(page: number) {
+    this.listingOption.page = page;
+    this.refresh();
   }
 }

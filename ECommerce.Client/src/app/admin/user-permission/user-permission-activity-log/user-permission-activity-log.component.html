@@ -1,0 +1,3 @@
+<div *ngIf="userPermission">
+    <app-activity-log-list [listingData]="activityLogs" [id]="Id" [route]="'user-permissions'" [controller]="'UserPermission'" (changePage)="goTo($event)" [entity]="userPermission.name"></app-activity-log-list>
+</div>

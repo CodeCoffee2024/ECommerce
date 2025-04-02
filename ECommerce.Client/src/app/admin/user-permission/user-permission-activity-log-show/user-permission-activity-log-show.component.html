@@ -1,0 +1,45 @@
+<div *ngIf="userPermission">
+    <div class="container" *ngIf ="userPermission.name">
+        <div class="row">
+            <div class="col-12 pt-3">
+                <h4>{{ userPermission.name }} Activity Logs</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Field</th>
+                            <th>Changes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let key of keys">
+                            <td><strong>{{ key }}</strong></td>
+                            <ng-container *ngIf="key !== 'Permissions' else permission">
+                                <td [innerHTML]="displayChange(key)"></td>
+                            </ng-container>
+                            <ng-template #permission>
+                                <td class="overflow-auto">
+                                    <div class="row" *ngFor="let module of modules">
+                                        <div class="col-12">
+                                            <h5>{{ module.description }}</h5>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-4" *ngFor="let permission of getPermissions(module)" [class]="userPermissionClass(permission)">
+                                                    <i class="mr-2" [class]="isChecked(permission.permission)"></i><span>{{ permission.description }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </ng-template>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

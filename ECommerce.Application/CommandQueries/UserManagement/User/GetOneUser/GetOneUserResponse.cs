@@ -27,7 +27,7 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.GetOneUser
 
         #region Methods
 
-        internal static GetOneUserResponse MapToResponse(ECommerce.Domain.Entities.UserManagement.User user)
+        internal static GetOneUserResponse MapToResponse(ECommerce.Domain.Entities.UserManagement.User user, bool canUpdate, bool canDelete)
         {
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
@@ -43,8 +43,8 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.GetOneUser
                 Img = user.Img,
                 Email = user.Email,
                 BirthDate = user.BirthDate,
-                CanUpdate = !user.isSuperAdmin(),
-                CanDelete = !user.isSuperAdmin(),
+                CanUpdate = !user.isSuperAdmin() && canUpdate,
+                CanDelete = !user.isSuperAdmin() && canDelete,
                 UserName = user.Username,
                 Permissions = user.UserUserPermissions
                 .Select(it => new OneUserPermissionDTO

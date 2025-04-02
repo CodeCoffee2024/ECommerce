@@ -1,7 +1,10 @@
-﻿using ECommerce.Application.Abstractions.Messaging;
+﻿using ECommerce.Application.Abstractions;
+using ECommerce.Application.Abstractions.Messaging;
 using ECommerce.Domain.Abstractions;
 using ECommerce.Domain.Commons;
+using ECommerce.Domain.Commons.Constants;
 using ECommerce.Domain.Entities.UserManagement.Interfaces;
+using ECommerce.Domain.Enums;
 
 namespace ECommerce.Application.CommandQueries.UserManagement.User.GetOneUser
 {
@@ -10,13 +13,18 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.GetOneUser
         #region Fields
 
         private readonly IUserRepository _userRepository;
+        private readonly IPermissionService _permissionService;
 
         #endregion Fields
 
         #region Public Constructors
 
-        public GetOneUserQueryHandler(IUserRepository userRepository)
+        public GetOneUserQueryHandler(
+            IUserRepository userRepository,
+            IPermissionService permissionService
+        )
         {
+            _permissionService = permissionService;
             _userRepository = userRepository;
         }
 
@@ -32,7 +40,11 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.GetOneUser
             {
                 return Result.Failure<GetOneUserResponse>(ValidationErrors.NotFound("User"));
             }
-            return GetOneUserResponse.MapToResponse(user);
+            return GetOneUserResponse.MapToResponse(
+                user,
+                _permissionService.HasPermission(Permissions.UserEnableToModifyUser),
+                _permissionService.HasPermission(Permissions.UserEnableToDeleteUser)
+            );
         }
 
         #endregion Public Methods

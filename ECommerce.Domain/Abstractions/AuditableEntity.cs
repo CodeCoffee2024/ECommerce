@@ -1,4 +1,5 @@
 ﻿using ECommerce.Domain.Entities.UserManagement;
+using System.Text.Json.Serialization;
 
 namespace ECommerce.Domain.Abstractions
 {
@@ -7,7 +8,9 @@ namespace ECommerce.Domain.Abstractions
         #region Properties
 
         public DateTime? ModifiedDate { get; set; }
+        [JsonIgnore]
         public virtual User? CreatedBy { get; set; }
+        [JsonIgnore]
         public virtual User? ModifiedBy { get; set; }
         public Guid? CreatedById { get; private set; }
         public Guid? ModifiedById { get; private set; }

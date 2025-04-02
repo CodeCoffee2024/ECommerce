@@ -1,19 +1,16 @@
 import { BehaviorSubject } from "rxjs";
 import { GenericSort } from "../generics/generic-sort";
 
-export abstract class GenericComponentListing<T> {
-    listingOption: T
+export abstract class GenericComponentListing {
+    listingOption;
     refreshBySort = new BehaviorSubject<{value, sortBy, sortDirection}>({value: false, sortBy: '', sortDirection: ''});
     sortEvent(event: GenericSort) {
-        console.log(event);
         this.refreshBySort.next({value: true, sortBy: event.name, sortDirection: event.sortDirection});
     };
     turnOffSortEvent(){
-
         this.refreshBySort.next({value: false, sortBy: '', sortDirection: ''});
     }
     downloadExportedFile(result, exportType: string, fileName: string) {
-        
         const fileType =
         exportType === 'pdf'
             ? 'application/pdf'

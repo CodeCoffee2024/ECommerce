@@ -7,6 +7,8 @@ import { UserPermissionNewComponent } from './user-permission-new/user-permissio
 import { UserPermissionUpdateComponent } from './user-permission-update/user-permission-update.component';
 import { SharedModule } from '../../shared/shared.module';
 import { UserPermissionShowComponent } from './user-permission-show/user-permission-show.component';
+import { UserPermissionActivityLogComponent } from './user-permission-activity-log/user-permission-activity-log.component';
+import { UserPermissionActivityLogShowComponent } from './user-permission-activity-log-show/user-permission-activity-log-show.component';
 
 
 @NgModule({
@@ -14,7 +16,9 @@ import { UserPermissionShowComponent } from './user-permission-show/user-permiss
     UserPermissionFormComponent,
     UserPermissionNewComponent,
     UserPermissionUpdateComponent,
-    UserPermissionShowComponent
+    UserPermissionShowComponent,
+    UserPermissionActivityLogComponent,
+    UserPermissionActivityLogShowComponent
   ],
   imports: [
     CommonModule,

@@ -29,6 +29,7 @@ export class UserForm extends BaseModel {
                 lastName: ['', [Validators.required, Validators.minLength(2)]],
                 firstName: ['', [Validators.required, Validators.minLength(2)]],
                 middleName: [''],
+                img: [''],
                 email: ['', [Validators.required, Validators.email]],
                 userName: ['', [Validators.required, Validators.minLength(4)]],
                 password: ['', [Validators.required, Validators.minLength(6)]],
@@ -96,7 +97,7 @@ export class UserForm extends BaseModel {
         this.form.get('firstName').setValue(user.firstName);
         this.form.get('middleName').setValue(user.middleName);
         this.form.get('img').setValue(user.img ?? '/assets/profile-placeholder.png');
-        const birthDate = user.birthDate ? new Date(user.birthDate).toISOString().split('T')[0] : '';
+        const birthDate = user.birthDate ? user.birthDate.toString().split('T')[0] : '';
         this.form.get('birthDate')!.setValue(birthDate);
         this.form.get('userName').setValue(user.userName);
         this.form.get('email').setValue(user.email);

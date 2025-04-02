@@ -36,6 +36,17 @@ namespace ECommerce.Domain.Entities.UserManagement
             return this;
         }
 
+        public Dictionary<string, string> GetActivityLog(string modifiedBy = "", string createdBy = "")
+        {
+            return new Dictionary<string, string>
+            {
+                { "Name", Name },
+                { "Permissions", Permissions },
+                { "Modified By", !string.IsNullOrEmpty(modifiedBy) ? modifiedBy : ModifiedBy?.FirstName + " " + ModifiedBy?.LastName },
+                { "Created By",!string.IsNullOrEmpty(createdBy) ? createdBy : CreatedBy?.FirstName + " " + CreatedBy?.LastName }
+            };
+        }
+
         #endregion Properties
     }
 }

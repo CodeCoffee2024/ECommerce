@@ -3,6 +3,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
     using System.Linq;
+    using System.Security.Claims;
 
     public class AuthorizePermissionAttribute : Attribute, IAuthorizationFilter
     {
@@ -45,6 +46,21 @@
             {
                 context.Result = new ForbidResult();
             }
+        }
+
+        public bool HasPermission(ClaimsPrincipal user, params string[] requiredPermissions)
+        {
+            if (user?.Identity is null || !user.Identity.IsAuthenticated)
+                return false;
+
+            var userPermissions = user.Claims
+                .Where(c => c.Type == "Permissions")
+                .SelectMany(c => c.Value.Split(","))
+                .Select(p => p.Trim())
+                .Distinct()
+                .ToList();
+
+            return requiredPermissions.All(p => userPermissions.Contains(p));
         }
 
         #endregion Public Methods

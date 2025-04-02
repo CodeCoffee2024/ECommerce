@@ -1,7 +1,13 @@
 <div class="container" *ngIf="user.id">
     <div class="row">
-        <div class="col-12 pt-3">
+        <div class="col-12 pt-3 d-flex justify-content-between">
             <h4><span class="color-highlight cursor-pointer" [routerLink]="'../../'">User</span> <i class="bi bi-chevron-right"></i> <span>{{ user.firstName + " "+user.lastName }}</span></h4>
+            <div class="">
+                <button class="btn btn-sm btn-white" [routerLink]="'../../activity-log/'+user.id">
+                    <i class="bi bi-clock-history mr-2"></i>
+                    <span>View Changes</span>
+                </button>
+            </div>
         </div>
     </div>
     <div class="row" *ngIf="user.canUpdate || user.canDelete">

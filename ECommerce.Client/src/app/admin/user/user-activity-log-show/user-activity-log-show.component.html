@@ -1,0 +1,54 @@
+<div *ngIf="user">
+    <div class="container" *ngIf="user.lastName">
+        <div class="row">
+            <div class="col-12 pt-3">
+                <h4>{{ user.firstName + " " + user.lastName }} Activity Logs</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Field</th>
+                            <th>Changes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let key of keys">
+                            <td><strong>{{ key }}</strong></td>
+
+                            <td [ngSwitch]="key">
+                                <!-- Special handling for User Permissions -->
+                                <ng-container *ngSwitchCase="'User Permissions'">
+                                    <div class="overflow-auto">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <span class="pl-1 pr-1" 
+                                                    [class]="userPermissionClass(userPermission)" 
+                                                    *ngFor="let userPermission of newUserPermissions; let i = index;">
+                                                    {{ userPermission }}{{ i < newUserPermissions.length - 1 ? ',' : '' }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+
+                                <!-- Special handling for Img -->
+                                <ng-container *ngSwitchCase="'Img'">
+                                    <div class="d-flex" [innerHTML]="displayImg">
+                                    </div>
+                                </ng-container>
+
+                                <!-- Default case -->
+                                <ng-container *ngSwitchDefault>
+                                    <span [innerHTML]="displayChange(key)"></span>
+                                </ng-container>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -40,12 +40,12 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-right" [class.show]="isDropdownOpen">
                     <li>
-                        <button class="dropdown-item" (click)="exportToPDF()">
+                        <button class="dropdown-item" (click)="export('pdf')">
                             <i class="bi bi-file-pdf mr-2"></i> Export to PDF
                         </button>
                     </li>
                     <li>
-                        <button class="dropdown-item" (click)="exportToExcel()">
+                        <button class="dropdown-item" (click)="export('excel')">
                             <i class="bi bi-file-excel mr-2"></i> Export to Excel
                         </button>
                     </li>

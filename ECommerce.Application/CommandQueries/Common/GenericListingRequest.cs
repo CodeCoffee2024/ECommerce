@@ -12,6 +12,7 @@ namespace ECommerce.Application.CommandQueries.Common
             return new TQuery
             {
                 Search = Search,
+                Id = Id,
                 Page = Page,
                 Exclude = Exclude,
                 PageSize = PageSize,
@@ -31,6 +32,7 @@ namespace ECommerce.Application.CommandQueries.Common
             {
                 SearchValues = searchValues,
                 Page = Page,
+                Id = Id,
                 Exclude = Exclude,
                 PageSize = PageSize,
                 SortDirection = SortDirection,

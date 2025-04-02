@@ -14,15 +14,22 @@ namespace ECommerce.Application.CommandQueries.UserManagement.Permission.UpdateU
 
         private readonly IUserPermissionRepository _userPermissionRepository;
         private readonly IPermissionService _permissionService;
+        private readonly IActivityLogService _activityLogService;
         private readonly UpdateUserPermissionCommandValidator _validator;
 
         #endregion Fields
 
         #region Public Constructors
 
-        public UpdateUserPermissionCommandHandler(IUserPermissionRepository userPermissionRepository, IDbService dbService, IPermissionService permissionService)
+        public UpdateUserPermissionCommandHandler(
+            IUserPermissionRepository userPermissionRepository,
+            IDbService dbService,
+            IPermissionService permissionService,
+            IActivityLogService activityLogService
+        )
         {
             _dbService = dbService;
+            _activityLogService = activityLogService;
             _userPermissionRepository = userPermissionRepository;
             _permissionService = permissionService;
             _validator = new UpdateUserPermissionCommandValidator(userPermissionRepository);
@@ -38,9 +45,14 @@ namespace ECommerce.Application.CommandQueries.UserManagement.Permission.UpdateU
             if (!validation.IsValid)
                 return Result.Failure<Result>(Error.Validation, validation.Errors);
             var current = await _userPermissionRepository.GetByIdAsync(request.Id, cancellationToken);
-            var userPermission = current.Update(request.Permissions, request.Name, request.UpdatedById, DateTime.Now);
+            var oldValues = current!.GetActivityLog();
+            var userPermission = current.Update(request.Permissions, request.Name, request.UpdatedById, DateTime.UtcNow);
             var oneResult = GetOneUserPermissionResponse.MapToResponse(userPermission, _permissionService.GetPermissions());
             _userPermissionRepository.Update(userPermission);
+            await _dbService.SaveChangesAsync();
+            var current2 = await _userPermissionRepository.GetByIdAsync(request.Id, cancellationToken);
+            var newValues = current2.GetActivityLog();
+            await _activityLogService.LogAsync("User Permission", request.Id, "Update", oldValues, newValues);
             await _dbService.SaveChangesAsync();
             return Result.Success(oneResult);
         }

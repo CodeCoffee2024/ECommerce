@@ -1,0 +1,38 @@
+<div class="container" *ngIf ="entity">
+    <div class="row">
+        <div class="col-12 pt-3">
+            <h4>{{ entity }} Activity Logs</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>
+                            <app-th-header 
+                                [name]="'Event'" 
+                                [description]="'Event'" 
+                                [isSortable]="false"
+                            ></app-th-header>
+                        </th>
+                        <th>
+                            <app-th-header 
+                                [name]="'Timestamp'" 
+                                [description]="'Timestamp'" 
+                                [isSortable]="false"
+                            ></app-th-header>
+                        </th>
+                    </tr>
+                </thead>
+                <tr *ngFor="let result of lists; let i = index;" class="table-item cursor-pointer" (click)="go(result.id)">
+                    <td>{{ 1 + i }}</td>
+                    <td>{{ result.eventType }}</td>
+                    <td>{{ result.timeStamp | date:'Y-MM-dd hh:mm a' }}</td>
+                </tr>
+            </table>
+            <app-listing-summary [listingData]="listingData" (changePage)="goTo($event)"></app-listing-summary>
+        </div>
+    </div>
+</div>

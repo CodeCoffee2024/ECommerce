@@ -1,5 +1,9 @@
-﻿using ECommerce.Api.Middleware.Authorization;
+﻿using ECommerce.Api.Controllers.ActivityLog;
+using ECommerce.Api.Middleware.Authorization;
 using ECommerce.Api.Shared;
+using ECommerce.Application.CommandQueries.ActivityLog.GetActivityLog;
+using ECommerce.Application.CommandQueries.ActivityLog.GetOneActivityLog;
+using ECommerce.Application.CommandQueries.Common;
 using ECommerce.Application.CommandQueries.UserManagement.User;
 using ECommerce.Application.CommandQueries.UserManagement.User.DeleteUser;
 using ECommerce.Application.CommandQueries.UserManagement.User.GetOneUser;
@@ -100,6 +104,27 @@ namespace ECommerce.Api.Controllers.UserManagement.User
         {
             var command = new DeleteUserCommand(Guid.Parse(Id));
             var result = await _sender.Send(command, cancellationToken);
+
+            return HandleResponse(result);
+        }
+
+        [HttpGet("GetActivityLogs")]
+        [AuthorizePermission(Permissions.UserEnableToViewUser)]
+        public async Task<IActionResult> GetAllActivityLogs([FromQuery] GenericListingRequest request, CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(request.SetQuery<GetActivityLogQuery>(), cancellationToken);
+
+            return HandleResponse(result);
+        }
+
+        [HttpGet("GetActivityLog/{Id}")]
+        [AuthorizePermission(Permissions.UserEnableToViewUser)]
+        public async Task<IActionResult> GetActivityLog([FromRoute] string Id, CancellationToken cancellationToken)
+        {
+            ActivityLogRequest request = new ActivityLogRequest();
+            var query = new GetOneActivityLogQuery(Guid.Parse(Id));
+
+            var result = await _sender.Send(query, cancellationToken);
 
             return HandleResponse(result);
         }
