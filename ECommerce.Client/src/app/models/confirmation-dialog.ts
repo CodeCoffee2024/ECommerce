@@ -1,7 +1,8 @@
 export enum ConfirmationDialogType {
     SUCCESS,
     ERROR,
-    WARNING
+    WARNING,
+    SECONDARY
 }
 
 export class ConfirmationDialogDTO {
@@ -22,7 +23,7 @@ export class ConfirmationDialogDTO {
             case ConfirmationDialogType.WARNING:
                 return 'btn btn-warning';
             default:
-                return 'bg-warning';
+                return 'btn btn-secondary';
         }
     }
 }
@@ -32,5 +33,19 @@ export function DeleteConfirmationDialog(entityName: string): ConfirmationDialog
         "Delete Confirmation",
         `Are you sure you want to delete this ${entityName}?`,
         ConfirmationDialogType.WARNING
+    );
+}
+export function DisableConfirmationDialog(entityName: string): ConfirmationDialogDTO {
+    return new ConfirmationDialogDTO(
+        "Disable Confirmation",
+        `Are you sure you want to disable this ${entityName}?`,
+        ConfirmationDialogType.SECONDARY
+    );
+}
+export function EnableConfirmationDialog(entityName: string): ConfirmationDialogDTO {
+    return new ConfirmationDialogDTO(
+        "Enable Confirmation",
+        `Are you sure you want to enable this ${entityName}?`,
+        ConfirmationDialogType.SUCCESS
     );
 }

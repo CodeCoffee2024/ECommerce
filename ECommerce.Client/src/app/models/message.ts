@@ -14,3 +14,9 @@ export const UpdateSuccess = (module: string): string => {
 export const DeleteSuccess = (module: string): string => {
     return `${module} successfully deleted`;
 };
+export const EnableSuccess = (module: string): string => {
+    return `${module} successfully enabled`;
+};
+export const DisableSuccess = (module: string): string => {
+    return `${module} successfully disabled`;
+};

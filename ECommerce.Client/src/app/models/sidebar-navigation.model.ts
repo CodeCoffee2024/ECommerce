@@ -1,5 +1,6 @@
 import { UserPermission } from "./user/user";
 import { UserPermissionPermission } from "./user-permission/user-permission";
+import { UnitOfMeasurementTypePermission } from "./settings/unit-of-measurement-type/unit-of-measurement-type";
 
 export class SideBarNavigation {
     name: string;
@@ -25,6 +26,10 @@ export const Modules = [
     {
         name: "User Management",
         order: 5
+    },
+    {
+        name: "Settings",
+        order: 6
     }
 ].sort((a, b) => a.order - b.order); // Sorting modules by 'order'
 export const Navigations = [
@@ -50,5 +55,13 @@ export const Navigations = [
         route: '/admin/user-permissions',
         requiredPermission: [UserPermissionPermission.UserEnableToViewUserPermission],
         description: "User Permissions",
+    },
+    {
+        module: Modules.find(it => it.name == "Settings").name,
+        icon: "bi bi-list-check",
+        name: "UnitOfMeasurementType",
+        route: '/admin/settings/unit-of-measurement-types',
+        requiredPermission: [UnitOfMeasurementTypePermission.UserEnableToViewUnitOfMeasurementType],
+        description: "UOM Types",
     }
 ];

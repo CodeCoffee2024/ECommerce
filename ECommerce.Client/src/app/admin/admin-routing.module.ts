@@ -5,6 +5,8 @@ import { AuthGuard } from '../shared/guards/auth/auth.guard';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { UserPermissionPermission } from '../models/user-permission/user-permission';
 import { UserPermission } from '../models/user/user';
+import { UnitOfMeasurementTypePermission } from '../models/settings/unit-of-measurement-type/unit-of-measurement-type';
+import { UnitOfMeasurementPermission } from '../models/settings/unit-of-measurement/unit-of-measurement';
 
 const routes: Routes = [
   {
@@ -24,6 +26,16 @@ const routes: Routes = [
         loadChildren: () => import('./user/user.module').then(m => m.UserModule),
         canActivate: [AuthGuard],
         data: { permission: UserPermission.UserEnableToViewUser }, 
+      },
+      { 
+        path: 'settings', 
+        loadChildren: () => import('./settings/settings.module').then(m => m.SettingsModule),
+        canActivate: [AuthGuard],
+        data: { 
+          optionalPermission: 
+            UnitOfMeasurementTypePermission.UserEnableToViewUnitOfMeasurementType + "," + 
+            UnitOfMeasurementPermission.UserEnableToViewUnitOfMeasurement
+        }, 
       },
       {
         path: '401',

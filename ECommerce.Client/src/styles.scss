@@ -65,3 +65,8 @@ ul, li, a, a:hover {
     width: 120px;
     height: 120px;
 }
+
+.dropdown-menu.show {
+    display: block;
+    z-index: 10;
+}

@@ -60,7 +60,4 @@ export class UserPermissionActivityLogComponent implements OnInit {
       });
     }
   }
-  goTo(page) {
-    console.log(page);
-  }
 }

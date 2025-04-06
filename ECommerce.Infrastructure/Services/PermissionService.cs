@@ -69,9 +69,59 @@ namespace ECommerce.Infrastructure.Services
                     ),
                 ]
             );
+            var unitOfMeasurementField = typeof(Modules).GetField("UnitOfMeasurement");
+            var unitOfMeasurementDscription = unitOfMeasurementField.GetCustomAttribute<DescriptionAttribute>()?.Description;
+            var unitOfMeasurementModulePermission = new ModulePermissionDTO(
+                Modules.UnitOfMeasurement,
+                unitOfMeasurementDscription,
+                1,
+                [
+                    new PermissionDetailDTO(
+                        Permissions.UserEnableToViewUnitOfMeasurement,
+                        "View",
+                        []
+                    ),
+                    new PermissionDetailDTO(
+                        Permissions.UserEnableToModifyUnitOfMeasurement,
+                        "Modify",
+                        [Permissions.UserEnableToViewUnitOfMeasurement]
+                    ),
+                    new PermissionDetailDTO(
+                        Permissions.UserEnableToDeleteUnitOfMeasurement,
+                        "Delete",
+                        [Permissions.UserEnableToViewUnitOfMeasurement]
+                    ),
+                ]
+            );
+            var unitOfMeasurementTypeField = typeof(Modules).GetField("UnitOfMeasurementType");
+            var unitOfMeasurementTypeDscription = unitOfMeasurementTypeField.GetCustomAttribute<DescriptionAttribute>()?.Description;
+            var unitOfMeasurementTypeModulePermission = new ModulePermissionDTO(
+                Modules.UnitOfMeasurementType,
+                unitOfMeasurementTypeDscription,
+                1,
+                [
+                    new PermissionDetailDTO(
+                        Permissions.UserEnableToViewUnitOfMeasurementType,
+                        "View",
+                        []
+                    ),
+                    new PermissionDetailDTO(
+                        Permissions.UserEnableToModifyUnitOfMeasurementType,
+                        "Modify",
+                        [Permissions.UserEnableToViewUnitOfMeasurementType]
+                    ),
+                    new PermissionDetailDTO(
+                        Permissions.UserEnableToDeleteUnitOfMeasurementType,
+                        "Delete",
+                        [Permissions.UserEnableToViewUnitOfMeasurementType]
+                    ),
+                ]
+            );
             ModulePermissions = [
                 userModulePermission,
-                userPermissionModulePermission
+                userPermissionModulePermission,
+                unitOfMeasurementModulePermission,
+                unitOfMeasurementTypeModulePermission,
             ];
         }
 

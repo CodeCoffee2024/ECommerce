@@ -15,6 +15,14 @@ namespace ECommerce.Domain.Enums
                         .Description ?? value.ToString();
         }
 
+        // General method to get enum from description
+        public static TEnum? GetEnumFromDescription<TEnum>(string description) where TEnum : Enum
+        {
+            return Enum.GetValues(typeof(TEnum))
+                .Cast<TEnum>()
+                .FirstOrDefault(e => e.GetDescription() == description);
+        }
+
         #endregion Public Methods
     }
 }

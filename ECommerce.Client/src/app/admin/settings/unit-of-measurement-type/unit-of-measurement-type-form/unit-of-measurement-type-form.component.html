@@ -1,0 +1,41 @@
+<div class="modal-header">
+    <h5 class="modal-title">{{title}}</h5>
+    <button type="button" class="close" (click)="cancel()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<form [formGroup]="form.form" (ngSubmit)="submit()">
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-12">
+                <app-input
+                    [inputType]="InputTypes.Text"
+                    inputId="name"
+                    [formGroup]="form.form"
+                    [controlName]="'name'"
+                    [label]="'Name'"
+                ></app-input>
+                <div *ngIf="form.getServerError('name')" class="alert alert-danger">
+                    {{ form.getServerError('name') }}
+                </div>
+            </div>
+            <div class="col-12">
+                <app-input
+                    [inputType]="InputTypes.Checkbox"
+                    inputId="hasDecimal"
+                    [formGroup]="form.form"
+                    [controlName]="'hasDecimal'"
+                    [label]="'Has Decimal?'"
+                ></app-input>
+                <div *ngIf="form.getServerError('hasDecimal')" class="alert alert-danger">
+                    {{ form.getServerError('hasDecimal') }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-secondary btn-sm" (click)="cancel()">Cancel</button>
+        <button class="btn btn-success  btn-sm" type="submit"><i class="bi bi-check mr-2"></i>Save</button>
+    
+    </div>
+</form>

@@ -31,7 +31,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <button class="btn btn-success w-100 listing-btn" (click)="new()">
+            <button class="btn btn-success w-100 listing-btn" *ngIf="hasAccess(UserEnableToModifyUser)" (click)="new()">
                 <i class="bi bi-plus mr-2"></i>New User
             </button>
             <div class="dropdown mt-2" *ngIf="results && results.length > 0">

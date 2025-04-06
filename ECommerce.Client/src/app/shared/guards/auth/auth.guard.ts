@@ -11,8 +11,20 @@ export class AuthGuard {
   constructor(private permissionService: PermissionService, private router: Router, private toastService: ToastService) {}
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
-    const requiredPermission = route.data['permission'].split(',');
-
+    const optionalPermission = route.data['optionalPermission']?.split(',');
+    let exists = false;
+    if (optionalPermission && optionalPermission.length > 0) {
+      optionalPermission.forEach(it => {
+        console.log(it);
+        if (this.permissionService.hasPermissions([it])) {
+          exists = true;
+        }
+      });
+    }
+    const requiredPermission = route.data['permission']?.split(',');
+    if (!requiredPermission && exists) {
+      return exists;
+    }
     if (!requiredPermission || this.permissionService.hasPermissions(requiredPermission)) {
       return true;
     }

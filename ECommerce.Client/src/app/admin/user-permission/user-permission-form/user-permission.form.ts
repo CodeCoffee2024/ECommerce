@@ -46,9 +46,6 @@ export class UserPermissionForm extends BaseModel {
         const permissionName = permissionControl.get('permission')?.value;
     
         if (!isChecked) {
-            console.log(permissionName);
-            console.log(permissionControl);
-            // If unchecked, recursively uncheck dependent permissions
             this.uncheckDependentPermissions(moduleIndex, permissionName);
         } else {
             // If checked, make sure all dependencies are also checked

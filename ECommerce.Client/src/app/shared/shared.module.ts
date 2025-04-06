@@ -6,6 +6,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ActivityLogEntityComponent } from './components/activity-log-entity/activity-log-entity.component';
 import { ActivityLogListComponent } from './components/activity-log-list/activity-log-list.component';
 import { AuditComponent } from './components/audit/audit.component';
+import { BaseComponent } from './components/base/base.component';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { FieldLabelComponent } from './components/field-label/field-label.component';
 import { InputComponent } from './components/input/input.component';
@@ -16,7 +17,8 @@ import { SearchMultiSelectComponent } from './components/search-multi-select/sea
 import { ThHeaderComponent } from './components/th-header/th-header.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { FormatNullablePipe } from './pipes/format-nullable.pipe';
-import { BaseComponent } from './components/base/base.component';
+import { StatusLabelComponent } from './components/status-label/status-label.component';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -34,8 +36,10 @@ import { BaseComponent } from './components/base/base.component';
     ActivityLogListComponent,
     ActivityLogEntityComponent,
     BaseComponent,
+    StatusLabelComponent,
   ],
   imports: [
+    RouterModule,
     CommonModule,
     NgbModule,
     ReactiveFormsModule,
@@ -61,6 +65,7 @@ import { BaseComponent } from './components/base/base.component';
     ActivityLogListComponent,
     ActivityLogEntityComponent,
     BaseComponent,
+    StatusLabelComponent
   ]
 })
 export class SharedModule { }

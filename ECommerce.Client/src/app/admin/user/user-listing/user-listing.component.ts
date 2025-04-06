@@ -25,10 +25,9 @@ export class UserListingComponent extends BaseComponent implements OnInit {
   isDropdownLoading = false;
   userPermissions = [];
   hasMore = false;
-  UserEnableToModifyUserPermission = UserPermission.UserEnableToModifyUser;
+  UserEnableToModifyUser = UserPermission.UserEnableToModifyUser;
   listingOptionPermission = new UserPermissionListingOption();
-  
-  form: UserForm;
+  form: UserForm = new UserForm();
   listingFormat: UserListingReponse[];
   constructor(
     private authService: LoginService,
@@ -95,6 +94,7 @@ export class UserListingComponent extends BaseComponent implements OnInit {
     this.refresh();
   }
   async new() {
+    this.form.initializeForm();
     const result = await this.modalService.open(UserFormComponent, {form: this.form});
     if (result) {
       this.refresh();

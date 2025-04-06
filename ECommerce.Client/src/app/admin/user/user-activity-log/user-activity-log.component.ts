@@ -62,7 +62,4 @@ export class UserActivityLogComponent implements OnInit {
       });
     }
   }
-  goTo(page) {
-    console.log(page);
-  }
 }

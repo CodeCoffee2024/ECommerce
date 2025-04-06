@@ -12,6 +12,12 @@ namespace ECommerce.Domain.Commons.Constants
         [Description("User Permission")]
         public static readonly string UserPermission = "UserPermission";
 
+        [Description("Unit of Measurement")]
+        public static readonly string UnitOfMeasurement = "UnitOfMeasurement";
+
+        [Description("Unit of Measurement Type")]
+        public static readonly string UnitOfMeasurementType = "UnitOfMeasurementType";
+
         #endregion Fields
     }
 }

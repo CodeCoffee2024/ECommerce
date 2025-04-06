@@ -1,4 +1,5 @@
-﻿using ECommerce.Domain.Entities.UserManagement;
+﻿using ECommerce.Domain.Commons.Constants;
+using ECommerce.Domain.Entities.UserManagement;
 
 namespace ECommerce.Infrastructure.Seeders.Scripts
 {
@@ -13,17 +14,31 @@ namespace ECommerce.Infrastructure.Seeders.Scripts
             if (existingPermissionSuperAdmin == null)
             {
                 var userPermissionSuperAdmin = UserPermission.Create(
-                    "UserEnableToViewUser," +
-                    "UserEnableToModifyUser," +
-                    "UserEnableToDeleteUser" +
+                    Permissions.UserEnableToViewUser + "," +
+                    Permissions.UserEnableToModifyUser + "," +
+                    Permissions.UserEnableToDeleteUser +
                     "", "User Access", superadmin?.Id, DateTime.UtcNow);
                 context.Set<UserPermission>().Add(userPermissionSuperAdmin);
 
                 userPermissionSuperAdmin = UserPermission.Create(
-                    "UserEnableToViewUserPermission," +
-                    "UserEnableToModifyUserPermission," +
-                    "UserEnableToDeleteUserPermission" +
+                    Permissions.UserEnableToViewUserPermission + "," +
+                    Permissions.UserEnableToModifyUserPermission + "," +
+                    Permissions.UserEnableToDeleteUserPermission +
                     "", "User Permission Access", superadmin?.Id, DateTime.UtcNow);
+                context.Set<UserPermission>().Add(userPermissionSuperAdmin);
+
+                userPermissionSuperAdmin = UserPermission.Create(
+                    Permissions.UserEnableToViewUnitOfMeasurement + "," +
+                    Permissions.UserEnableToModifyUnitOfMeasurement + "," +
+                    Permissions.UserEnableToDeleteUnitOfMeasurement +
+                    "", "Unif of Measurement Access", superadmin?.Id, DateTime.UtcNow);
+                context.Set<UserPermission>().Add(userPermissionSuperAdmin);
+
+                userPermissionSuperAdmin = UserPermission.Create(
+                    Permissions.UserEnableToViewUnitOfMeasurementType + "," +
+                    Permissions.UserEnableToModifyUnitOfMeasurementType + "," +
+                    Permissions.UserEnableToDeleteUnitOfMeasurementType +
+                    "", "Unif of Measurement Access", superadmin?.Id, DateTime.UtcNow);
                 context.Set<UserPermission>().Add(userPermissionSuperAdmin);
 
                 context.SaveChanges();
@@ -41,7 +56,6 @@ namespace ECommerce.Infrastructure.Seeders.Scripts
             }
 
             //staff
-
             var staff = context.Set<User>().FirstOrDefault(u => u.Email == "staff@gmail.com");
             existingPermissionSuperAdmin = context.UserPermissions.FirstOrDefault(u => u.Name == "User Permission Access");
             var existingStaffAccess = context.UserUserPermissions.FirstOrDefault(u => u.UserId == staff!.Id && u.UserPermissionId == existingPermissionSuperAdmin.Id);

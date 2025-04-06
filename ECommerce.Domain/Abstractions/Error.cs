@@ -6,5 +6,6 @@
 
         public static readonly Error NullValue = new("Error.NullValue", "Null value was provided");
         public static readonly Error Validation = new("ValidationException", "One or more values has failed");
+        public static readonly Error Concurrency = new("ConcurrencyException", "Item has failed to update. Please try again later.");
     }
 }

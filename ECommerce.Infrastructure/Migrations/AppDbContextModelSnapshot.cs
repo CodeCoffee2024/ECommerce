@@ -84,6 +84,89 @@ namespace ECommerce.Infrastructure.Migrations
                     b.ToTable("Logs");
                 });
 
+            modelBuilder.Entity("ECommerce.Domain.Entities.Settings.UnitOfMeasurement", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CreatedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
+
+                    b.Property<Guid>("UnitOfMeasurementTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("ModifiedById");
+
+                    b.HasIndex("UnitOfMeasurementTypeId")
+                        .IsUnique();
+
+                    b.ToTable("UnitOfMeasurements");
+                });
+
+            modelBuilder.Entity("ECommerce.Domain.Entities.Settings.UnitOfMeasurementType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CreatedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("HasDecimal")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("ModifiedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("ModifiedById");
+
+                    b.ToTable("UnitOfMeasurementTypes");
+                });
+
             modelBuilder.Entity("ECommerce.Domain.Entities.UserManagement.Module", b =>
                 {
                     b.Property<Guid>("Id")
@@ -222,6 +305,44 @@ namespace ECommerce.Infrastructure.Migrations
                     b.ToTable("UserUserPermission", (string)null);
                 });
 
+            modelBuilder.Entity("ECommerce.Domain.Entities.Settings.UnitOfMeasurement", b =>
+                {
+                    b.HasOne("ECommerce.Domain.Entities.UserManagement.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("ECommerce.Domain.Entities.UserManagement.User", "ModifiedBy")
+                        .WithMany()
+                        .HasForeignKey("ModifiedById");
+
+                    b.HasOne("ECommerce.Domain.Entities.Settings.UnitOfMeasurementType", "UnitOfMeasurementType")
+                        .WithOne("UnitOfMeasurement")
+                        .HasForeignKey("ECommerce.Domain.Entities.Settings.UnitOfMeasurement", "UnitOfMeasurementTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("ModifiedBy");
+
+                    b.Navigation("UnitOfMeasurementType");
+                });
+
+            modelBuilder.Entity("ECommerce.Domain.Entities.Settings.UnitOfMeasurementType", b =>
+                {
+                    b.HasOne("ECommerce.Domain.Entities.UserManagement.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("ECommerce.Domain.Entities.UserManagement.User", "ModifiedBy")
+                        .WithMany()
+                        .HasForeignKey("ModifiedById");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("ModifiedBy");
+                });
+
             modelBuilder.Entity("ECommerce.Domain.Entities.UserManagement.User", b =>
                 {
                     b.HasOne("ECommerce.Domain.Entities.UserManagement.User", "CreatedBy")
@@ -273,6 +394,11 @@ namespace ECommerce.Infrastructure.Migrations
                     b.Navigation("User");
 
                     b.Navigation("UserPermission");
+                });
+
+            modelBuilder.Entity("ECommerce.Domain.Entities.Settings.UnitOfMeasurementType", b =>
+                {
+                    b.Navigation("UnitOfMeasurement");
                 });
 
             modelBuilder.Entity("ECommerce.Domain.Entities.UserManagement.User", b =>

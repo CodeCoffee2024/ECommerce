@@ -1,4 +1,4 @@
-import { FormGroup, ValidationErrors } from "@angular/forms";
+import { AbstractControl, FormGroup, ValidationErrors } from "@angular/forms";
 
 export class BaseModel {
     id: string;
@@ -12,5 +12,12 @@ export class BaseModel {
     }
     errorKeys(errors: ValidationErrors): string[] {
         return Object.keys(errors).map(key => errors[key]);
+    }
+    requiredNoWhitespace(control: AbstractControl): ValidationErrors | null {
+        const value = control.value;
+        if (typeof value === 'string' && value.trim().length === 0) {
+            return { required: true }; // <-- trigger the standard 'required' error
+        }
+        return null;
     }
 }

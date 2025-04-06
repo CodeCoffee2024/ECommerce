@@ -35,6 +35,13 @@ namespace ECommerce.Application.Common
             return this;
         }
 
+        public ValidationResult RequiredBoolean(string field, bool? value, string? message = null)
+        {
+            if (!value.HasValue)
+                AddError(field, message ?? $"{field} is required.");
+            return this;
+        }
+
         public ValidationResult Null(string entity)
         {
             AddError(entity, $"{entity} not found.");

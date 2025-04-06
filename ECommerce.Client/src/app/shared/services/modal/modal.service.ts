@@ -13,6 +13,7 @@ export class ModalService {
     const modalRef = this.modalService.open(component, { backdrop: 'static', keyboard: false });
     if (data) {
       Object.assign(modalRef.componentInstance, data);
+      console.log(data);
     }
     return modalRef.result; // Returns a Promise
   }
