@@ -1,4 +1,4 @@
-﻿using ECommerce.Application.CommandQueries.Common;
+﻿using ECommerce.Application.CommandQueries.Common.Mapping;
 using ECommerce.Domain.Dtos.UserManagement.UserPermission;
 
 namespace ECommerce.Application.CommandQueries.UserManagement.User.GetOneUser
@@ -20,8 +20,8 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.GetOneUser
         public DateTime? ModifiedDate { get; set; }
         public bool CanUpdate { get; set; }
         public bool CanDelete { get; set; }
-        public UserFragmentQueryResponse CreatedBy { get; set; } = new();
-        public UserFragmentQueryResponse ModifiedBy { get; set; } = new();
+        public UserFragmentResponse CreatedBy { get; set; } = new();
+        public UserFragmentResponse ModifiedBy { get; set; } = new();
 
         #endregion Properties
 
@@ -53,12 +53,12 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.GetOneUser
                     Name = it.UserPermission.Name
                 })
                 .ToList(),
-                CreatedBy = new UserFragmentQueryResponse()
+                CreatedBy = new UserFragmentResponse()
                 {
                     Id = user.CreatedBy != null ? user.CreatedBy!.Id.ToString() : "",
                     Name = user.CreatedBy != null ? $"{user.CreatedBy?.FirstName ?? "Unknown"} {user.CreatedBy?.LastName ?? ""}".Trim() : ""
                 },
-                ModifiedBy = new UserFragmentQueryResponse()
+                ModifiedBy = new UserFragmentResponse()
                 {
                     Id = user.ModifiedBy != null ? user.ModifiedBy!.Id.ToString() : "",
                     Name = user.ModifiedBy != null ? $"{user.ModifiedBy?.FirstName ?? "Unknown"} {user.ModifiedBy?.LastName ?? ""}".Trim() : ""

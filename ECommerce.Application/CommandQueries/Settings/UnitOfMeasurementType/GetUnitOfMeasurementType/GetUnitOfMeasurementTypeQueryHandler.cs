@@ -1,4 +1,5 @@
-﻿using ECommerce.Application.Abstractions.Messaging;
+﻿using AutoMapper;
+using ECommerce.Application.Abstractions.Messaging;
 using ECommerce.Domain.Abstractions;
 using ECommerce.Domain.Commons;
 using ECommerce.Domain.Entities.Settings.Interfaces;
@@ -10,6 +11,7 @@ namespace ECommerce.Application.CommandQueries.Settings.UnitOfMeasurementType.Ge
         #region Fields
 
         private readonly IUnitOfMeasurementTypeRepository _unitOfMeasurementTypeRepository;
+        private readonly IMapper _mapper;
 
         #endregion Fields
 
@@ -17,8 +19,9 @@ namespace ECommerce.Application.CommandQueries.Settings.UnitOfMeasurementType.Ge
 
         #region Public Constructors
 
-        public GetUnitOfMeasurementTypeQueryHandler(IUnitOfMeasurementTypeRepository unitOfMeasurementTypeRepository)
+        public GetUnitOfMeasurementTypeQueryHandler(IUnitOfMeasurementTypeRepository unitOfMeasurementTypeRepository, IMapper mapper)
         {
+            _mapper = mapper;
             _unitOfMeasurementTypeRepository = unitOfMeasurementTypeRepository;
         }
 
@@ -29,7 +32,7 @@ namespace ECommerce.Application.CommandQueries.Settings.UnitOfMeasurementType.Ge
         public async Task<Result<PagedResult<GetUnitOfMeasurementTypeResponse>>> Handle(GetUnitOfMeasurementTypeQuery request, CancellationToken cancellationToken)
         {
             PagedResult<ECommerce.Domain.Entities.Settings.UnitOfMeasurementType>? unitOfMeasurementType = await _unitOfMeasurementTypeRepository.GetListingPageResultAsync(request.SetGlobalSearchValueFilterDTO(), cancellationToken);
-            return unitOfMeasurementType.SetPagedResultResponse(result => GetUnitOfMeasurementTypeResponse.MapToResponse(result));
+            return unitOfMeasurementType.SetPagedResultResponse(result => GetUnitOfMeasurementTypeResponse.MapToResponse(_mapper, result));
         }
 
         #endregion Public Methods

@@ -1,0 +1,102 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12 pt-3">
+            <h4>Unit Of Measurement</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9">
+            <app-search-mono [(searchModel)]="listingOption.search" (searchChanged)="searchChanged($event)" [placeholder]="'Search By Name, Type'"></app-search-mono>
+        </div>
+        <div class="col-md-3">
+            <button *ngIf="hasAccess(UserEnableToModifyUnitOfMeasurement)" class="btn mb-2 btn-success w-100 listing-btn" (click)="new()">
+                <i class="bi bi-plus mr-2"></i>New 
+            </button>
+            <div class="dropdown" *ngIf="results && results.length > 0">
+                <button class="btn btn-secondary dropdown-toggle w-100 listing-btn" (click)="toggleDropdown()" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-file-earmark mr-2"></i> Export
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right" [class.show]="isDropdownOpen">
+                    <li>
+                        <button class="dropdown-item" (click)="export('pdf')">
+                            <i class="bi bi-file-pdf mr-2"></i> Export to PDF
+                        </button>
+                    </li>
+                    <li>
+                        <button class="dropdown-item" (click)="export('excel')">
+                            <i class="bi bi-file-excel mr-2"></i> Export to Excel
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="statuses">
+        <div class="col-lg-4 col-12">
+            <div class="font-weight-bold">
+                <span>Status</span>
+            </div>
+            <select class="form-control form-control-sm" [(ngModel)]="listingOption.status" (ngModelChange)="refresh()">
+                <option value="" selected>Please Select</option>
+                <option *ngFor="let status of statuses;" [value]="status.value">{{ FormatStatus.format(status.value) }}</option>
+            </select>
+        </div>
+    </div>
+    <div class="row" *ngIf="!isLoading">
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>
+                            <app-th-header 
+                                [name]="'Name'" 
+                                [description]="'Name'" 
+                                [isSortable]="true"
+                                [sortBy]="listingOption.sortBy" 
+                                [sortDirection]="listingOption.sortDirection"
+                                (sortResult)="sortEvent($event)"
+                            ></app-th-header>
+                        </th>
+                        <th>
+                            <app-th-header 
+                                [name]="'UnitOfMeasurementType.Name'" 
+                                [description]="'Type'" 
+                                [isSortable]="true"
+                                [sortBy]="listingOption.sortBy" 
+                                [sortDirection]="listingOption.sortDirection"
+                                (sortResult)="sortEvent($event)"
+                            ></app-th-header>
+                        </th>
+                        <th>
+                            <app-th-header 
+                                [name]="'CreatedDate'" 
+                                [description]="'Date Created'" 
+                                [isSortable]="true"
+                                [sortBy]="listingOption.sortBy" 
+                                [sortDirection]="listingOption.sortDirection"
+                                (sortResult)="sortEvent($event)"
+                            ></app-th-header>
+                        </th>
+                    </tr>
+                </thead>
+                <tr *ngFor="let result of results; let i = index;" class="table-item cursor-pointer" [routerLink]="'view/'+result.id">
+                    <td>{{ 1 + i }}</td>
+                    <td>
+                        <div class="d-flex">
+                            {{ result.name }}
+                            <app-status-label class="ml-2" [status]="result.status"></app-status-label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex">
+                            {{ result.unitOfMeasurementType?.name }}
+                        </div>
+                    </td>
+                    <td>{{ result.createdDate | date:'Y-MM-dd'}}</td>
+                </tr>
+            </table>
+            <app-listing-summary [listingData]="listingData" (changePage)="goTo($event)"></app-listing-summary>
+        </div>
+    </div>
+</div>

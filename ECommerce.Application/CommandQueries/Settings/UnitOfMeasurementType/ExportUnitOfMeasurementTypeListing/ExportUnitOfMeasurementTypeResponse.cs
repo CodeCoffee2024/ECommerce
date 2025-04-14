@@ -1,4 +1,5 @@
-﻿using ECommerce.Domain.Enums;
+﻿using ECommerce.Application.Common.Helpers;
+using ECommerce.Domain.Enums;
 using System.ComponentModel;
 
 namespace ECommerce.Application.CommandQueries.Settings.UnitOfMeasurementType.ExportUnitOfMeasurementTypeListing
@@ -11,13 +12,13 @@ namespace ECommerce.Application.CommandQueries.Settings.UnitOfMeasurementType.Ex
         public string Name { get; set; } = string.Empty;
 
         [Description("Has Decimal?")]
-        public string HasDecimal { get; set; }
+        public string? HasDecimal { get; set; } = string.Empty;
 
         [Description("Status")]
         public string Status { get; set; } = string.Empty;
 
         [Description("Created Date")]
-        public DateTime? CreatedDate { get; set; }
+        public string? CreatedDate { get; set; }
 
         [Description("Created By")]
         public string CreatedBy { get; set; } = string.Empty;
@@ -36,7 +37,7 @@ namespace ECommerce.Application.CommandQueries.Settings.UnitOfMeasurementType.Ex
                 Name = unitOfMeasurementType.Name,
                 Status = EnumExtensions.GetEnumFromDescription<Status>(unitOfMeasurementType.Status).ToString(),
                 HasDecimal = unitOfMeasurementType.HasDecimal ? "Yes" : "No",
-                CreatedDate = unitOfMeasurementType.CreatedDate,
+                CreatedDate = DateHelper.ToFormattedDate(unitOfMeasurementType.CreatedDate!.Value),
                 CreatedBy = $"{unitOfMeasurementType.CreatedBy?.FirstName ?? "Unknown"}  {unitOfMeasurementType.CreatedBy?.LastName ?? ""}".Trim(),
             };
         }

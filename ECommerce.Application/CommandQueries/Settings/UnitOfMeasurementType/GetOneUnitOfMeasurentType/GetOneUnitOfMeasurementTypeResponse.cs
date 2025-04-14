@@ -1,4 +1,5 @@
-﻿using ECommerce.Application.CommandQueries.Common;
+﻿using AutoMapper;
+using ECommerce.Application.CommandQueries.Common.Mapping;
 using ECommerce.Domain.Enums;
 
 namespace ECommerce.Application.CommandQueries.Settings.UnitOfMeasurementType.GetOneUnitOfMeasurentType
@@ -17,14 +18,14 @@ namespace ECommerce.Application.CommandQueries.Settings.UnitOfMeasurementType.Ge
         public Guid? Id { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
-        public UserFragmentQueryResponse CreatedBy { get; set; } = new();
-        public UserFragmentQueryResponse ModifiedBy { get; set; } = new();
+        public UserFragmentResponse CreatedBy { get; set; } = new();
+        public UserFragmentResponse ModifiedBy { get; set; } = new();
 
         #endregion Properties
 
         #region Methods
 
-        internal static GetOneUnitOfMeasurementTypeResponse MapToResponse(Domain.Entities.Settings.UnitOfMeasurementType unitOfMeasurementType)
+        internal static GetOneUnitOfMeasurementTypeResponse MapToResponse(IMapper mapper, Domain.Entities.Settings.UnitOfMeasurementType unitOfMeasurementType)
         {
             if (unitOfMeasurementType == null)
                 throw new ArgumentNullException(nameof(unitOfMeasurementType));
@@ -41,16 +42,8 @@ namespace ECommerce.Application.CommandQueries.Settings.UnitOfMeasurementType.Ge
                 CanDisable = unitOfMeasurementType.Status == Domain.Enums.Status.Active.GetDescription(),
                 CanUpdate = unitOfMeasurementType.Status == Domain.Enums.Status.Active.GetDescription(),
                 CanDelete = unitOfMeasurementType.Status == Domain.Enums.Status.Active.GetDescription(),
-                CreatedBy = new UserFragmentQueryResponse()
-                {
-                    Id = unitOfMeasurementType.CreatedBy!.Id.ToString(),
-                    Name = $"{unitOfMeasurementType.CreatedBy?.FirstName ?? "Unknown"} {unitOfMeasurementType.CreatedBy?.LastName ?? ""}".Trim()
-                },
-                ModifiedBy = new UserFragmentQueryResponse()
-                {
-                    Id = unitOfMeasurementType.CreatedBy!.Id.ToString(),
-                    Name = $"{unitOfMeasurementType.ModifiedBy?.FirstName ?? "Unknown"} {unitOfMeasurementType.ModifiedBy?.LastName ?? ""}".Trim()
-                }
+                CreatedBy = mapper.Map<UserFragmentResponse>(unitOfMeasurementType.CreatedBy),
+                ModifiedBy = mapper.Map<UserFragmentResponse>(unitOfMeasurementType.ModifiedBy)
             };
         }
 

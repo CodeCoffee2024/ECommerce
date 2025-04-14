@@ -1,4 +1,4 @@
-﻿using ECommerce.Application.CommandQueries.Common;
+﻿using ECommerce.Application.CommandQueries.Common.Mapping;
 
 namespace ECommerce.Application.CommandQueries.UserManagement.User.GetUser
 {
@@ -13,8 +13,8 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.GetUser
         public Guid? Id { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
-        public UserFragmentQueryResponse CreatedBy { get; set; } = new();
-        public UserFragmentQueryResponse ModifiedBy { get; set; } = new();
+        public UserFragmentResponse CreatedBy { get; set; } = new();
+        public UserFragmentResponse ModifiedBy { get; set; } = new();
 
         #endregion Properties
 
@@ -34,12 +34,12 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.GetUser
                 CreatedDate = user.CreatedDate,
                 ModifiedDate = user.ModifiedDate,
                 Permissions = string.Join(", ", user.UserUserPermissions.Select(it => it.UserPermission.Name)),
-                CreatedBy = new UserFragmentQueryResponse()
+                CreatedBy = new UserFragmentResponse()
                 {
                     Id = user.CreatedBy!?.Id.ToString(),
                     Name = $"{user.CreatedBy?.FirstName ?? "Unknown"} {user.CreatedBy?.LastName ?? ""}".Trim()
                 },
-                ModifiedBy = new UserFragmentQueryResponse()
+                ModifiedBy = new UserFragmentResponse()
                 {
                     Id = user.CreatedBy!?.Id.ToString(),
                     Name = $"{user.ModifiedBy?.FirstName ?? "Unknown"} {user.ModifiedBy?.LastName ?? ""}".Trim()

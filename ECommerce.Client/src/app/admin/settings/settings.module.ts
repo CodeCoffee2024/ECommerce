@@ -9,7 +9,7 @@ import { UnitOfMeasurementTypeComponent } from './unit-of-measurement-type/unit-
 @NgModule({
   declarations: [
     SettingsComponent,
-    UnitOfMeasurementTypeComponent
+    UnitOfMeasurementTypeComponent,
   ],
   imports: [
     CommonModule,

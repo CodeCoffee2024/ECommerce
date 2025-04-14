@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
-    "generate-component": "ng g c admin/settings/unit-of-measurement/UnitOfMeasurementListing && ng g c admin/settings/unit-of-measurement/UnitOfMeasurementNew && ng g c admin/settings/unit-of-measurement/UnitOfMeasurementUpdate && ng g c admin/settings/unit-of-measurement/UnitOfMeasurementShow && ng g c admin/settings/unit-of-measurement/UnitOfMeasurementActivityLog && ng g c admin/settings/unit-of-measurement/UnitOfMeasurementActivityLogShow && ng g c admin/settings/unit-of-measurement/UnitOfMeasurementForm"
+    "generate-component": "ng g m admin/settings/unit-of-measurement/UnitOfMeasurement --routing && ng g c admin/settings/unit-of-measurement/UnitOfMeasurementListing && ng g c admin/settings/unit-of-measurement/UnitOfMeasurementNew && ng g c admin/settings/unit-of-measurement/UnitOfMeasurementUpdate && ng g c admin/settings/unit-of-measurement/UnitOfMeasurementShow && ng g c admin/settings/unit-of-measurement/UnitOfMeasurementActivityLog && ng g c admin/settings/unit-of-measurement/UnitOfMeasurementActivityLogShow && ng g c admin/settings/unit-of-measurement/UnitOfMeasurementForm"
   },
   "private": true,
   "dependencies": {

@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { finalize, Subject, takeUntil } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { finalize, takeUntil } from 'rxjs';
 import { LoginService } from '../../../../login/login.service';
 import { GenericListingResult } from '../../../../models/generics/generic-listing-result';
 import { Failed, NotFound } from '../../../../models/message';
 import { FormatUnitOfMeasurementTypeStatus, UnitOfMeasurementTypePermission } from '../../../../models/settings/unit-of-measurement-type/unit-of-measurement-type';
-import { UnitOfMeasurementTypeListingReponse } from '../../../../models/settings/unit-of-measurement-type/unit-of-measurement-type-listing-response';
+import { UnitOfMeasurementTypeListingResponse } from '../../../../models/settings/unit-of-measurement-type/unit-of-measurement-type-listing-response';
 import { ToastType } from '../../../../models/toast';
 import { BaseComponent } from '../../../../shared/components/base/base.component';
 import { LoadingService } from '../../../../shared/services/loading/loading.service';
@@ -22,7 +22,7 @@ import { UnitOfMeasurementTypeListingOption } from './unit-of-measurement-type-l
   templateUrl: './unit-of-measurement-type-listing.component.html',
   styleUrl: './unit-of-measurement-type-listing.component.scss'
 })
-export class UnitOfMeasurementTypeListingComponent extends BaseComponent implements OnInit, OnDestroy {
+export class UnitOfMeasurementTypeListingComponent extends BaseComponent implements OnInit {
   title = 'Unit of Measurement Types';
   isDropdownOpen = false;
   isDropdownLoading = false;
@@ -31,7 +31,7 @@ export class UnitOfMeasurementTypeListingComponent extends BaseComponent impleme
   hasMore = false;
   UserEnableToModifyUnitOfMeasurementType = UnitOfMeasurementTypePermission.UserEnableToModifyUnitOfMeasurementType; 
   form: UnitOfMeasurementTypeForm = new UnitOfMeasurementTypeForm();
-  listingFormat: UnitOfMeasurementTypeListingReponse[];
+  listingFormat: UnitOfMeasurementTypeListingResponse[];
   FormatStatus = FormatUnitOfMeasurementTypeStatus;
   listingOptionDecimal = [
     {
@@ -50,7 +50,6 @@ export class UnitOfMeasurementTypeListingComponent extends BaseComponent impleme
       description: 'No'
     },
   ]
-  private destroy$ = new Subject<void>();
   constructor(
     private authService: LoginService,
     private titleService: TitleService,
@@ -65,7 +64,7 @@ export class UnitOfMeasurementTypeListingComponent extends BaseComponent impleme
       new UnitOfMeasurementTypeListingOption(),
     'UnitOfMeasurementType',
       this.unitOfMeasurementTypeService,
-      GenericListingResult<UnitOfMeasurementTypeListingReponse[]>,
+      GenericListingResult<UnitOfMeasurementTypeListingResponse[]>,
       this.listingFormat
     )
   }
@@ -107,10 +106,6 @@ export class UnitOfMeasurementTypeListingComponent extends BaseComponent impleme
       });
   }
   
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
   async new() {
     this.form.initializeForm();
     const result = await this.modalService.open(UnitOfMeasurementTypeFormComponent, {form: this.form});

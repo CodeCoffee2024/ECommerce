@@ -1,4 +1,4 @@
-﻿using ECommerce.Application.CommandQueries.Common;
+﻿using ECommerce.Application.CommandQueries.Common.Mapping;
 using ECommerce.Domain.Dtos.Shared;
 using ECommerce.Domain.Entities.UserManagement;
 
@@ -14,8 +14,8 @@ namespace ECommerce.Application.CommandQueries.UserManagement.Permission.GetOneU
         public IEnumerable<ModulePermissionDTO> ModulePermissions { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
-        public UserFragmentQueryResponse CreatedBy { get; set; } = new();
-        public UserFragmentQueryResponse ModifiedBy { get; set; } = new();
+        public UserFragmentResponse CreatedBy { get; set; } = new();
+        public UserFragmentResponse ModifiedBy { get; set; } = new();
 
         #endregion Properties
 
@@ -34,12 +34,12 @@ namespace ECommerce.Application.CommandQueries.UserManagement.Permission.GetOneU
                 CreatedDate = userPermission.CreatedDate,
                 ModifiedDate = userPermission.ModifiedDate,
                 Permissions = userPermission.Permissions,
-                CreatedBy = new UserFragmentQueryResponse()
+                CreatedBy = new UserFragmentResponse()
                 {
                     Id = userPermission.CreatedBy!.Id.ToString(),
                     Name = $"{userPermission.CreatedBy?.FirstName ?? "Unknown"} {userPermission.CreatedBy?.LastName ?? ""}".Trim()
                 },
-                ModifiedBy = new UserFragmentQueryResponse()
+                ModifiedBy = new UserFragmentResponse()
                 {
                     Id = userPermission.CreatedBy!.Id.ToString(),
                     Name = $"{userPermission.ModifiedBy?.FirstName ?? "Unknown"} {userPermission.ModifiedBy?.LastName ?? ""}".Trim()

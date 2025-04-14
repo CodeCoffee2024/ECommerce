@@ -9,7 +9,7 @@ namespace ECommerce.Domain.Dtos.Settings.UnitOfMeasurement
 
         public Dictionary<string, string> SearchValues { get; set; } = new Dictionary<string, string>();
         public bool HasSearchValues { get => SearchValues.Any(); }
-        public string UserPermissions { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
         public string GlobalSearchValue { get => SearchValues.GetValueOrDefault(GlobalConstant.SEARCH_VALUE)?.ToString().Trim() ?? string.Empty; }
 
         #endregion Properties

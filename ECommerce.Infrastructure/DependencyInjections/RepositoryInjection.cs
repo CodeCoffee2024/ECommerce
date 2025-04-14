@@ -19,7 +19,7 @@ namespace ECommerce.Infrastructure.DependencyInjections
             services.AddScoped<IModuleRepository, ModuleRepository>();
             services.AddScoped<IActivityLogRepository, ActivityLogRepository>();
             services.AddScoped<IUnitOfMeasurementTypeRepository, UnitOfMeasurementTypeRepository>();
-            //services.AddScoped<IUnitOfMeasurementRepository, UnitOfMeasurementRepository>();
+            services.AddScoped<IUnitOfMeasurementRepository, UnitOfMeasurementRepository>();
             services.AddScoped<IUserUserPermissionRepository, UserUserPermissionRepository>();
             return services;
         }

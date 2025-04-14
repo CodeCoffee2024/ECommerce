@@ -1,0 +1,56 @@
+<div class="modal-header">
+    <h5 class="modal-title">{{title}}</h5>
+    <button type="button" class="close" (click)="cancel()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<form [formGroup]="form.form" (ngSubmit)="submit()">
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-12">
+                <app-input
+                    [inputType]="InputTypes.Text"
+                    inputId="name"
+                    [formGroup]="form.form"
+                    [controlName]="'name'"
+                    [label]="'Name'"
+                ></app-input>
+                <div *ngIf="form.getServerError('name')" class="alert alert-danger">
+                    {{ form.getServerError('name') }}
+                </div>
+            </div>
+            <div class="col-12">
+                <app-input
+                    [inputType]="InputTypes.Text"
+                    inputId="abbreviation"
+                    [formGroup]="form.form"
+                    [controlName]="'abbreviation'"
+                    [label]="'Abbreviation'"
+                ></app-input>
+                <div *ngIf="form.getServerError('abbreviation')" class="alert alert-danger">
+                    {{ form.getServerError('abbreviation') }}
+                </div>
+            </div>
+            <div class="col-12">
+                <app-search-mono-select 
+                    [label]="'Type'"
+                    [placeholder]="'Search types...'"
+                    [searchOptions]="form.unitOfMeasurementTypesList"
+                    [hasSearchIcon]="true"
+                    [formGroup]="form.form"
+                    [controlName]="'unitOfMeasurementType'"
+                    [hasMore]="hasMore"
+                    [selectedItem]="form.form.get('unitOfMeasurementType')?.value"
+                    [field]="'name'"
+                    [isLoading]="isDropdownLoading"
+                    (searchChanged)="onSearchChanged($event)"
+                    (selectedItemChange)="onSelectionChange($event)">
+                </app-search-mono-select>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-secondary btn-sm" (click)="cancel()">Cancel</button>
+        <button class="btn btn-success  btn-sm" type="submit"><i class="bi bi-check mr-2"></i>Save</button>
+    </div>
+</form>

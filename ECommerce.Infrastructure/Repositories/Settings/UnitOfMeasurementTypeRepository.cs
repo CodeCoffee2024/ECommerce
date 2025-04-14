@@ -114,7 +114,7 @@ namespace ECommerce.Infrastructure.Repositories.Settings
             }
             if (listFilterDto.HasDecimal != null)
             {
-                query.Where(it => it.HasDecimal == (listFilterDto.HasDecimal == "Yes"));
+                query = query.Where(it => it.HasDecimal == (listFilterDto.HasDecimal == "Yes"));
             }
             if (listFilterDto.Status != null)
             {

@@ -1,5 +1,6 @@
 ﻿using ECommerce.Domain.Abstractions;
 using ECommerce.Domain.Enums;
+using System.Text.Json.Serialization;
 
 namespace ECommerce.Domain.Entities.Settings
 {
@@ -8,6 +9,8 @@ namespace ECommerce.Domain.Entities.Settings
         #region Properties
 
         public static readonly Status[] AllowedStatuses = { Enums.Status.Active, Enums.Status.Disabled };
+        [JsonIgnore]
+        public virtual ICollection<UnitOfMeasurement> UnitOfMeasurements { get; set; } = new List<UnitOfMeasurement>();
         public string Name { get; private set; } = string.Empty;
         public bool HasDecimal { get; private set; }
         public string Status { get; private set; } = string.Empty;

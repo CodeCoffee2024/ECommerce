@@ -7,23 +7,33 @@ namespace ECommerce.Domain.Entities.Settings
     {
         #region Properties
 
-        public virtual UnitOfMeasurementType? UnitOfMeasurementType { get; set; }
-        public Guid UnitOfMeasurementTypeId { get; private set; }
+        public static readonly Status[] AllowedStatuses = { Enums.Status.Active, Enums.Status.Disabled };
+        public virtual UnitOfMeasurementType UnitOfMeasurementType { get; set; }
+        public Guid UnitOfMeasurementTypeId { get; set; }
         public string Name { get; private set; } = string.Empty;
+        public string Abbreviation { get; private set; } = string.Empty;
         public string Status { get; private set; } = Enums.Status.Active.GetDescription();
+        public virtual ICollection<UnitOfMeasurementConversion>? Conversions { get; set; } = new List<UnitOfMeasurementConversion>();
 
         #endregion Properties
 
         #region Private Constructors
 
+        private static readonly IReadOnlyList<object> _cachedStatuses = AllowedStatuses
+        .Select(s => new { key = s.GetDescription(), value = s.GetDescription() })
+        .ToList();
+
         public UnitOfMeasurement()
         { }
 
-        private UnitOfMeasurement(string name, Guid unitOfMeasurementTypeId)
+        private UnitOfMeasurement(string name, string abbreviation, Guid unitOfMeasurementTypeId)
         {
             Name = name;
+            Abbreviation = abbreviation;
             UnitOfMeasurementTypeId = unitOfMeasurementTypeId;
         }
+
+        public static IReadOnlyList<object> GetStatuses() => _cachedStatuses;
 
         public UnitOfMeasurement ToggleStatus(string status)
         {
@@ -31,9 +41,10 @@ namespace ECommerce.Domain.Entities.Settings
             return this;
         }
 
-        public UnitOfMeasurement Update(string name, bool hasDecimal, Guid unitOfMeasurementTypeId)
+        public UnitOfMeasurement Update(string name, string abbreviation, bool hasDecimal, Guid unitOfMeasurementTypeId)
         {
             Name = name;
+            Abbreviation = abbreviation;
             UnitOfMeasurementTypeId = unitOfMeasurementTypeId;
             return this;
         }
@@ -42,9 +53,9 @@ namespace ECommerce.Domain.Entities.Settings
 
         #region Private Methods
 
-        public static UnitOfMeasurement Create(string name, Guid unitOfMeasurementTypeId, DateTime? createdDate, Guid? createdById)
+        public static UnitOfMeasurement Create(string name, string abbreviation, Guid unitOfMeasurementTypeId, DateTime? createdDate, Guid? createdById)
         {
-            var uom = new UnitOfMeasurement(name, unitOfMeasurementTypeId);
+            var uom = new UnitOfMeasurement(name, abbreviation, unitOfMeasurementTypeId);
             uom.SetCreated(createdDate, createdById);
             return uom;
         }
@@ -54,7 +65,9 @@ namespace ECommerce.Domain.Entities.Settings
             return new Dictionary<string, string>
             {
                 { "Name", Name },
+                { "Abbreviation", Abbreviation },
                 { "Type", UnitOfMeasurementType!.Name },
+                { "Status", Status },
                 { "Modified By", !string.IsNullOrEmpty(modifiedBy) ? modifiedBy : ModifiedBy?.FirstName + " " + ModifiedBy?.LastName },
                 { "Created By",!string.IsNullOrEmpty(createdBy) ? createdBy : CreatedBy?.FirstName + " " + CreatedBy?.LastName }
             };

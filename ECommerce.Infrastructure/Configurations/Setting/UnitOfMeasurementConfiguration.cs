@@ -16,14 +16,17 @@ namespace ECommerce.Infrastructure.Configurations.Setting
                 .IsRequired()
                 .HasMaxLength(100);
 
+            builder.Property(u => u.Abbreviation)
+                .IsRequired()
+                .HasMaxLength(2);
+
             builder.Property(u => u.Status)
                 .IsRequired()
                 .HasMaxLength(5);
-
-            builder.HasOne(u => u.UnitOfMeasurementType) // One-to-One
-                .WithOne(ut => ut.UnitOfMeasurement)
-                .HasForeignKey<UnitOfMeasurement>(u => u.UnitOfMeasurementTypeId)
-                .OnDelete(DeleteBehavior.Cascade); // Adjust based on business logic
+            builder.HasOne(u => u.UnitOfMeasurementType)
+                .WithMany(ut => ut.UnitOfMeasurements)
+                .HasForeignKey(u => u.UnitOfMeasurementTypeId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         #endregion Public Methods

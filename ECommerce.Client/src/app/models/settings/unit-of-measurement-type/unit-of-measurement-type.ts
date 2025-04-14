@@ -8,6 +8,10 @@ export class UnitOfMeasurementTypeDTO {
     name: string;
     status: UnitOfMeasurementTypeStatuses;
 }
+export class UnitOfMeasurementTypeFragment {
+    name: string;
+    id: string;
+}
 export class UnitOfMeasurementTypeResult {
     id: string;
     name: string;
@@ -17,10 +21,6 @@ export class UnitOfMeasurementTypeResult {
     canDelete: boolean;
     canEnable: boolean;
     status: UnitOfMeasurementTypeStatuses;
-}
-export class UserPermissionFragment {
-    id: string;
-    name: string;
 }
 export enum UnitOfMeasurementTypeStatuses {
     ACTIVE = 'activ',

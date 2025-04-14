@@ -20,6 +20,7 @@ namespace ECommerce.Application
 
             services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly, includeInternalTypes: true);
 
+            services.AddAutoMapper(typeof(ECommerce.Application.CommandQueries.Common.Mapping.MappingProfile));
             return services;
         }
 

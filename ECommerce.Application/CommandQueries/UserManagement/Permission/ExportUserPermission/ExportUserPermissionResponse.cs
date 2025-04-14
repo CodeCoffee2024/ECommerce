@@ -1,4 +1,5 @@
-﻿using ECommerce.Domain.Entities.UserManagement;
+﻿using ECommerce.Application.Common.Helpers;
+using ECommerce.Domain.Entities.UserManagement;
 using System.ComponentModel;
 
 namespace ECommerce.Application.CommandQueries.UserManagement.Permission.ExportUserPermission
@@ -11,7 +12,7 @@ namespace ECommerce.Application.CommandQueries.UserManagement.Permission.ExportU
         public string Name { get; set; } = string.Empty;
 
         [Description("Created Date")]
-        public DateTime? CreatedDate { get; set; }
+        public string? CreatedDate { get; set; }
 
         [Description("Created By")]
         public string CreatedBy { get; set; } = string.Empty;
@@ -28,7 +29,7 @@ namespace ECommerce.Application.CommandQueries.UserManagement.Permission.ExportU
             return new ExportUserPermissionResponse()
             {
                 Name = userPermission.Name,
-                CreatedDate = userPermission.CreatedDate,
+                CreatedDate = DateHelper.ToFormattedDate(userPermission.CreatedDate.Value),
                 CreatedBy = $"{userPermission.CreatedBy?.FirstName ?? "Unknown"}  {userPermission.CreatedBy?.LastName ?? ""}".Trim(),
             };
         }

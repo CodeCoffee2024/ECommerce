@@ -19,6 +19,7 @@ import { ToastComponent } from './components/toast/toast.component';
 import { FormatNullablePipe } from './pipes/format-nullable.pipe';
 import { StatusLabelComponent } from './components/status-label/status-label.component';
 import { RouterModule } from '@angular/router';
+import { SearchMonoSelectComponent } from './components/search-mono-select/search-mono-select.component';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { RouterModule } from '@angular/router';
     ActivityLogEntityComponent,
     BaseComponent,
     StatusLabelComponent,
+    SearchMonoSelectComponent,
   ],
   imports: [
     RouterModule,
@@ -65,7 +67,8 @@ import { RouterModule } from '@angular/router';
     ActivityLogListComponent,
     ActivityLogEntityComponent,
     BaseComponent,
-    StatusLabelComponent
+    StatusLabelComponent,
+    SearchMonoSelectComponent
   ]
 })
 export class SharedModule { }

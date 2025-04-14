@@ -1,6 +1,7 @@
 import { UserPermission } from "./user/user";
 import { UserPermissionPermission } from "./user-permission/user-permission";
 import { UnitOfMeasurementTypePermission } from "./settings/unit-of-measurement-type/unit-of-measurement-type";
+import { UnitOfMeasurementPermission } from "./settings/unit-of-measurement/unit-of-measurement";
 
 export class SideBarNavigation {
     name: string;
@@ -55,6 +56,14 @@ export const Navigations = [
         route: '/admin/user-permissions',
         requiredPermission: [UserPermissionPermission.UserEnableToViewUserPermission],
         description: "User Permissions",
+    },
+    {
+        module: Modules.find(it => it.name == "Settings").name,
+        icon: "bi bi-rulers",
+        name: "UnitOfMeasurement",
+        route: '/admin/settings/unit-of-measurements',
+        requiredPermission: [UnitOfMeasurementPermission.UserEnableToViewUnitOfMeasurement],
+        description: "Unit of Measurements",
     },
     {
         module: Modules.find(it => it.name == "Settings").name,

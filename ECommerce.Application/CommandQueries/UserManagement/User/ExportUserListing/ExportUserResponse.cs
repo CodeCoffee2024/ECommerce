@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using ECommerce.Application.Common.Helpers;
+using System.ComponentModel;
 
 namespace ECommerce.Application.CommandQueries.UserManagement.User.ExportUserListing
 {
@@ -19,7 +20,7 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.ExportUserLis
         public string UserPermissions { get; set; } = string.Empty;
 
         [Description("Created Date")]
-        public DateTime? CreatedDate { get; set; }
+        public string? CreatedDate { get; set; }
 
         [Description("Created By")]
         public string CreatedBy { get; set; } = string.Empty;
@@ -39,7 +40,7 @@ namespace ECommerce.Application.CommandQueries.UserManagement.User.ExportUserLis
                 FirstName = user.FirstName,
                 MiddleName = user.MiddleName ?? "--",
                 UserPermissions = string.Join(",", user.UserUserPermissions!.Select(it => it.UserPermission.Name)),
-                CreatedDate = user.CreatedDate,
+                CreatedDate = DateHelper.ToFormattedDate(user.CreatedDate!.Value),
                 CreatedBy = $"{user.CreatedBy?.FirstName ?? "Unknown"}  {user.CreatedBy?.LastName ?? ""}".Trim(),
             };
         }

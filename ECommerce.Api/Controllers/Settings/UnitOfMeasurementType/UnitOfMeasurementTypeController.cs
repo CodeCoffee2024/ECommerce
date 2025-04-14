@@ -46,13 +46,13 @@ namespace ECommerce.Api.Controllers.Settings
         //    return HandleResponse(result);
         //}
 
-        //[HttpGet("Dropdown")]
-        //public async Task<IActionResult> Dropdown([FromQuery] GenericListingRequest request, CancellationToken cancellationToken)
-        //{
-        //    var result = await _sender.Send(request.SetQuery<GetUserPermissionDropdownQuery>(), cancellationToken);
+        [HttpGet("Dropdown")]
+        public async Task<IActionResult> Dropdown([FromQuery] GenericListingRequest request, CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(request.SetQuery<GetUnitOfMeasurementTypeDropdownQuery>(), cancellationToken);
 
-        //    return HandleResponse(result);
-        //}
+            return HandleResponse(result);
+        }
 
         [HttpGet("GetUnitOfMeasurementTypes")]
         [AuthorizePermission(Permissions.UserEnableToViewUnitOfMeasurementType)]
@@ -105,7 +105,7 @@ namespace ECommerce.Api.Controllers.Settings
         }
 
         [HttpPost]
-        [AuthorizePermission(Permissions.UserEnableToDeleteUnitOfMeasurementType)]
+        [AuthorizePermission(Permissions.UserEnableToModifyUnitOfMeasurementType)]
         public async Task<IActionResult> Create([FromBody] UnitOfMeasurementTypeRequest request, CancellationToken cancellationToken)
         {
             var command = request.SetAddCommand(UserId);

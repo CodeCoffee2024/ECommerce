@@ -90,6 +90,11 @@ namespace ECommerce.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Abbreviation")
+                        .IsRequired()
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
+
                     b.Property<Guid?>("CreatedById")
                         .HasColumnType("uniqueidentifier");
 
@@ -115,14 +120,20 @@ namespace ECommerce.Infrastructure.Migrations
                     b.Property<Guid>("UnitOfMeasurementTypeId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("UnitOfMeasurementTypeId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedById");
 
                     b.HasIndex("ModifiedById");
 
-                    b.HasIndex("UnitOfMeasurementTypeId")
-                        .IsUnique();
+                    b.HasIndex("UnitOfMeasurementTypeId");
+
+                    b.HasIndex("UnitOfMeasurementTypeId1")
+                        .IsUnique()
+                        .HasFilter("[UnitOfMeasurementTypeId1] IS NOT NULL");
 
                     b.ToTable("UnitOfMeasurements");
                 });
@@ -316,10 +327,14 @@ namespace ECommerce.Infrastructure.Migrations
                         .HasForeignKey("ModifiedById");
 
                     b.HasOne("ECommerce.Domain.Entities.Settings.UnitOfMeasurementType", "UnitOfMeasurementType")
-                        .WithOne("UnitOfMeasurement")
-                        .HasForeignKey("ECommerce.Domain.Entities.Settings.UnitOfMeasurement", "UnitOfMeasurementTypeId")
+                        .WithMany("UnitOfMeasurements")
+                        .HasForeignKey("UnitOfMeasurementTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("ECommerce.Domain.Entities.Settings.UnitOfMeasurementType", null)
+                        .WithOne("UnitOfMeasurement")
+                        .HasForeignKey("ECommerce.Domain.Entities.Settings.UnitOfMeasurement", "UnitOfMeasurementTypeId1");
 
                     b.Navigation("CreatedBy");
 
@@ -399,6 +414,8 @@ namespace ECommerce.Infrastructure.Migrations
             modelBuilder.Entity("ECommerce.Domain.Entities.Settings.UnitOfMeasurementType", b =>
                 {
                     b.Navigation("UnitOfMeasurement");
+
+                    b.Navigation("UnitOfMeasurements");
                 });
 
             modelBuilder.Entity("ECommerce.Domain.Entities.UserManagement.User", b =>

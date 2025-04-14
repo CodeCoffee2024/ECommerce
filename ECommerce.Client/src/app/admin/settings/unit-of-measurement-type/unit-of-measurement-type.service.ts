@@ -4,8 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResult, NullApiResult } from '../../../models/result.model';
 import { GenericListingResult } from '../../../models/generics/generic-listing-result';
-import { UnitOfMeasurementTypeListingReponse } from '../../../models/settings/unit-of-measurement-type/unit-of-measurement-type-listing-response';
-import { UnitOfMeasurementTypeResult } from '../../../models/settings/unit-of-measurement-type/unit-of-measurement-type';
+import { UnitOfMeasurementTypeFragment, UnitOfMeasurementTypeResult } from '../../../models/settings/unit-of-measurement-type/unit-of-measurement-type';
+import { UnitOfMeasurementTypeListingResponse } from '../../../models/settings/unit-of-measurement-type/unit-of-measurement-type-listing-response';
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +16,16 @@ export class UnitOfMeasurementTypeService extends GenericService {
   constructor(private http2:HttpClient) {
     super(http2);
   }
-  getList(listingOption): Observable<ApiResult<GenericListingResult<UnitOfMeasurementTypeListingReponse[]>>> {
+  getList(listingOption): Observable<ApiResult<GenericListingResult<UnitOfMeasurementTypeListingResponse[]>>> {
     const queryParams = this.setQueryParameters(listingOption);
-    return this.get<ApiResult<GenericListingResult<UnitOfMeasurementTypeListingReponse[]>>>(`${this.controller}/GetUnitOfMeasurementTypes?`+queryParams, null, true);
+    return this.get<ApiResult<GenericListingResult<UnitOfMeasurementTypeListingResponse[]>>>(`${this.controller}/GetUnitOfMeasurementTypes?`+queryParams, null, true);
   }
   getStatuses(): Observable<ApiResult<[]>> {
     return this.get<ApiResult<[]>>(`${this.controller}/GetStatuses?`, null, true);
+  }
+  getDropdown(listingOption): Observable<ApiResult<GenericListingResult<UnitOfMeasurementTypeFragment[]>>> {
+    const queryParams = this.setQueryParameters(listingOption);
+    return this.get<ApiResult<GenericListingResult<UnitOfMeasurementTypeFragment[]>>>(`${this.controller}/Dropdown?`+queryParams, null, true);
   }
   show(id): Observable<ApiResult<UnitOfMeasurementTypeResult>> {
     return this.get<ApiResult<UnitOfMeasurementTypeResult>>(`${this.controller}/`+id, null, true);
