@@ -10,6 +10,7 @@ export class ThHeaderComponent {
   @Input() description: string;
   @Input() sortBy: string;
   @Input() sortDirection: string;
+  @Input() alignment: string;
   @Input() isSortable = false;
   @Output() sortResult = new EventEmitter<{name, sortDirection}>();
   sort() {
@@ -19,5 +20,11 @@ export class ThHeaderComponent {
   }
   get isAsc(): boolean {
     return this.sortDirection == 'asc';
+  }
+  get alignmentClass() {
+    if (this.alignment == 'right') {
+      return ' d-flex justify-content-end';
+    }
+    return ' d-flex ';
   }
 }

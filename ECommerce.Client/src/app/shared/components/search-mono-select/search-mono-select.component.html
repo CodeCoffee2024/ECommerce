@@ -1,7 +1,7 @@
 <ng-container (blur)="isFocused(false)">
     <div class="position-relative">
         <!-- Label -->
-        <label class="font-weight-bold" for="search">
+        <label class="font-weight-bold" for="search" *ngIf="!hideLabel">
             {{ label }}
             <span *ngIf="isRequired" class="text-danger">*</span>
         </label>

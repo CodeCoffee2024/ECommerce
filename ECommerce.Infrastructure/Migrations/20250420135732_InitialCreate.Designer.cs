@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerce.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250414114641_InitialCreate")]
+    [Migration("20250420135732_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -139,6 +139,47 @@ namespace ECommerce.Infrastructure.Migrations
                         .HasFilter("[UnitOfMeasurementTypeId1] IS NOT NULL");
 
                     b.ToTable("UnitOfMeasurements");
+                });
+
+            modelBuilder.Entity("ECommerce.Domain.Entities.Settings.UnitOfMeasurementConversion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ConvertFromId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ConvertToId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CreatedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Value")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConvertFromId");
+
+                    b.HasIndex("ConvertToId");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("ModifiedById");
+
+                    b.ToTable("UnitOfMeasurementConversions", (string)null);
                 });
 
             modelBuilder.Entity("ECommerce.Domain.Entities.Settings.UnitOfMeasurementType", b =>
@@ -346,6 +387,37 @@ namespace ECommerce.Infrastructure.Migrations
                     b.Navigation("UnitOfMeasurementType");
                 });
 
+            modelBuilder.Entity("ECommerce.Domain.Entities.Settings.UnitOfMeasurementConversion", b =>
+                {
+                    b.HasOne("ECommerce.Domain.Entities.Settings.UnitOfMeasurement", "ConvertFrom")
+                        .WithMany("ConvertFroms")
+                        .HasForeignKey("ConvertFromId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ECommerce.Domain.Entities.Settings.UnitOfMeasurement", "ConvertTo")
+                        .WithMany("ConvertTos")
+                        .HasForeignKey("ConvertToId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ECommerce.Domain.Entities.UserManagement.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("ECommerce.Domain.Entities.UserManagement.User", "ModifiedBy")
+                        .WithMany()
+                        .HasForeignKey("ModifiedById");
+
+                    b.Navigation("ConvertFrom");
+
+                    b.Navigation("ConvertTo");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("ModifiedBy");
+                });
+
             modelBuilder.Entity("ECommerce.Domain.Entities.Settings.UnitOfMeasurementType", b =>
                 {
                     b.HasOne("ECommerce.Domain.Entities.UserManagement.User", "CreatedBy")
@@ -412,6 +484,13 @@ namespace ECommerce.Infrastructure.Migrations
                     b.Navigation("User");
 
                     b.Navigation("UserPermission");
+                });
+
+            modelBuilder.Entity("ECommerce.Domain.Entities.Settings.UnitOfMeasurement", b =>
+                {
+                    b.Navigation("ConvertFroms");
+
+                    b.Navigation("ConvertTos");
                 });
 
             modelBuilder.Entity("ECommerce.Domain.Entities.Settings.UnitOfMeasurementType", b =>

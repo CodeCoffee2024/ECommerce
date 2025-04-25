@@ -5,8 +5,9 @@ using ECommerce.Domain.Dtos.Settings.UnitOfMeasurement;
 namespace ECommerce.Application.CommandQueries.Settings.UnitOfMeasurement.UpdateUnitOfMeasurement
 {
     public sealed record UpdateUnitOfMeasurementCommand(
+        Guid Id,
         string Name,
         string Abbreviation,
         List<UpdateUnitOfMeasurementConversionDTO> Conversions,
-        Guid Id) : ICommand, IUpdateUnitOfMeasurementCommand;
+        Guid UserId) : ICommand, IUpdateUnitOfMeasurementCommand;
 }

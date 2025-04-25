@@ -1,5 +1,6 @@
-﻿using ECommerce.Domain.Abstractions;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
+
+using ECommerce.Domain.Abstractions;
 
 namespace ECommerce.Domain.Entities.UserManagement
 {

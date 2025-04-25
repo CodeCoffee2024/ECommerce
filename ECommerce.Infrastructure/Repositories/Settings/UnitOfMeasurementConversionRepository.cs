@@ -14,6 +14,17 @@ namespace ECommerce.Infrastructure.Repositories.Settings
 
         #endregion Public Constructors
 
+        #region Public Methods
+
+        public async Task<UnitOfMeasurementConversion> GetCounterpartById(Guid FromId, Guid ToId, CancellationToken cancellationToken = default)
+        {
+            var unitOfMeasurement = DbContext.UnitOfMeasurementConversions
+                     .FirstOrDefault(it => it.ConvertFromId == FromId && it.ConvertToId == ToId);
+            return unitOfMeasurement!;
+        }
+
+        #endregion Public Methods
+
         //#region Private Methods
 
         //public UnitOfMeasurementConversion FindByName(string name)

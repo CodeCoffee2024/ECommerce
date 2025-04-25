@@ -24,6 +24,7 @@ namespace ECommerce.Infrastructure
         public DbSet<User> Users { get; set; }
         public DbSet<UserPermission> UserPermissions { get; set; }
         public DbSet<UnitOfMeasurement> UnitOfMeasurements { get; set; }
+        public DbSet<UnitOfMeasurementConversion> UnitOfMeasurementConversions { get; set; }
         public DbSet<UnitOfMeasurementType> UnitOfMeasurementTypes { get; set; }
         public DbSet<Log> Logs { get; set; }
         public DbSet<ActivityLog> ActivityLogs { get; set; }

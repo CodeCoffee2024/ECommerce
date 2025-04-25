@@ -12,11 +12,12 @@ export class SearchMonoSelectComponent {
   @Input() placeholder = 'Type to search...';
   @Input() isLoading = false;
   @Input() field: string;
+  @Input() hideLabel = false;
   @Input() hasSearchIcon = false;
   @Input() controlName;
   @Input() searchOptions = []; // Options must be passed from parent
   @Output() searchChanged = new EventEmitter<{ search: string; page: number, clear: boolean }>(); // Emits search event
-  @Output() selectedItemChange = new EventEmitter<string>(); // Emits selected items
+  @Output() selectedItemChange = new EventEmitter<object>(); // Emits selected items
 
   @ViewChild('dropdownMenu', { static: false }) dropdownMenu!: ElementRef;
   @ViewChild('searchInput', { static: false }) searchInput!: ElementRef;
@@ -75,13 +76,13 @@ export class SearchMonoSelectComponent {
 
   /** Selects an item */
   selectItem(item): void {
-    this.selectedItemChange.emit(item);
+    this.selectedItemChange.emit({item: item, formGroup: this.formGroup});
     this.searchQuery = '';
   }
 
   /** Removes a selected item */
   clearSelection(): void {
-    this.selectedItemChange.emit(null);
+    this.selectedItemChange.emit({item: null, formGroup: this.formGroup});
   }
   get errors(): string[] {
     if (!this.formControl) return [];

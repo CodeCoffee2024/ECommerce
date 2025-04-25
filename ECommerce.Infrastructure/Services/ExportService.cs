@@ -1,4 +1,6 @@
-﻿using ClosedXML.Excel;
+﻿using System.ComponentModel;
+
+using ClosedXML.Excel;
 using ECommerce.Application.Abstractions;
 using iText.Kernel.Pdf;
 using iText.Kernel.Pdf.Canvas;
@@ -6,7 +8,6 @@ using iText.Layout;
 using iText.Layout.Element;
 using iText.Layout.Properties;
 using Microsoft.AspNetCore.Http;
-using System.ComponentModel;
 
 namespace ECommerce.Infrastructure.Services
 {
@@ -115,6 +116,7 @@ namespace ECommerce.Infrastructure.Services
             document.Close();
             return stream.ToArray();
         }
+
         private byte[] GenerateExcel(List<object> data)
         {
             if (!data.Any())
@@ -181,7 +183,6 @@ namespace ECommerce.Infrastructure.Services
             workbook.SaveAs(stream);
             return stream.ToArray();
         }
-
 
         private string GetCurrentUser()
         {

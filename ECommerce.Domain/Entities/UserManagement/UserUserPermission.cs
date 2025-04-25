@@ -14,13 +14,14 @@
 
         #region Public Constructors
 
+        public UserUserPermission()
+        {
+        }
+
         private UserUserPermission(Guid userId, Guid userPermissionId)
         {
             UserId = userId;
             UserPermissionId = userPermissionId;
-        }
-        public UserUserPermission()
-        {
         }
 
         public static UserUserPermission Create(Guid userId, Guid userPermissionId)

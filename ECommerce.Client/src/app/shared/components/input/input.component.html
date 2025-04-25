@@ -1,6 +1,6 @@
 <!-- Regular Input (Text, Password, etc.) -->
 <div class="form-group input-container" *ngIf="inputType !== 'checkbox'">
-  <label *ngIf="label" [for]="inputId" class="form-label font-weight-bold">
+  <label *ngIf="label && !hideLabel" [for]="inputId" class="form-label font-weight-bold">
     {{ label }}
     <span *ngIf="isRequired" class="text-danger">*</span>
   </label>
@@ -26,11 +26,14 @@
   <ng-template #normalInput>
     <input
       pInputText
-      class="form-control"
+      class="form-control form-control-sm"
       [id]="inputId"
       [formControl]="formControl"
       [type]="inputType"
       [ngClass]="{'border-danger': formControl.invalid && formGroup.touched}"
+      (input)="onInput($event)"
+      (blur)="onBlur()"
+      [attr.pattern]="inputType === 'number' ? '^\\d*(\\.\\d{0,2})?$' : null"
     />
   </ng-template>
   <div *ngIf="errors && (formControl.invalid && formGroup.touched) " class="text-danger">

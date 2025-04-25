@@ -6,6 +6,10 @@ namespace ECommerce.Domain.Entities.Settings.Interfaces
     {
         #region Public Methods
 
+        Task<UnitOfMeasurementConversion?> GetByIdAsync(Guid Id, CancellationToken cancellationToken = default);
+
+        Task<UnitOfMeasurementConversion?> GetCounterpartById(Guid FromId, Guid ToId, CancellationToken cancellationToken = default);
+
         void Add(UnitOfMeasurementConversion unitOfMeasurementConversion);
 
         void Remove(UnitOfMeasurementConversion unitOfMeasurementConversion);

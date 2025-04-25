@@ -1,3 +1,5 @@
+using System.Text;
+
 using ECommerce.Application;
 using ECommerce.Application.Abstractions;
 using ECommerce.Infrastructure;
@@ -9,7 +11,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 

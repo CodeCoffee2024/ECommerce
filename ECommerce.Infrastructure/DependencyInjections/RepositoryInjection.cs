@@ -18,6 +18,7 @@ namespace ECommerce.Infrastructure.DependencyInjections
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IModuleRepository, ModuleRepository>();
             services.AddScoped<IActivityLogRepository, ActivityLogRepository>();
+            services.AddScoped<IUnitOfMeasurementConversionRepository, UnitOfMeasurementConversionRepository>();
             services.AddScoped<IUnitOfMeasurementTypeRepository, UnitOfMeasurementTypeRepository>();
             services.AddScoped<IUnitOfMeasurementRepository, UnitOfMeasurementRepository>();
             services.AddScoped<IUserUserPermissionRepository, UserUserPermissionRepository>();

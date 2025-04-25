@@ -1,8 +1,13 @@
 ﻿using AutoMapper;
+using ECommerce.Api.Controllers.ActivityLog;
 using ECommerce.Api.Middleware.Authorization;
 using ECommerce.Api.Shared;
+using ECommerce.Application.CommandQueries.ActivityLog.GetActivityLog;
+using ECommerce.Application.CommandQueries.ActivityLog.GetOneActivityLog;
+using ECommerce.Application.CommandQueries.Common;
 using ECommerce.Application.CommandQueries.Settings.UnitOfMeasurement.GetOneUnitOfMeasurement;
 using ECommerce.Application.CommandQueries.Settings.UnitOfMeasurement.GetUnitOfMeasurement;
+using ECommerce.Application.CommandQueries.Settings.UnitOfMeasurement.GetUnitOfMeasurementDropdown;
 using ECommerce.Application.CommandQueries.Settings.UnitOfMeasurement.GetUnitOfMeasurementStatuses;
 using ECommerce.Domain.Commons.Constants;
 using MediatR;
@@ -41,13 +46,13 @@ namespace ECommerce.Api.Controllers.Settings.UnitOfMeasurement
         //    return HandleResponse(result);
         //}
 
-        //[HttpGet("Dropdown")]
-        //public async Task<IActionResult> Dropdown([FromQuery] GenericListingRequest request, CancellationToken cancellationToken)
-        //{
-        //    var result = await _sender.Send(request.SetQuery<GetUserPermissionDropdownQuery>(), cancellationToken);
+        [HttpGet("Dropdown")]
+        public async Task<IActionResult> Dropdown([FromQuery] GetUnitOfMeasurementRequest request, CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(request.SetQuery<GetUnitOfMeasurementDropdownQuery>(), cancellationToken);
 
-        //    return HandleResponse(result);
-        //}
+            return HandleResponse(result);
+        }
 
         [HttpGet("GetUnitOfMeasurements")]
         [AuthorizePermission(Permissions.UserEnableToViewUnitOfMeasurement)]
@@ -58,14 +63,14 @@ namespace ECommerce.Api.Controllers.Settings.UnitOfMeasurement
             return HandleResponse(result);
         }
 
-        //[HttpGet("GetActivityLogs")]
-        //[AuthorizePermission(Permissions.UserEnableToViewUnitOfMeasurementType)]
-        //public async Task<IActionResult> GetAllActivityLogs([FromQuery] GenericListingRequest request, CancellationToken cancellationToken)
-        //{
-        //    var result = await _sender.Send(request.SetQuery<GetActivityLogQuery>(), cancellationToken);
+        [HttpGet("GetActivityLogs")]
+        [AuthorizePermission(Permissions.UserEnableToViewUnitOfMeasurement)]
+        public async Task<IActionResult> GetAllActivityLogs([FromQuery] GenericListingRequest request, CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(request.SetQuery<GetActivityLogQuery>(), cancellationToken);
 
-        //    return HandleResponse(result);
-        //}
+            return HandleResponse(result);
+        }
 
         [HttpGet("GetStatuses")]
         public async Task<IActionResult> GetStatuses([FromQuery] GetUnitOfMeasurementStatusesQuery request, CancellationToken cancellationToken)
@@ -75,17 +80,17 @@ namespace ECommerce.Api.Controllers.Settings.UnitOfMeasurement
             return HandleResponse(result);
         }
 
-        //[HttpGet("GetActivityLog/{Id}")]
-        //[AuthorizePermission(Permissions.UserEnableToViewUnitOfMeasurementType)]
-        //public async Task<IActionResult> GetActivityLog([FromRoute] string Id, CancellationToken cancellationToken)
-        //{
-        //    ActivityLogRequest request = new ActivityLogRequest();
-        //    var query = new GetOneActivityLogQuery(Guid.Parse(Id));
+        [HttpGet("GetActivityLog/{Id}")]
+        [AuthorizePermission(Permissions.UserEnableToViewUnitOfMeasurement)]
+        public async Task<IActionResult> GetActivityLog([FromRoute] string Id, CancellationToken cancellationToken)
+        {
+            ActivityLogRequest request = new ActivityLogRequest();
+            var query = new GetOneActivityLogQuery(Guid.Parse(Id));
 
-        //    var result = await _sender.Send(query, cancellationToken);
+            var result = await _sender.Send(query, cancellationToken);
 
-        //    return HandleResponse(result);
-        //}
+            return HandleResponse(result);
+        }
 
         [HttpGet("{Id}")]
         [AuthorizePermission(Permissions.UserEnableToViewUnitOfMeasurementType)]
@@ -108,25 +113,25 @@ namespace ECommerce.Api.Controllers.Settings.UnitOfMeasurement
             return HandleResponse(result);
         }
 
-        //[HttpGet("Disable/{Id}")]
-        //[AuthorizePermission(Permissions.UserEnableToDeleteUnitOfMeasurementType)]
-        //public async Task<IActionResult> Disable([FromRoute] UnitOfMeasurementTypeRequest request, [FromRoute] string Id, CancellationToken cancellationToken)
-        //{
-        //    var command = request.SetToDisableCommand(Guid.Parse(Id), UserId);
-        //    var result = await _sender.Send(command, cancellationToken);
+        [HttpGet("Disable/{Id}")]
+        [AuthorizePermission(Permissions.UserEnableToDeleteUnitOfMeasurement)]
+        public async Task<IActionResult> Disable([FromRoute] UnitOfMeasurementRequest request, [FromRoute] string Id, CancellationToken cancellationToken)
+        {
+            var command = request.SetToDisableCommand(Guid.Parse(Id), UserId);
+            var result = await _sender.Send(command, cancellationToken);
 
-        //    return HandleResponse(result);
-        //}
+            return HandleResponse(result);
+        }
 
-        //[HttpGet("Enable/{Id}")]
-        //[AuthorizePermission(Permissions.UserEnableToDeleteUnitOfMeasurementType)]
-        //public async Task<IActionResult> Enable([FromRoute] UnitOfMeasurementTypeRequest request, [FromRoute] string Id, CancellationToken cancellationToken)
-        //{
-        //    var command = request.SetToEnableCommand(Guid.Parse(Id), UserId);
-        //    var result = await _sender.Send(command, cancellationToken);
+        [HttpGet("Enable/{Id}")]
+        [AuthorizePermission(Permissions.UserEnableToDeleteUnitOfMeasurement)]
+        public async Task<IActionResult> Enable([FromRoute] UnitOfMeasurementRequest request, [FromRoute] string Id, CancellationToken cancellationToken)
+        {
+            var command = request.SetToEnableCommand(Guid.Parse(Id), UserId);
+            var result = await _sender.Send(command, cancellationToken);
 
-        //    return HandleResponse(result);
-        //}
+            return HandleResponse(result);
+        }
 
         [HttpPut("{Id}")]
         [AuthorizePermission(Permissions.UserEnableToModifyUnitOfMeasurement)]

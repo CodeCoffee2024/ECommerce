@@ -84,9 +84,8 @@ export class UnitOfMeasurementFormComponent {
   }
   
   onSelectionChange(selected): void {
-    console.log(selected)
-    this.listingOptionUnitOfMeasurementType.exclude = selected;
-    this.form.form.get('unitOfMeasurementType').setValue(selected);
+    this.listingOptionUnitOfMeasurementType.exclude = selected.item;
+    this.form.form.get('unitOfMeasurementType').setValue(selected.item);
     // this.refresh();
   }
 }

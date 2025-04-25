@@ -1,6 +1,7 @@
-﻿using ECommerce.Application.Common.Helpers;
+﻿using System.ComponentModel;
+
+using ECommerce.Application.Common.Helpers;
 using ECommerce.Domain.Entities.UserManagement;
-using System.ComponentModel;
 
 namespace ECommerce.Application.CommandQueries.UserManagement.Permission.ExportUserPermission
 {

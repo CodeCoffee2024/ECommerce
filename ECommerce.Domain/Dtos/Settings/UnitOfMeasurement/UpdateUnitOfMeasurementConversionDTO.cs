@@ -4,8 +4,9 @@
     {
         #region Properties
 
-        public Guid FromId { get; set; }
-        public Guid ToId { get; set; }
+        public Guid? Id { get; set; }
+        public Guid? UnitOfMeasurementFrom { get; set; }
+        public Guid? UnitOfMeasurementTo { get; set; }
         public decimal Value { get; set; }
 
         #endregion Properties

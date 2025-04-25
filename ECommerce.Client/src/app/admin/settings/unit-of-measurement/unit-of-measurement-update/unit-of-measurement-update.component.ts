@@ -19,6 +19,7 @@ import { UnitOfMeasurementListingOption } from '../unit-of-measurement-listing/u
 export class UnitOfMeasurementUpdateComponent implements OnInit {
   form: UnitOfMeasurementForm = new UnitOfMeasurementForm();
   Id: string;
+  isLoading = true;
   unitOfMeasurementResult:UnitOfMeasurementResult = new UnitOfMeasurementResult();
   listingOption = new UnitOfMeasurementListingOption();
   constructor(
@@ -55,6 +56,7 @@ export class UnitOfMeasurementUpdateComponent implements OnInit {
     )
     .subscribe(({ unitOfMeasurements, unitOfMeasurement }) => {
       this.form.initializeForm();
+      this.isLoading = false;
       this.unitOfMeasurementResult = unitOfMeasurement.data;
       this.form.fill(unitOfMeasurement.data, unitOfMeasurements.data.result);
     });

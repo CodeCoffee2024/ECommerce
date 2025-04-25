@@ -215,6 +215,66 @@ namespace ECommerce.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UnitOfMeasurementConversions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ConvertFromId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ConvertToId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Value = table.Column<decimal>(type: "decimal(18,6)", precision: 18, scale: 6, nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedById = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ModifiedById = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UnitOfMeasurementConversions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UnitOfMeasurementConversions_UnitOfMeasurements_ConvertFromId",
+                        column: x => x.ConvertFromId,
+                        principalTable: "UnitOfMeasurements",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UnitOfMeasurementConversions_UnitOfMeasurements_ConvertToId",
+                        column: x => x.ConvertToId,
+                        principalTable: "UnitOfMeasurements",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UnitOfMeasurementConversions_User_CreatedById",
+                        column: x => x.CreatedById,
+                        principalTable: "User",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UnitOfMeasurementConversions_User_ModifiedById",
+                        column: x => x.ModifiedById,
+                        principalTable: "User",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UnitOfMeasurementConversions_ConvertFromId",
+                table: "UnitOfMeasurementConversions",
+                column: "ConvertFromId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UnitOfMeasurementConversions_ConvertToId",
+                table: "UnitOfMeasurementConversions",
+                column: "ConvertToId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UnitOfMeasurementConversions_CreatedById",
+                table: "UnitOfMeasurementConversions",
+                column: "CreatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UnitOfMeasurementConversions_ModifiedById",
+                table: "UnitOfMeasurementConversions",
+                column: "ModifiedById");
+
             migrationBuilder.CreateIndex(
                 name: "IX_UnitOfMeasurements_CreatedById",
                 table: "UnitOfMeasurements",
@@ -292,16 +352,19 @@ namespace ECommerce.Infrastructure.Migrations
                 name: "Module");
 
             migrationBuilder.DropTable(
-                name: "UnitOfMeasurements");
+                name: "UnitOfMeasurementConversions");
 
             migrationBuilder.DropTable(
                 name: "UserUserPermission");
 
             migrationBuilder.DropTable(
-                name: "UnitOfMeasurementTypes");
+                name: "UnitOfMeasurements");
 
             migrationBuilder.DropTable(
                 name: "UserPermission");
+
+            migrationBuilder.DropTable(
+                name: "UnitOfMeasurementTypes");
 
             migrationBuilder.DropTable(
                 name: "User");

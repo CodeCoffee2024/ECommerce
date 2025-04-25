@@ -23,6 +23,7 @@ namespace ECommerce.Infrastructure.Configurations.Setting
             builder.Property(u => u.Status)
                 .IsRequired()
                 .HasMaxLength(5);
+
             builder.HasOne(u => u.UnitOfMeasurementType)
                 .WithMany(ut => ut.UnitOfMeasurements)
                 .HasForeignKey(u => u.UnitOfMeasurementTypeId)

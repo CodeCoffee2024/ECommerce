@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ControlValueAccessor, FormControl, FormGroup } from '@angular/forms';
 import { InputTypes } from '../../constants/input-type';
 
@@ -9,7 +9,8 @@ import { InputTypes } from '../../constants/input-type';
 })
 export class InputComponent implements ControlValueAccessor {
   @Input() inputType: InputTypes = InputTypes.Text;
-  @Input() label = '';
+  @Input() label;
+  @Input() hideLabel = false;
   @Input() inputId = 'input';
   @Input() controlName!: string;
   @Input() erorField: string;
@@ -53,7 +54,27 @@ export class InputComponent implements ControlValueAccessor {
   }
   get isRequired(): boolean {
     return !!this.formControl?.errors?.['required'];
+  }onInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (this.inputType === 'number') {
+      const regex = /^\d*(\.\d{0,2})?$/;
+      if (!regex.test(input.value)) {
+        input.value = input.value.slice(0, -1); // remove invalid char
+        this.formControl.setValue(input.value, { emitEvent: false });
+      }
+    }
   }
+  
+  onBlur(): void {
+    if (this.inputType === 'number') {
+      let value = parseFloat(this.formControl.value);
+      if (!isNaN(value)) {
+        value = parseFloat(value.toFixed(2));
+        this.formControl.setValue(value, { emitEvent: false });
+      }
+    }
+  }
+  
 
   /** ControlValueAccessor Implementation */
   writeValue(value): void {

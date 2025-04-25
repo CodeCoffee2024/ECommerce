@@ -1,5 +1,6 @@
-﻿using ECommerce.Application.Common.Helpers;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+
+using ECommerce.Application.Common.Helpers;
 
 namespace ECommerce.Application.CommandQueries.UserManagement.User.ExportUserListing
 {

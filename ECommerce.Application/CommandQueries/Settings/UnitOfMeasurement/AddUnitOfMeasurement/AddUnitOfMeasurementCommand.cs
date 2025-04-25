@@ -1,5 +1,5 @@
 ﻿using ECommerce.Application.Abstractions.Messaging;
-using ECommerce.Application.CommandQueries.Settings.UnitOfMeasurementType.Validators;
+using ECommerce.Application.CommandQueries.Settings.UnitOfMeasurement.Validators;
 
 namespace ECommerce.Application.CommandQueries.Settings.UnitOfMeasurement.AddUnitOfMeasurement
 {

@@ -22,6 +22,7 @@ body, .bg-color-main {
     color: var(--font-color-highlight)
 }
 .bg-color-highlight:hover {
+    color: white !important;
     background-color: var(--font-color-highlight) !important
 }
 .bg-color-primary {

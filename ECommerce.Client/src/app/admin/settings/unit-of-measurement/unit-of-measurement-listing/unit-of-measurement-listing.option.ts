@@ -2,9 +2,9 @@ import { GenericListingOption } from "../../../../models/generics/generic-listin
 import { EntityStatuses } from "../../../../models/status";
 
 export class UnitOfMeasurementListingOption extends GenericListingOption {
-    exclude: string;
+    exclude = '';
     status: EntityStatuses = EntityStatuses.NONE;
-    unitOfMeasurementTypes = '';
+    unitOfMeasurementType = '';
     constructor() {
         super();
         this.sortBy = 'CreatedDate';

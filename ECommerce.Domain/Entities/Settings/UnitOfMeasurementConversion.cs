@@ -6,10 +6,11 @@ namespace ECommerce.Domain.Entities.Settings
     {
         #region Properties
 
-        public virtual UnitOfMeasurementType UnitOfMeasurementFrom { get; set; }
-        public virtual UnitOfMeasurementType UnitOfMeasurementTo { get; private set; }
-        public Guid UnitOfMeasurementFromId { get; private set; }
-        public Guid UnitOfMeasurementToId { get; private set; }
+        public Guid ConvertFromId { get; set; }
+        public Guid ConvertToId { get; set; }
+        public virtual UnitOfMeasurement ConvertFrom { get; set; }
+        public virtual UnitOfMeasurement ConvertTo { get; set; }
+
         public decimal Value { get; private set; }
 
         #endregion Properties
@@ -19,10 +20,10 @@ namespace ECommerce.Domain.Entities.Settings
         public UnitOfMeasurementConversion()
         { }
 
-        private UnitOfMeasurementConversion(Guid unitOfMeasurementFromId, Guid unitOfMeasurementToId, decimal value)
+        private UnitOfMeasurementConversion(Guid convertFromId, Guid convertToId, decimal value)
         {
-            UnitOfMeasurementFromId = unitOfMeasurementFromId;
-            UnitOfMeasurementToId = unitOfMeasurementToId;
+            ConvertFromId = convertFromId;
+            ConvertToId = convertToId;
             Value = value;
         }
 
@@ -43,12 +44,20 @@ namespace ECommerce.Domain.Entities.Settings
             return uom;
         }
 
+        public UnitOfMeasurementConversion Update(Guid unitOfMeasurementToId, decimal value, DateTime? updatedDate, Guid? updateById)
+        {
+            ConvertToId = unitOfMeasurementToId;
+            Value = value;
+            SetUpdated(updatedDate, updateById);
+            return this;
+        }
+
         public Dictionary<string, string> GetActivityLog(string modifiedBy = "", string createdBy = "")
         {
             return new Dictionary<string, string>
             {
-                { "From", UnitOfMeasurementFrom.Name },
-                { "To", UnitOfMeasurementTo.Name },
+                { "From", ConvertFrom!.Name },
+                { "To", ConvertTo!.Name },
                 { "Value", Value.ToString() },
                 { "Modified By", !string.IsNullOrEmpty(modifiedBy) ? modifiedBy : ModifiedBy?.FirstName + " " + ModifiedBy?.LastName },
                 { "Created By",!string.IsNullOrEmpty(createdBy) ? createdBy : CreatedBy?.FirstName + " " + CreatedBy?.LastName }

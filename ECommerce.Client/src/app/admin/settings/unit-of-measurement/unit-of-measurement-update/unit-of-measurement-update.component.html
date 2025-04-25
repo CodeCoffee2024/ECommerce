@@ -1,1 +1,13 @@
-<p>unit-of-measurement-update works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-12 pt-3" *ngIf="!isLoading">
+            <h4><span class="color-highlight cursor-pointer" [routerLink]="'../../'">Unit of Measurementts</span> <i class="bi bi-chevron-right"></i> <span class="color-highlight cursor-pointer" [routerLink]="'../../view/'+Id">{{ form.form.get('name')?.value }}</span><i class="bi bi-chevron-right"></i> <span>Update</span></h4>
+        
+        </div>
+    </div>
+    <div class="row" *ngIf="form">
+        <div class="col-12">
+            <app-unit-of-measurement-update-form *ngIf="form.id" [form]="form"></app-unit-of-measurement-update-form>
+        </div>
+    </div>
+</div>

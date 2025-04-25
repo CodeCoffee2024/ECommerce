@@ -1,1 +1,47 @@
-<p>unit-of-measurement-activity-log-show works!</p>
+<div *ngIf="unitOfMeasurement">
+    <div class="container" *ngIf="unitOfMeasurement.name">
+        <div class="row">
+            <div class="col-12 pt-3">
+                <h4>{{ unitOfMeasurement.name }} Activity Logs</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Field</th>
+                            <th>Changes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let key of keys">
+                            <td><strong>{{ key }}</strong></td>
+                            <ng-container *ngIf="key !== 'Conversions' else conversion">
+                                <td [innerHTML]="displayChange(key)"></td>
+                            </ng-container>
+                            <ng-template #conversion>
+                                <td class="overflow-auto">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>To</th>
+                                                <th>Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let conversion of conversions">
+                                                <td [innerHTML]="displayChangeConversion(conversion.Id, 'Name')"></td>
+                                                <td [innerHTML]="displayChangeConversion(conversion.Id, 'Value')"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </ng-template>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

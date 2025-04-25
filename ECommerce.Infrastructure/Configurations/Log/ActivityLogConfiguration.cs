@@ -1,7 +1,8 @@
-﻿using ECommerce.Domain.Entities.Log;
+﻿using System.Text.Json;
+
+using ECommerce.Domain.Entities.Log;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Text.Json;
 
 namespace ECommerce.Infrastructure.Configurations.Log
 {

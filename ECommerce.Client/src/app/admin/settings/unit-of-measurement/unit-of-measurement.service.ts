@@ -1,11 +1,11 @@
 import { HttpClient } from "@angular/common/http";
-import { GenericService } from "../../../shared/services/generic/generic.service";
-import { Observable } from "rxjs";
-import { ApiResult, NullApiResult } from "../../../models/result.model";
-import { UnitOfMeasurementListingFragmentResponse, UnitOfMeasurementListingResponse } from "../../../models/settings/unit-of-measurement/unit-of-measurement-listing-response";
-import { GenericListingResult } from "../../../models/generics/generic-listing-result";
-import { UnitOfMeasurementResult } from "../../../models/settings/unit-of-measurement/unit-of-measurement";
 import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { GenericListingResult } from "../../../models/generics/generic-listing-result";
+import { ApiResult, NullApiResult } from "../../../models/result.model";
+import { UnitOfMeasurementFragment, UnitOfMeasurementResult } from "../../../models/settings/unit-of-measurement/unit-of-measurement";
+import { UnitOfMeasurementListingFragmentResponse, UnitOfMeasurementListingResponse } from "../../../models/settings/unit-of-measurement/unit-of-measurement-listing-response";
+import { GenericService } from "../../../shared/services/generic/generic.service";
 
 @Injectable({
     providedIn: 'root'
@@ -29,6 +29,10 @@ export class UnitOfMeasurementService extends GenericService {
     }
     show(id): Observable<ApiResult<UnitOfMeasurementResult>> {
         return this.get<ApiResult<UnitOfMeasurementResult>>(`${this.controller}/`+id, null, true);
+    }
+    getDropdown(listingOption): Observable<ApiResult<GenericListingResult<UnitOfMeasurementFragment[]>>> {
+        const queryParams = this.setQueryParameters(listingOption);
+        return this.get<ApiResult<GenericListingResult<UnitOfMeasurementFragment[]>>>(`${this.controller}/Dropdown?`+queryParams, null, true);
     }
     create(payload): Observable<ApiResult<UnitOfMeasurementResult>> {
         return this.post(this.controller, payload);

@@ -1,12 +1,13 @@
-﻿using ECommerce.Application.Abstractions;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+
+using ECommerce.Application.Abstractions;
 using ECommerce.Application.CommandQueries.Security;
 using ECommerce.Domain.Entities.UserManagement;
 using ECommerce.Domain.Entities.UserManagement.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace ECommerce.Infrastructure.Services
 {

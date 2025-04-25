@@ -1,5 +1,4 @@
 ﻿using ECommerce.Domain.Commons;
-using ECommerce.Domain.Dtos.Commons;
 using ECommerce.Domain.Dtos.Settings.UnitOfMeasurement;
 using ECommerce.Domain.Entities.Settings;
 using ECommerce.Domain.Entities.Settings.Interfaces;
@@ -43,6 +42,12 @@ namespace ECommerce.Infrastructure.Repositories.Settings
             return result;
         }
 
+        public async Task<UnitOfMeasurement?> GetByIdAsyncDependencies(Guid Id, CancellationToken cancellationToken = default)
+        {
+
+            var result = DbContext.UnitOfMeasurements.Include(it => it.ConvertFroms).Include(it => it.ConvertTos).Where(it => it.Id == Id).FirstOrDefault();
+            return result;
+        }
         public async Task<PagedResult<UnitOfMeasurement>> GetListingPageResultAsync(UnitOfMeasurementDTO listFilterDto, CancellationToken cancellationToken)
         {
             var query = DbContext.UnitOfMeasurements.AsQueryable();
@@ -74,22 +79,30 @@ namespace ECommerce.Infrastructure.Repositories.Settings
             return list;
         }
 
-        public async Task<PagedResult<UnitOfMeasurement>> GetListingPageDropdownResultAsync(DefaultFilterBaseDto listFilterDto, CancellationToken cancellationToken)
+        public async Task<PagedResult<UnitOfMeasurement>> GetListingPageDropdownResultAsync(UnitOfMeasurementDTO listFilterDto, CancellationToken cancellationToken)
         {
             var query = DbContext.UnitOfMeasurements.AsQueryable();
             var queryCount = await query.AsNoTracking().CountAsync();
 
+            if (listFilterDto.UnitOfMeasurementType != null)
+            {
+                query = query.Where(unitOfMeasurement => unitOfMeasurement.UnitOfMeasurementTypeId == listFilterDto.UnitOfMeasurementType);
+            }
+
             if (listFilterDto.HasSearchValues)
             {
                 query = query.Where(UnitOfMeasurement =>
-                    UnitOfMeasurement.Name.Contains(listFilterDto.GlobalSearchValue)
+                    UnitOfMeasurement.Name.ToString().Contains(listFilterDto.GlobalSearchValue!.ToString()!)
                 );
-                if (listFilterDto.Exclude != "")
-                {
-                    query = query.Where(UnitOfMeasurement =>
-                        UnitOfMeasurement.Name.Contains(listFilterDto.GlobalSearchValue) && !listFilterDto.Exclude!.Contains(UnitOfMeasurement.Name)
-                    );
-                }
+            }
+            query = query.Where(UnitOfMeasurement =>
+                UnitOfMeasurement.Id.ToString()!.Contains(listFilterDto.Id.ToString()!)
+            );
+            if (listFilterDto.Exclude != "")
+            {
+                query = query.Where(UnitOfMeasurement =>
+                    UnitOfMeasurement.Id.ToString()!.Contains(listFilterDto.Id.ToString()!) && !listFilterDto.Exclude!.Contains(UnitOfMeasurement.Id.ToString()!)
+                );
             }
 
             var list = await query

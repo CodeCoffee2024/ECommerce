@@ -49,7 +49,7 @@ namespace ECommerce.Application.CommandQueries.Settings.UnitOfMeasurement.AddUni
             await _dbService.SaveChangesAsync();
             var current = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
             var currentUom = _unitOfMeasurementRepository.FindByName(unitOfMeasurement.Name);
-            var newValues = currentUom!.GetActivityLog(current!.FirstName + " " + current.LastName, current.FirstName + " " + current.LastName);
+            var newValues = currentUom!.GetActivityLog(new List<object>(), current!.FirstName + " " + current.LastName, current.FirstName + " " + current.LastName);
             await _activityLogService.LogAsync("Unit of Measurement", unitOfMeasurement.Id!.Value, "New", new Dictionary<string, string>(), newValues);
             await _dbService.SaveChangesAsync();
             return Result.Success(unitOfMeasurement);

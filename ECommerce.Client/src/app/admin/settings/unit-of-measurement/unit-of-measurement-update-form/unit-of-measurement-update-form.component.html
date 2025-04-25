@@ -2,38 +2,100 @@
     <div class="row">
         <div class="col-12 col-lg-4">
             <app-input
-                [inputType]="InputTypes.Text"
-                inputId="name"
-                [formGroup]="form.form"
-                [controlName]="'name'"
-                [label]="'Name'"
-            ></app-input>
+            [inputType]="InputTypes.Text"
+            inputId="name"
+            [formGroup]="form.form"
+            [controlName]="'name'"
+            [label]="'Name'">
+            </app-input>
             <div *ngIf="form.getServerError('name')" class="alert alert-danger">
-                {{ form.getServerError('name') }}
+            {{ form.getServerError('name') }}
             </div>
         </div>
-    </div><div formArrayName="conversions">
-        <div *ngFor="let conversion of form.conversions.controls; let i = index" [formGroupName]="i" class="mb-2 border p-2 rounded">
-            <div class="form-row">
-                <div class="col">
-                    <input class="form-control" formControlName="from" placeholder="From" />
-                </div>
-                <div class="col">
-                    <input class="form-control" formControlName="to" placeholder="To" />
-                </div>
-                <div class="col">
-                    <input class="form-control" formControlName="factor" placeholder="Factor" />
-                </div>
-                <div class="col-auto">
-                    <button type="button" class="btn btn-danger" (click)="form.removeConversion(i)">Remove</button>
-                </div>
+        <div class="col-12 col-lg-4">
+            <app-input
+            [inputType]="InputTypes.Text"
+            inputId="abbreviation"
+            [formGroup]="form.form"
+            [controlName]="'abbreviation'"
+            [label]="'Abbreviation'">
+            </app-input>
+            <div *ngIf="form.getServerError('abbreviation')" class="alert alert-danger">
+            {{ form.getServerError('abbreviation') }}
             </div>
         </div>
-        <button type="button" class="btn btn-primary mt-2" (click)="form.addConversion()">Add Conversion</button>
     </div>
+    
+        <!-- FormArray displayed as a table -->
+    <div formArrayName="conversions" class="mt-4">
+        <div class="h5">Conversions</div>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th class="w-50">Convert To</th>     <!-- 50% width -->
+                    <th class="w-25">Factor</th>         <!-- 25% width -->
+                    <th class="w-25 text-center">Actions</th> <!-- 25% width, center align -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let conversion of form.conversions.controls; let i = index" [formGroupName]="i">
+                    <td>
+                    <app-search-mono-select 
+                        [label]="'Convert To'"
+                        [hideLabel]="true"
+                        [placeholder]="'Search types...'"
+                        [searchOptions]="form.unitOfMeasurementList"
+                        [hasSearchIcon]="true"
+                        [formGroup]="form.conversion(conversion)"
+                        [controlName]="'unitOfMeasurementTo'"
+                        [hasMore]="hasMore"
+                        [selectedItem]="conversion.get('unitOfMeasurementTo').value"
+                        [field]="'name'"
+                        [isLoading]="isDropdownLoading"
+                        (searchChanged)="onSearchChanged($event)"
+                        (selectedItemChange)="onSelectionChange($event)">
+                    </app-search-mono-select>
+                    </td>
+                    <td>
+                        <app-input
+                            [inputType]="InputTypes.Number"
+                            inputId="value"
+                            [formGroup]="form.conversion(conversion)"
+                            [controlName]="'value'"
+                            [hideLabel]="true"
+                            [label]="'Value'"
+                        ></app-input>
+                        <div *ngIf="form.getServerError('value')" class="alert alert-danger">
+                            {{ form.getServerError('value') }}
+                        </div>
+                    </td>
+                    <td class="text-center">
+                    <button
+                        *ngIf="form.conversions.length > 1 && i !== form.conversions.length - 1"
+                        type="button"
+                        class="btn btn-sm btn-danger"
+                        (click)="removeConversion(i)">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                    <button
+                        type="button"
+                        *ngIf="i === form.conversions.length - 1"
+                        class="btn btn-success btn-sm"
+                        (click)="form.addConversion()"
+                        [disabled]="!form.canAddConversion()">
+                        <i class="bi bi-plus"></i>
+                    </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
     <div class="row">
         <div class="col-12 d-flex justify-content-end">
-            <button class="btn btn-success" type="submit"><i class="bi bi-check mr-2"></i>Save</button>
+            <button class="btn btn-sm btn-success" type="submit">
+            <i class="bi bi-check mr-2"></i>Save
+            </button>
         </div>
     </div>
 </form>

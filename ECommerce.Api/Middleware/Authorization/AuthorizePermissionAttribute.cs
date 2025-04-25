@@ -1,9 +1,10 @@
 ﻿namespace ECommerce.Api.Middleware.Authorization
 {
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Filters;
     using System.Linq;
     using System.Security.Claims;
+
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Filters;
 
     public class AuthorizePermissionAttribute : Attribute, IAuthorizationFilter
     {

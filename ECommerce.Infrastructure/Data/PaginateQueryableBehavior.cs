@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Linq.Dynamic.Core;
+﻿using System.Linq.Dynamic.Core;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Infrastructure.Data
 {

@@ -1,3 +1,4 @@
+import { UnitOfMeasurementConversionFragment } from "../unit-of-measurement-conversion/unit-of-measurement-conversion";
 import { UnitOfMeasurementTypeFragment } from "../unit-of-measurement-type/unit-of-measurement-type";
 
 export enum UnitOfMeasurementPermission {
@@ -14,6 +15,8 @@ export class UnitOfMeasurementResult {
     name: string;
     abbreviation: string;
     unitOfMeasurementType: UnitOfMeasurementTypeFragment;
+    conversionsFrom: UnitOfMeasurementConversionFragment[];
+    conversionsTo: UnitOfMeasurementConversionFragment[];
     canDisable: boolean;
     canUpdate: boolean;
     canDelete: boolean;
@@ -25,6 +28,11 @@ export enum UnitOfMeasurementStatuses {
     INACTIVE = 'inact'
 }
 
+export class UnitOfMeasurementFragment {
+    abbreviation: string;
+    name: string;
+    id: string;
+}
 export class FormatUnitOfMeasurementStatus {
     static format(status: UnitOfMeasurementStatuses = UnitOfMeasurementStatuses.INACTIVE, component = false): string {
         if (component) {

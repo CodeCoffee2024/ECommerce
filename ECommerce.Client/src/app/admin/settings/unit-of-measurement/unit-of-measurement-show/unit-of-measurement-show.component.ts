@@ -61,9 +61,12 @@ export class UnitOfMeasurementShowComponent implements OnInit {
       this.unitOfMeasurementService.deleteUnitOfMeasurement(this.unitOfMeasurement.id).subscribe({
         next:() => {
           this.toastService.add("Success", DeleteSuccess("Unit of Measurement"), ToastType.SUCCESS);
-          // this.activeModal.close(true);
+          this.router.navigate(['/admin/settings/unit-of-measurements/view/' + this.Id])
       } })
     }
+  }
+  goTo(data) {
+    console.log(data)
   }
   async disable() {
     const dialog = DisableConfirmationDialog("Unit of Measurement");
@@ -71,8 +74,8 @@ export class UnitOfMeasurementShowComponent implements OnInit {
     if (result) {
       this.unitOfMeasurementService.disable(this.unitOfMeasurement.id).subscribe({
         next:() => {
+          window.location.reload();
           this.toastService.add("Success", DisableSuccess("Unit of Measurement"), ToastType.SUCCESS);
-          // this.activeModal.close(true);
       } })
     }
   }
@@ -82,8 +85,8 @@ export class UnitOfMeasurementShowComponent implements OnInit {
     if (result) {
       this.unitOfMeasurementService.enable(this.unitOfMeasurement.id).subscribe({
         next:() => {
+          window.location.reload();
           this.toastService.add("Success", EnableSuccess("Unit of Measurement "), ToastType.SUCCESS);
-          // this.activeModal.close(true);
       } })
     }
   }

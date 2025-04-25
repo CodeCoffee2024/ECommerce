@@ -1,10 +1,11 @@
-﻿using ECommerce.Application.Abstractions;
+﻿using System.ComponentModel;
+using System.Reflection;
+
+using ECommerce.Application.Abstractions;
 using ECommerce.Domain.Commons.Constants;
 using ECommerce.Domain.Dtos.Shared;
 using ECommerce.Domain.Entities.UserManagement.Interfaces;
 using Microsoft.AspNetCore.Http;
-using System.ComponentModel;
-using System.Reflection;
 
 namespace ECommerce.Infrastructure.Services
 {

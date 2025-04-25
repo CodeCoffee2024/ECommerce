@@ -68,6 +68,7 @@ namespace ECommerce.Domain.Abstractions
         {
             _value = value;
         }
+
         public Result(TValue? value, bool isSuccess, Error error, List<Error> errors)
             : base(isSuccess, error, errors)
         {

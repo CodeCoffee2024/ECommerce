@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ECommerce.Application.CommandQueries.Common.Mapping;
+using ECommerce.Application.CommandQueries.Settings.UnitOfMeasurementConversion.GetUnitOfMeasurementConversion;
 using ECommerce.Domain.Enums;
 
 namespace ECommerce.Application.CommandQueries.Settings.UnitOfMeasurement.GetOneUnitOfMeasurement
@@ -9,6 +10,7 @@ namespace ECommerce.Application.CommandQueries.Settings.UnitOfMeasurement.GetOne
         #region Properties
 
         public string Name { get; set; } = string.Empty;
+        public string Abbreviation { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
         public UnitOfMeasurementTypeFragmentResponse UnitOfMeasurementType { get; set; }
         public bool CanEnable { get; set; }
@@ -20,6 +22,8 @@ namespace ECommerce.Application.CommandQueries.Settings.UnitOfMeasurement.GetOne
         public DateTime? ModifiedDate { get; set; }
         public UserFragmentResponse CreatedBy { get; set; } = new();
         public UserFragmentResponse ModifiedBy { get; set; } = new();
+        public List<GetUnitOfMeasurementConversionResponse> ConversionsFrom { get; set; }
+        public List<GetUnitOfMeasurementConversionResponse> ConversionsTo { get; set; }
 
         #endregion Properties
 
@@ -33,6 +37,9 @@ namespace ECommerce.Application.CommandQueries.Settings.UnitOfMeasurement.GetOne
             return new GetOneUnitOfMeasurementResponse()
             {
                 Name = unitOfMeasurement.Name,
+                Abbreviation = unitOfMeasurement.Abbreviation,
+                ConversionsFrom = mapper.Map<List<GetUnitOfMeasurementConversionResponse>>(unitOfMeasurement.ConvertFroms),
+                ConversionsTo = mapper.Map<List<GetUnitOfMeasurementConversionResponse>>(unitOfMeasurement.ConvertTos),
                 Id = unitOfMeasurement.Id,
                 Status = unitOfMeasurement.Status,
                 CanEnable = unitOfMeasurement.Status == Domain.Enums.Status.Disabled.GetDescription(),
