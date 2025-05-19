@@ -16,7 +16,7 @@ import { UserPermissionListingComponent } from './user-permission/user-permissio
     SidebarComponent,
     AdminComponent,
     UnauthorizedComponent,
-    UserPermissionListingComponent
+    UserPermissionListingComponent,
   ],
   imports: [
     CommonModule,

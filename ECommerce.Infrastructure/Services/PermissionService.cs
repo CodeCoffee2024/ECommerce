@@ -23,10 +23,10 @@ namespace ECommerce.Infrastructure.Services
         {
             _httpContextAccessor = httpContextAccessor;
             var userField = typeof(Modules).GetField("User");
-            var userDscription = userField.GetCustomAttribute<DescriptionAttribute>()?.Description;
+            var userDscription = userField!.GetCustomAttribute<DescriptionAttribute>()?.Description;
             var userModulePermission = new ModulePermissionDTO(
                 Modules.User,
-                userDscription,
+                userDscription!,
                 0,
                 [
                     new PermissionDetailDTO(
@@ -47,10 +47,10 @@ namespace ECommerce.Infrastructure.Services
                 ]
             );
             var userPermissionField = typeof(Modules).GetField("UserPermission");
-            var userPermissionDscription = userPermissionField.GetCustomAttribute<DescriptionAttribute>()?.Description;
+            var userPermissionDscription = userPermissionField!.GetCustomAttribute<DescriptionAttribute>()?.Description;
             var userPermissionModulePermission = new ModulePermissionDTO(
                 Modules.UserPermission,
-                userPermissionDscription,
+                userPermissionDscription!,
                 1,
                 [
                     new PermissionDetailDTO(
@@ -70,11 +70,35 @@ namespace ECommerce.Infrastructure.Services
                     ),
                 ]
             );
+            var productCategoryField = typeof(Modules).GetField("ProductCategory");
+            var productCategoryDescription = productCategoryField!.GetCustomAttribute<DescriptionAttribute>()?.Description;
+            var productCategoryModulePermission = new ModulePermissionDTO(
+                Modules.ProductCategory,
+                productCategoryDescription!,
+                1,
+                [
+                    new PermissionDetailDTO(
+                        Permissions.UserEnableToViewProductCategory,
+                        "View",
+                        []
+                    ),
+                    new PermissionDetailDTO(
+                        Permissions.UserEnableToModifyProductCategory,
+                        "Modify",
+                        [Permissions.UserEnableToViewProductCategory]
+                    ),
+                    new PermissionDetailDTO(
+                        Permissions.UserEnableToDeleteProductCategory,
+                        "Delete",
+                        [Permissions.UserEnableToViewProductCategory]
+                    ),
+                ]
+            );
             var unitOfMeasurementField = typeof(Modules).GetField("UnitOfMeasurement");
-            var unitOfMeasurementDscription = unitOfMeasurementField.GetCustomAttribute<DescriptionAttribute>()?.Description;
+            var unitOfMeasurementDescription = unitOfMeasurementField!.GetCustomAttribute<DescriptionAttribute>()?.Description;
             var unitOfMeasurementModulePermission = new ModulePermissionDTO(
                 Modules.UnitOfMeasurement,
-                unitOfMeasurementDscription,
+                unitOfMeasurementDescription!,
                 1,
                 [
                     new PermissionDetailDTO(
@@ -95,10 +119,10 @@ namespace ECommerce.Infrastructure.Services
                 ]
             );
             var unitOfMeasurementTypeField = typeof(Modules).GetField("UnitOfMeasurementType");
-            var unitOfMeasurementTypeDscription = unitOfMeasurementTypeField.GetCustomAttribute<DescriptionAttribute>()?.Description;
+            var unitOfMeasurementTypeDescription = unitOfMeasurementTypeField!.GetCustomAttribute<DescriptionAttribute>()?.Description;
             var unitOfMeasurementTypeModulePermission = new ModulePermissionDTO(
                 Modules.UnitOfMeasurementType,
-                unitOfMeasurementTypeDscription,
+                unitOfMeasurementTypeDescription!,
                 1,
                 [
                     new PermissionDetailDTO(
@@ -121,6 +145,7 @@ namespace ECommerce.Infrastructure.Services
             ModulePermissions = [
                 userModulePermission,
                 userPermissionModulePermission,
+                productCategoryModulePermission,
                 unitOfMeasurementModulePermission,
                 unitOfMeasurementTypeModulePermission,
             ];

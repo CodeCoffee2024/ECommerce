@@ -14,6 +14,7 @@ export class SearchMonoSelectComponent {
   @Input() field: string;
   @Input() hideLabel = false;
   @Input() hasSearchIcon = false;
+  @Input() errorName = '';
   @Input() controlName;
   @Input() searchOptions = []; // Options must be passed from parent
   @Output() searchChanged = new EventEmitter<{ search: string; page: number, clear: boolean }>(); // Emits search event
@@ -96,6 +97,19 @@ export class SearchMonoSelectComponent {
         errorMessages.push(controlErrors['serverError']);
       } else {
         errorMessages.push(`${this.label} ${errorKey.replace(/([A-Z])/g, ' $1').toLowerCase()}`);
+      }
+    });
+
+    const serverErrors = this.formGroup.errors || {};
+    Object.keys(serverErrors).forEach(errorKey => {
+      if (errorKey === 'serverError') {
+        Object.keys(serverErrors['serverError']).forEach(serverKey => {
+          if (serverKey.toLocaleLowerCase() == this.errorName.toLocaleLowerCase()) {
+            this.formControl.markAsTouched();
+            this.formControl.setErrors({ invalid: true });
+            // errorMessages.push(serverErrors['serverError'][serverKey]);
+          }
+        });
       }
     });
     return errorMessages;

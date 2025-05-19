@@ -2,6 +2,7 @@ import { UserPermission } from "./user/user";
 import { UserPermissionPermission } from "./user-permission/user-permission";
 import { UnitOfMeasurementTypePermission } from "./settings/unit-of-measurement-type/unit-of-measurement-type";
 import { UnitOfMeasurementPermission } from "./settings/unit-of-measurement/unit-of-measurement";
+import { ProductCategoryPermission } from "./inventory/product-category/product-category";
 
 export class SideBarNavigation {
     name: string;
@@ -25,6 +26,10 @@ export const Modules = [
         order: 1
     },
     {
+        name: "Inventory",
+        order: 2
+    },
+    {
         name: "User Management",
         order: 5
     },
@@ -40,6 +45,14 @@ export const Navigations = [
         icon: "bi bi-speedometer",
         route: '/admin/dashboard',
         description: "Dashboard",
+    },
+    {
+        module: Modules.find(it => it.name == "Inventory").name,
+        name: "ProductCategory",
+        icon: "bi bi-boxes",
+        route: '/admin/inventory/product-categories',
+        requiredPermission: [ProductCategoryPermission.UserEnableToViewProductCategory],
+        description: "Product Categories",
     },
     {
         module: Modules.find(it => it.name == "User Management").name,

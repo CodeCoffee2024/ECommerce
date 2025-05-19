@@ -7,6 +7,7 @@ import { UserPermissionPermission } from '../models/user-permission/user-permiss
 import { UserPermission } from '../models/user/user';
 import { UnitOfMeasurementTypePermission } from '../models/settings/unit-of-measurement-type/unit-of-measurement-type';
 import { UnitOfMeasurementPermission } from '../models/settings/unit-of-measurement/unit-of-measurement';
+import { ProductCategoryPermission } from '../models/inventory/product-category/product-category';
 
 const routes: Routes = [
   {
@@ -20,6 +21,16 @@ const routes: Routes = [
         loadChildren: () => import('./user-permission/user-permission.module').then(m => m.UserPermissionModule),
         canActivate: [AuthGuard],
         data: { permission: UserPermissionPermission.UserEnableToViewUserPermission }, 
+      },
+      { 
+        path: 'inventory', 
+        loadChildren: () => import('./inventory/inventory.module').then(m => m.InventoryModule),
+        canActivate: [AuthGuard],
+        data: { 
+          optionalPermission: 
+            ProductCategoryPermission.UserEnableToViewProductCategory + "," 
+            // UnitOfMeasurementPermission.UserEnableToViewUnitOfMeasurement
+        }, 
       },
       { 
         path: 'users', 

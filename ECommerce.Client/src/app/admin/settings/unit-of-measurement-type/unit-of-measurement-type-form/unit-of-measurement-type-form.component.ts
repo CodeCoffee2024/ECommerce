@@ -17,16 +17,9 @@ import { UnitOfMeasurementTypeForm } from './unit-of-measurement-type.form';
 export class UnitOfMeasurementTypeFormComponent {
   form: UnitOfMeasurementTypeForm;
   InputTypes = InputTypes;
-  hasMore = false;
   isUpdate = false;
-  isProfileUpdate = false;
   isDropdownLoading = false;
-  invalidDimension = false;
   isLoading = false;
-  invalidFileSize = false;
-  isImgModified = false;
-  userPermissions = [];
-  selectedItems = [];
   constructor(
     public activeModal: NgbActiveModal,
     private unitOfMeasurementService: UnitOfMeasurementTypeService,

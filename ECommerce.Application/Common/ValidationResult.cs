@@ -20,17 +20,19 @@ namespace ECommerce.Application.Common
         #region Public Methods
 
         public static ValidationResult Success() => new();
-
-        // ✅ Add an error
         public void AddError(string field, string error)
         {
             _errors.Add(new Error(field, error));
         }
-
-        // ✅ Required Validation
         public ValidationResult Required(string field, string? value, string? message = null)
         {
             if (string.IsNullOrWhiteSpace(value))
+                AddError(field, message ?? $"{field} is required.");
+            return this;
+        }
+        public ValidationResult RequiredIf(string field, string? value, string referenceValue, string? message = null)
+        {
+            if (string.IsNullOrWhiteSpace(value) && !string.IsNullOrWhiteSpace(referenceValue))
                 AddError(field, message ?? $"{field} is required.");
             return this;
         }

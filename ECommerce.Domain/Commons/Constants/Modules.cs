@@ -18,6 +18,9 @@ namespace ECommerce.Domain.Commons.Constants
         [Description("Unit of Measurement Type")]
         public static readonly string UnitOfMeasurementType = "UnitOfMeasurementType";
 
+        [Description("Product Category")]
+        public static readonly string ProductCategory = "ProductCategory";
+
         #endregion Fields
     }
 }

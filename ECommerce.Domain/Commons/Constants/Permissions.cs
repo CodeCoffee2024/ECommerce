@@ -20,6 +20,10 @@
         public const string UserEnableToModifyUnitOfMeasurementType = "UserEnableToModifyUnitOfMeasurementType";
         public const string UserEnableToDeleteUnitOfMeasurementType = "UserEnableToDeleteUnitOfMeasurementType";
 
+        public const string UserEnableToViewProductCategory = "UserEnableToViewProductCategory";
+        public const string UserEnableToModifyProductCategory = "UserEnableToModifyProductCategory";
+        public const string UserEnableToDeleteProductCategory = "UserEnableToDeleteProductCategory";
+
         #endregion Fields
     }
 }

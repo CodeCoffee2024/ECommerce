@@ -22,6 +22,51 @@ namespace ECommerce.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("ECommerce.Domain.Entities.Inventory.ProductCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CreatedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsSubCategory")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("ModifiedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<Guid?>("ParentProductCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("ModifiedById");
+
+                    b.HasIndex("ParentProductCategoryId");
+
+                    b.ToTable("ProductCategories");
+                });
+
             modelBuilder.Entity("ECommerce.Domain.Entities.Log.ActivityLog", b =>
                 {
                     b.Property<Guid>("Id")
@@ -357,6 +402,28 @@ namespace ECommerce.Infrastructure.Migrations
                     b.ToTable("UserUserPermission", (string)null);
                 });
 
+            modelBuilder.Entity("ECommerce.Domain.Entities.Inventory.ProductCategory", b =>
+                {
+                    b.HasOne("ECommerce.Domain.Entities.UserManagement.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("ECommerce.Domain.Entities.UserManagement.User", "ModifiedBy")
+                        .WithMany()
+                        .HasForeignKey("ModifiedById");
+
+                    b.HasOne("ECommerce.Domain.Entities.Inventory.ProductCategory", "ParentProductCategory")
+                        .WithMany("Subcategories")
+                        .HasForeignKey("ParentProductCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("ModifiedBy");
+
+                    b.Navigation("ParentProductCategory");
+                });
+
             modelBuilder.Entity("ECommerce.Domain.Entities.Settings.UnitOfMeasurement", b =>
                 {
                     b.HasOne("ECommerce.Domain.Entities.UserManagement.User", "CreatedBy")
@@ -481,6 +548,11 @@ namespace ECommerce.Infrastructure.Migrations
                     b.Navigation("User");
 
                     b.Navigation("UserPermission");
+                });
+
+            modelBuilder.Entity("ECommerce.Domain.Entities.Inventory.ProductCategory", b =>
+                {
+                    b.Navigation("Subcategories");
                 });
 
             modelBuilder.Entity("ECommerce.Domain.Entities.Settings.UnitOfMeasurement", b =>

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using ECommerce.Application.CommandQueries.Settings.UnitOfMeasurementConversion.GetUnitOfMeasurementConversion;
+using ECommerce.Domain.Dtos.Inventory.ProductCategory;
+using ECommerce.Domain.Entities.Inventory;
 using ECommerce.Domain.Entities.Settings;
 
 namespace ECommerce.Application.CommandQueries.Common.Mapping
@@ -11,6 +13,8 @@ namespace ECommerce.Application.CommandQueries.Common.Mapping
         public MappingProfile()
         {
             CreateMap<UnitOfMeasurementType, UnitOfMeasurementTypeFragmentResponse>().ReverseMap();
+            CreateMap<ProductCategory, ProductCategoryFragmentResponse>().ReverseMap();
+            CreateMap<ProductCategory, ProductCategoryDTO>().ReverseMap();
             CreateMap<UnitOfMeasurementConversion, GetUnitOfMeasurementConversionResponse>()
             .ForMember(dest => dest.UnitOfMeasurementFrom, opt => opt.MapFrom(src => new UnitOfMeasurementFragmentResponse
             {

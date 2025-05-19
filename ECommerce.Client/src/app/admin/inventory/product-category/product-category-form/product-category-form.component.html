@@ -1,0 +1,60 @@
+<div class="modal-header">
+    <h5 class="modal-title">{{title}}</h5>
+    <button type="button" class="close" (click)="cancel()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<form [formGroup]="form.form" (ngSubmit)="submit()">
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-12">
+                <app-input
+                    [inputType]="InputTypes.Text"
+                    inputId="name"
+                    [formGroup]="form.form"
+                    [controlName]="'name'"
+                    [label]="'Name'"
+                ></app-input>
+                <div *ngIf="form.getServerError('name')" class="alert alert-danger">
+                    {{ form.getServerError('name') }}
+                </div>
+            </div>
+            <div class="col-12">
+                <app-input
+                    [inputType]="InputTypes.Checkbox"
+                    inputId="IsSubCategory"
+                    [formGroup]="form.form"
+                    [controlName]="'isSubCategory'"
+                    [label]="'Is Sub Category?'"
+                ></app-input>
+                <div *ngIf="form.getServerError('isSubCategory')" class="alert alert-danger">
+                    {{ form.getServerError('isSubCategory') }}
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2" *ngIf="form.form.get('isSubCategory').value">
+            <div class="col-12">
+                <app-search-mono-select 
+                    [label]="'Product Category'"
+                    [placeholder]="'Search product categories...'"
+                    [searchOptions]="form.productCategoriesList"
+                    [hasSearchIcon]="true"
+                    [formGroup]="form.form"
+                    [errorName]="'Product Category'"
+                    [controlName]="'parentProductCategoryId'"
+                    [hasMore]="hasMore"
+                    [selectedItem]="form.form.get('parentProductCategoryId')?.value"
+                    [field]="'name'"
+                    [isLoading]="isDropdownLoading"
+                    (searchChanged)="onSearchChanged($event)"
+                    (selectedItemChange)="onSelectionChange($event)">
+                </app-search-mono-select>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-secondary btn-sm" (click)="cancel()">Cancel</button>
+        <button class="btn btn-success  btn-sm" type="submit"><i class="bi bi-check mr-2"></i>Save</button>
+    
+    </div>
+</form>

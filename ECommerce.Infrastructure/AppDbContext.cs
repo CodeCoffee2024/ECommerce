@@ -1,4 +1,5 @@
 ﻿using ECommerce.Domain.Abstractions;
+using ECommerce.Domain.Entities.Inventory;
 using ECommerce.Domain.Entities.Log;
 using ECommerce.Domain.Entities.Settings;
 using ECommerce.Domain.Entities.UserManagement;
@@ -30,6 +31,7 @@ namespace ECommerce.Infrastructure
         public DbSet<ActivityLog> ActivityLogs { get; set; }
         public DbSet<Module> Modules { get; set; }
         public DbSet<UserUserPermission> UserUserPermissions { get; set; }
+        public DbSet<ProductCategory> ProductCategories { get; set; }
 
         public EntityEntry Entry(object entity) => base.Entry(entity); // ✅ Correct implementation
 

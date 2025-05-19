@@ -94,6 +94,40 @@ namespace ECommerce.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductCategories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
+                    ParentProductCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedById = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ModifiedById = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductCategories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductCategories_ProductCategories_ParentProductCategoryId",
+                        column: x => x.ParentProductCategoryId,
+                        principalTable: "ProductCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProductCategories_User_CreatedById",
+                        column: x => x.CreatedById,
+                        principalTable: "User",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ProductCategories_User_ModifiedById",
+                        column: x => x.ModifiedById,
+                        principalTable: "User",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UnitOfMeasurementTypes",
                 columns: table => new
                 {
@@ -256,6 +290,21 @@ namespace ECommerce.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductCategories_CreatedById",
+                table: "ProductCategories",
+                column: "CreatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductCategories_ModifiedById",
+                table: "ProductCategories",
+                column: "ModifiedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductCategories_ParentProductCategoryId",
+                table: "ProductCategories",
+                column: "ParentProductCategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UnitOfMeasurementConversions_ConvertFromId",
                 table: "UnitOfMeasurementConversions",
                 column: "ConvertFromId");
@@ -350,6 +399,9 @@ namespace ECommerce.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Module");
+
+            migrationBuilder.DropTable(
+                name: "ProductCategories");
 
             migrationBuilder.DropTable(
                 name: "UnitOfMeasurementConversions");

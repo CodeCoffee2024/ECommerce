@@ -1,6 +1,8 @@
-﻿using ECommerce.Domain.Entities.Log.Interfaces;
+﻿using ECommerce.Domain.Entities.Inventory.Interfaces;
+using ECommerce.Domain.Entities.Log.Interfaces;
 using ECommerce.Domain.Entities.Settings.Interfaces;
 using ECommerce.Domain.Entities.UserManagement.Interfaces;
+using ECommerce.Infrastructure.Repositories.Inventory;
 using ECommerce.Infrastructure.Repositories.Log;
 using ECommerce.Infrastructure.Repositories.Settings;
 using ECommerce.Infrastructure.Repositories.UserManagement;
@@ -22,6 +24,7 @@ namespace ECommerce.Infrastructure.DependencyInjections
             services.AddScoped<IUnitOfMeasurementTypeRepository, UnitOfMeasurementTypeRepository>();
             services.AddScoped<IUnitOfMeasurementRepository, UnitOfMeasurementRepository>();
             services.AddScoped<IUserUserPermissionRepository, UserUserPermissionRepository>();
+            services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
             return services;
         }
 
